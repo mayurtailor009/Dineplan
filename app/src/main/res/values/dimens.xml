@@ -17,6 +17,7 @@
 
     <!-- EDITTEXT -->
     <dimen name="et_padding">20dp</dimen>
+    <dimen name="et_padding1">10dp</dimen>
     <dimen name="et_text_size">18sp</dimen>
     <dimen name="et_rounded_corner_radius">3dp</dimen>
     <!-- Default screen margins, per the Android Design guidelines. -->

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.dineplan.activities.LoginActivity">
+
+    <include layout="@layout/header" />
+
+    <TextView
+        style="@style/tv_heading"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_gravity="center"
+
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="Sign in to Dine Plan"
+        android:textColor="@color/black" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/et_username"
+            style="@style/et_style"
+            android:hint="Username"
+            android:imeOptions="actionNext" />
+
+        <EditText
+            android:id="@+id/et_password"
+            style="@style/et_style"
+            android:layout_marginTop="5dp"
+            android:hint="Password"
+            android:imeOptions="actionNext"
+            android:inputType="textPassword"
+            android:typeface="monospace" />
+
+        <EditText
+            android:id="@+id/et_tenant"
+            style="@style/et_style"
+            android:layout_marginTop="5dp"
+            android:hint="Tenant"
+            android:imeOptions="actionDone"
+            android:inputType="text" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_help"
+        style="@style/tv_big_heading"
+        android:layout_gravity="center"
+        android:layout_marginTop="15dp"
+        android:gravity="center_horizontal"
+        android:text="Help"
+        android:textStyle="bold" />
+</LinearLayout>

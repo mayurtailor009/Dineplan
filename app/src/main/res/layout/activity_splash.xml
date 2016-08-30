@@ -8,5 +8,5 @@
     <TextView
         style="@style/tv_heading"
         android:layout_centerInParent="true"
-        android:text="Splash Screen" />
+        android:text="App Logo" />
 </RelativeLayout>

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -60,15 +61,15 @@ public class BaseActivity extends AppCompatActivity implements OnClickListener {
 		return v;
 	}
 
-	/*public Toolbar setToolbarTitle(String title){
+	public Toolbar getToolbar(){
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-		((TextView)toolbar.findViewById(R.id.tv_header)).setText(title);
+		//((TextView)toolbar.findViewById(R.id.tv_header)).setText(title);
 		//toolbar.setContentInsetsAbsolute(0,0);
 		setSupportActionBar(toolbar);
 		getSupportActionBar().setDisplayShowTitleEnabled(false);
 		return toolbar;
 	}
-
+	/*
 	public Toolbar setToolbarTitleHome(String title){
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 		((TextView)toolbar.findViewById(R.id.tv_header)).setText(title);

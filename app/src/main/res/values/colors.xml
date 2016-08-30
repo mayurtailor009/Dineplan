@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#000000</color>
+    <color name="colorPrimary">#F2F4F5</color>
     <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="app_bg">#000000</color>
+    <color name="app_bg">@color/colorPrimary</color>
 
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
@@ -23,57 +23,5 @@
     <color name="button_color">#ffffff</color> // White
     <color name="button_text_color">#000000</color> // Black
 
-    <!-- HEADER COLOR -->
-    <color name="header_color">#000000</color>
-    <color name="header_text_color">#ffffff</color>
-    <color name="header_btn_selected_color">#393939</color> // header btn selected
-
-    <color name="color_header_blue">#0A78F7</color>
-
-    <color name="circle_color">#5F9CF1</color>  // Un selected
-    <color name="circle_selected_color">#4D77B3</color>  // Selected
-
-    <!-- Profile Pic -->
-    <color name="profile_pic_upload_again">#7D9EBB</color>
-
-    <color name="hair_color_disable">#97BCFF</color>
-
-    <!-- SETTINGS -->
-    <color name="header_settings">#E8E8E8</color>
-    <color name="setting_box_text_color">#9F9F9F</color>
-
-    <!-- DASHBOARD -->
-    <color name="dashboard_style_color">#C6C6C6</color>
-    <color name="dashboard_style_value_color">#5D5D5D</color>
-    <color name="dashboard_calendar_bg_color">#3A5880</color>
-    <color name="dashboard_accept_btn_color">#689FEE</color>
-
-    <!-- TAB -->
-    <color name="color_gray">#757575</color>
-    <color name="color_gray_light">#A3A3A3</color>
-    <color name="tab_divider_color">#5F7289</color>
-    <color name="tab_horizontal_divider_color">#272727</color>
-
-    <!-- ACCOUNTING -->
-    <color name="accounting_pending_color">#5A83BA</color>
-    <color name="accounting_paid_color">#57A072</color>
-    <color name="accounting_bg_color">#202020</color>
-
-    <color name="user_name_side_drawer">#383838</color>
-
-    <color name="my_portfolio_upload_image_btn_color">#5183C6</color>
-    <color name="image_selected_color">#60FFFF00</color>
-
-    <!-- MY CALENDAR -->
-    <color name="cal_text_disable">#636363</color>
-    <color name="cal_daily_divider_color">#343434</color>
-
-    <!-- MESSAGING -->
-    <color name="circle_color_green">#0DCD71</color>
-    <color name="divider_messaging_list">#242424</color>
-
-
-    <color name="time_color">#505050</color>
-    <color name="week_divider_color">#DEDEDE</color>
-
+    <color name="mahroon">#A31409</color>
 </resources>

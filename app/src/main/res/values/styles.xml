@@ -13,7 +13,7 @@
         <!-- Active thumb color & Active track color(30% transparency) -->
         <item name="colorControlActivated">@color/black</item>
         <!-- Inactive track color(30% transparency) -->
-        <item name="android:colorForeground">@color/color_gray</item>
+        <!--<item name="android:colorForeground">@color/color_gray</item>-->
         <!--<item name="android:actionOverflowButtonStyle">@style/MyOverFlow</item>-->
     </style>
 
@@ -21,6 +21,7 @@
         <item name="spinBars">true</item>
         <item name="color">@color/white</item>
     </style>
+
     <style name="Toolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
         <item name="android:textSize">21sp</item>
         <item name="android:textStyle">italic</item>
@@ -35,15 +36,20 @@
     <style name="searchableStyle" parent="Widget.AppCompat.AutoCompleteTextView">
         <item name="android:textColor">@color/white</item>
     </style>
+
     <style name="et_style">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:singleLine">true</item>
-        <item name="android:padding">@dimen/et_padding</item>
+        <item name="android:paddingBottom">@dimen/et_padding</item>
+        <item name="android:paddingTop">@dimen/et_padding</item>
+        <item name="android:paddingLeft">@dimen/et_padding1</item>
+        <item name="android:paddingRight">@dimen/et_padding1</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:textSize">@dimen/et_text_size</item>
         <item name="android:textColor">@color/et_text_color</item>
         <item name="android:textColorHint">@color/et_text_hint_color</item>
+        <item name="android:background">@drawable/et_bg</item>
     </style>
 
     <style name="et_textarea">
