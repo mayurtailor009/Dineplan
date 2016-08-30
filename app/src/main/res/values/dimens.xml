@@ -1,0 +1,26 @@
+<resources>
+
+    <dimen name="btn_text_size">14sp</dimen>
+    <dimen name="btn_padding">15dp</dimen>
+    <!-- TEXTVIEWS -->
+    <dimen name="tv_big_headingx">26sp</dimen>
+    <dimen name="tv_big_heading">24sp</dimen>
+    <dimen name="tv_heading">22sp</dimen>
+    <dimen name="tv_subheading">20sp</dimen>
+    <dimen name="tv_normal">18sp</dimen>
+    <dimen name="tv_medium">16sp</dimen>
+    <dimen name="tv_small">14sp</dimen>
+    <dimen name="tv_top_padding">10sp</dimen>
+    <dimen name="tv_blue_button">16sp</dimen>
+    <dimen name="tv_bigxx">30sp</dimen>
+    <dimen name="tv_bigxxx">34sp</dimen>
+
+    <!-- EDITTEXT -->
+    <dimen name="et_padding">20dp</dimen>
+    <dimen name="et_text_size">18sp</dimen>
+    <dimen name="et_rounded_corner_radius">3dp</dimen>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+</resources>
