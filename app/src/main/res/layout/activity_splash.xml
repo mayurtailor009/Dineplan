@@ -3,10 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/splash"
     tools:context="com.dineplan.activities.SplashActivity">
 
-    <TextView
-        style="@style/tv_heading"
+    <ImageView
+        android:layout_width="100dp"
         android:layout_centerInParent="true"
-        android:text="App Logo" />
+        android:layout_height="wrap_content"
+        android:src="@drawable/splashlogo"/>
 </RelativeLayout>
