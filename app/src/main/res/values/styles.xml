@@ -7,8 +7,8 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/white</item>
         <item name="windowNoTitle">true</item>
-        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
-        <item name="android:textColorSecondary">@color/white</item>
+        <!--<item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
+        <item name="android:textColorSecondary">@color/white</item>-->
         <item name="autoCompleteTextViewStyle">@style/searchableStyle</item>
         <!-- Active thumb color & Active track color(30% transparency) -->
         <item name="colorControlActivated">@color/black</item>
@@ -18,10 +18,10 @@
         <!--<item name="android:actionOverflowButtonStyle">@style/MyOverFlow</item>-->
     </style>
 
-    <style name="DrawerArrowStyle" parent="@style/Widget.AppCompat.DrawerArrowToggle">
+   <!-- <style name="DrawerArrowStyle" parent="@style/Widget.AppCompat.DrawerArrowToggle">
         <item name="spinBars">true</item>
         <item name="color">@color/white</item>
-    </style>
+    </style>-->
 
     <style name="Toolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
         <item name="android:textSize">21sp</item>
@@ -42,10 +42,10 @@
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:singleLine">true</item>
-        <item name="android:paddingBottom">@dimen/et_padding</item>
-        <item name="android:paddingTop">@dimen/et_padding</item>
-        <item name="android:paddingLeft">@dimen/et_padding1</item>
-        <item name="android:paddingRight">@dimen/et_padding1</item>
+        <item name="android:paddingBottom">@dimen/margin_15</item>
+        <item name="android:paddingTop">@dimen/margin_15</item>
+        <item name="android:paddingLeft">@dimen/margin_10</item>
+        <item name="android:paddingRight">@dimen/margin_10</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:textSize">@dimen/et_text_size</item>
         <item name="android:textColor">@color/et_text_color</item>

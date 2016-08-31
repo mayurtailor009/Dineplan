@@ -16,4 +16,16 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+
+    <string name="current_sale">Current Sale</string>
+
+    <string name="drawer_open">Open</string>
+    <string name="drawer_close">Close</string>
+
+    <string name="menu_location">LOCATION</string>
+    <string name="menu_shift">SHIFT</string>
+    <string name="menu_register">REGISTER</string>
+    <string name="menu_reports">REPORTS</string>
+    <string name="menu_setting">SETTING</string>
+    <string name="menu_logout">LOGOUT</string>
 </resources>
