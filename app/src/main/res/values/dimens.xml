@@ -24,4 +24,10 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
+
+
+    <dimen name="mini_common_margin">5dp</dimen>
+    <dimen name="common_margin">10dp</dimen>
+
+
 </resources>

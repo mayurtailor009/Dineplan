@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#F2F4F5</color>
+    <color name="colorPrimary">#A8050D</color>
     <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#FF4081</color>
     <color name="app_bg">@color/colorPrimary</color>
@@ -11,7 +11,7 @@
     <!-- EDITTEXT COLOR -->
     <color name="et_bg_color">#ffffff</color>
     <color name="et_text_color">#000000</color>
-    <color name="et_text_hint_color">#454545</color>
+    <color name="et_text_hint_color">#6c454545</color>
     <color name="et_border">#c4c4c4</color>
 
     <!-- TEXTVIEW COLOR -->
@@ -23,5 +23,7 @@
     <color name="button_color">#ffffff</color> // White
     <color name="button_text_color">#000000</color> // Black
 
-    <color name="mahroon">#A31409</color>
+    <color name="mahroon">#A8050D</color>
+    <color name="main_light">#ada31409</color>
+    <color name="main_more_light">#6ea31409</color>
 </resources>
