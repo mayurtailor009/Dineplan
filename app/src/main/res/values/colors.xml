@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#A8050D</color>
-    <color name="colorPrimaryDark">#000000</color>
+    <!--<color name="colorPrimary">#A8050D</color>-->
+    <color name="colorPrimary">#F7F7F7</color>
+    <!--<color name="colorPrimaryDark">#000000</color>-->
+    <color name="colorPrimaryDark">#3F474E</color>
     <color name="colorAccent">#FF4081</color>
     <color name="app_bg">@color/colorPrimary</color>
 
@@ -26,4 +28,7 @@
     <color name="mahroon">#A8050D</color>
     <color name="main_light">#ada31409</color>
     <color name="main_more_light">#6ea31409</color>
+
+    <color name="divider_color">#CBCBCB</color>
+    <color name="category_bg_color">#9DA2A6</color>
 </resources>

@@ -10,10 +10,21 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
         <TextView
             style="@style/tv_normal"
-            android:text="@string/current_sale" />
+            android:text="@string/current_sale"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_count"
+            style="@style/tv_small"
+            android:layout_marginLeft="@dimen/margin_5"
+            android:background="@drawable/top_tab_icon"
+            android:gravity="center"
+            android:text="3"
+            android:textStyle="bold" />
     </LinearLayout>
 </android.support.v7.widget.Toolbar>

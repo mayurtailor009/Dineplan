@@ -12,11 +12,13 @@
         android:id="@+id/ll_location"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <ImageView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:src="@drawable/location_icon" />
 
         <TextView
             style="@style/tv_subheading"
@@ -31,11 +33,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_20"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <ImageView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:src="@drawable/shift_icon" />
 
         <TextView
             style="@style/tv_subheading"
@@ -50,11 +54,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_20"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <ImageView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:src="@drawable/register_icon" />
 
         <TextView
             style="@style/tv_subheading"
@@ -69,11 +75,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_20"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <ImageView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:src="@drawable/report_icon" />
 
         <TextView
             style="@style/tv_subheading"
@@ -88,11 +96,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_20"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <ImageView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:src="@drawable/setting_icon" />
 
         <TextView
             style="@style/tv_subheading"
@@ -107,11 +117,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_20"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <ImageView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:src="@drawable/sign_out_icon" />
 
         <TextView
             style="@style/tv_subheading"

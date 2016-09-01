@@ -7,6 +7,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.dineplan.R;
+import com.dineplan.fragments.FoodListFragment;
 import com.dineplan.utility.Utils;
 
 public class HomeActivity extends BaseActivity {
@@ -19,9 +20,9 @@ public class HomeActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-
-
         setupDrawer();
+
+        addFragment(new FoodListFragment(), true);
     }
 
     private void setupDrawer(){
@@ -43,21 +44,20 @@ public class HomeActivity extends BaseActivity {
             }
         };
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        /*getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(false);
         drawerToggle.setDrawerIndicatorEnabled(false);
-        drawerToggle.setHomeAsUpIndicator(R.drawable.icon_menu);
+        drawerToggle.setHomeAsUpIndicator(R.drawable.icon_menu);*/
 
-        //drawerToggle.setHomeAsUpIndicator(R.drawable.splashlogo);
-        //drawerToggle.setDrawerIndicatorEnabled(false);
-        //drawerLayout.addDrawerListener(drawerToggle);
-       // drawerToggle.syncState();
+        drawerLayout.addDrawerListener(drawerToggle);
 
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-       // getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        drawerToggle.setDrawerIndicatorEnabled(true);
+        drawerToggle.syncState();
+    }
 
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        //drawerToggle.setDrawerIndicatorEnabled(true);
-        //drawerToggle.syncState();
+    @Override
+    public void onBackPressed() {
+        finish();
     }
 }
