@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--<color name="colorPrimary">#A8050D</color>-->
-    <color name="colorPrimary">#F7F7F7</color>
+    <color name="colorPrimary">#A8050D</color>
     <!--<color name="colorPrimaryDark">#000000</color>-->
-    <color name="colorPrimaryDark">#3F474E</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimaryDark">@color/black</color>
+    <color name="colorAccent">#A8050D</color>
     <color name="app_bg">@color/colorPrimary</color>
 
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
+
+    <color name="color_drawer">#1F2226</color>
+
 
     <!-- EDITTEXT COLOR -->
     <color name="et_bg_color">#ffffff</color>
@@ -31,4 +34,8 @@
 
     <color name="divider_color">#CBCBCB</color>
     <color name="category_bg_color">#9DA2A6</color>
+
+    <color name="action_border">#C3C8CD</color>
+
+    <color name="card_color">#F7F7F7</color>
 </resources>

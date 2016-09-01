@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,54 +8,79 @@
 
     <include layout="@layout/header" />
 
-    <TextView
-        style="@style/tv_heading"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_gravity="center"
 
-        android:background="@color/white"
-        android:gravity="center"
-        android:text="Sign in to Dine Plan"
-        android:textColor="@color/black" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
+        android:layout_centerVertical="true"
         android:layout_marginRight="20dp"
         android:orientation="vertical">
 
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/et_url"
+                style="@style/et_style"
+                android:hint="Url"
+                android:typeface="monospace"
+                android:imeOptions="actionNext" />
+        </android.support.design.widget.TextInputLayout>
+
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/et_tenant"
+                style="@style/et_style"
+                android:layout_marginTop="5dp"
+                android:hint="Tenant"
+                android:typeface="monospace"
+                android:imeOptions="actionNext"
+                android:inputType="text" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
         <EditText
             android:id="@+id/et_username"
             style="@style/et_style"
-            android:hint="Username"
+            android:hint="User"
+            android:typeface="monospace"
             android:imeOptions="actionNext" />
+        </android.support.design.widget.TextInputLayout>
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
 
         <EditText
             android:id="@+id/et_password"
             style="@style/et_style"
             android:layout_marginTop="5dp"
             android:hint="Password"
-            android:imeOptions="actionNext"
-            android:inputType="textPassword"
+            android:imeOptions="actionDone"
             android:typeface="monospace" />
 
-        <EditText
-            android:id="@+id/et_tenant"
-            style="@style/et_style"
-            android:layout_marginTop="5dp"
-            android:hint="Tenant"
-            android:imeOptions="actionDone"
-            android:inputType="text" />
+        </android.support.design.widget.TextInputLayout>
+
+
     </LinearLayout>
 
     <TextView
         android:id="@+id/tv_help"
         style="@style/tv_big_heading"
         android:layout_gravity="center"
-        android:layout_marginTop="15dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="15dp"
+        android:layout_alignParentBottom="true"
+        android:typeface="monospace"
         android:gravity="center_horizontal"
         android:text="Help"
         android:textStyle="bold" />
-</LinearLayout>
+</RelativeLayout>

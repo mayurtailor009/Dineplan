@@ -28,8 +28,8 @@
                 style="@style/tv_subheading"
                 android:layout_width="0dp"
                 android:layout_weight="7"
-                android:text="All Gobi Masala"
-                android:textStyle="bold" />
+                android:text="All Gobi MASALA"
+                 />
 
             <TextView
                 android:id="@+id/tv_price"

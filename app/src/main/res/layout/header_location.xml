@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    android:minHeight="?attr/actionBarSize">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize">
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:id="@+id/ll_bor"
+            android:orientation="horizontal"
+            android:layout_alignParentBottom="true"
+            android:background="@color/action_border"/>
+        <TextView
+            style="@style/tv_heading"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:text="@string/choose_location"
+            android:layout_gravity="center"
+            />
+
+                <ImageButton
+                    android:id="@+id/btn_select_location"
+                    android:layout_width="70dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="right"
+                    android:layout_alignParentRight="true"
+                    android:background="@color/mahroon"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/big_right_check"
+                    />
+
+</RelativeLayout>
+</android.support.v7.widget.Toolbar>

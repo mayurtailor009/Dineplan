@@ -1,7 +1,10 @@
 package com.dineplan.utility;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
@@ -13,6 +16,8 @@ import android.util.Log;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.NumberPicker;
+
+import com.dineplan.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -196,5 +201,24 @@ public class Utils {
             InputMethodManager imm = (InputMethodManager) ctx.getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(ctx.getCurrentFocus().getWindowToken(), 0);
         }
+    }
+
+
+
+    public static void showOkDialog(Context context, String title, String message) {
+        //android.R.style.Theme_Material_Light_Dialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(title);
+        builder.setMessage(message);
+        builder.setPositiveButton(context.getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        Dialog dialog = builder.create();
+        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        dialog.show();
+
     }
 }

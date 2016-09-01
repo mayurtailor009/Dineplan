@@ -3,7 +3,7 @@
     android:id="@+id/ll_drawer"
     android:layout_width="@dimen/drawer_width"
     android:layout_height="match_parent"
-    android:background="@color/black"
+    android:background="@color/color_drawer"
     android:gravity="center_vertical"
     android:orientation="vertical"
     android:padding="@dimen/margin_20">

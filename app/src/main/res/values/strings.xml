@@ -13,9 +13,13 @@
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
-    <string name="permission_rationale">"Contacts permissions are needed for providing email
-        completions."
-    </string>
+    <string name="alert">Alert</string>
+    <string name="ok">Ok</string>
+    <string name="username_required">Username required.</string>
+    <string name="password_required">Password required.</string>
+    <string name="url_required">Url required.</string>
+    <string name="tenant_required">Tenant erquired.</string>
+
 
     <string name="current_sale">Current Sale</string>
 
@@ -30,4 +34,8 @@
     <string name="menu_logout">LOGOUT</string>
 
     <string name="include_tax">Including Tax</string>
+
+
+    <string name="choose_location">Choose Location</string>
+
 </resources>

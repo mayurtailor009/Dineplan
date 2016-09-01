@@ -10,6 +10,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
+import com.dineplan.utility.FontsOverride;
 
 
 public class AppController extends MultiDexApplication {
@@ -40,6 +41,11 @@ public class AppController extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
+        FontsOverride.setDefaultFont(this, "MONOSPACE", "raleway_black.ttf");
+       // FontsOverride.setDefaultFont(this, "DEFAULT", "MyFontAsset.ttf");
+        FontsOverride.setDefaultFont(this, "SERIF", "OpenSans-Semibold.ttf");
+     //   FontsOverride.setDefaultFont(this, "SANS_SERIF", "MyFontAsset4.ttf");
+
     }
 
     public RequestQueue getRequestQueue() {

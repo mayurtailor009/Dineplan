@@ -10,7 +10,7 @@ import java.util.TimerTask;
 
 public class SplashActivity extends BaseActivity {
 
-    private long splashDelay = 3000;
+    private long splashDelay = 2000;
     Timer timer;
 
     @Override
@@ -30,12 +30,8 @@ public class SplashActivity extends BaseActivity {
 
     public void moveToNextActivity() {
         Intent i = null;
-
-
-        i = new Intent(SplashActivity.this, HomeActivity.class);
-
+        i = new Intent(SplashActivity.this, LoginActivity.class);
         startActivity(i);
-
         finish();
     }
 
