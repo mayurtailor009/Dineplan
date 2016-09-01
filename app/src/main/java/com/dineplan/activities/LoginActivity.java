@@ -38,6 +38,7 @@ public class LoginActivity extends BaseActivity implements AsyncTaskCompleteList
         etPassword.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
         etTenant = (EditText) findViewById(R.id.et_tenant);
         url= (EditText) findViewById(R.id.et_url);
+        setClick(R.id.tv_help);
     }
 
     @Override
@@ -71,6 +72,9 @@ public class LoginActivity extends BaseActivity implements AsyncTaskCompleteList
                     }
                 }*/
             break;
+            case R.id.tv_help:
+                startActivity(new Intent(this, AddFoodActivity.class));
+                break;
         }
     }
 

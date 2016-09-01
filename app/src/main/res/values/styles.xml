@@ -26,6 +26,7 @@
     <style name="Toolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
         <item name="android:textSize">21sp</item>
         <item name="android:textStyle">italic</item>
+        <item name="android:textColor">@color/text_color</item>
     </style>
     <!--
 

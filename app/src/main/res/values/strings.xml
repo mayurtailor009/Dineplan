@@ -38,4 +38,10 @@
 
     <string name="choose_location">Choose Location</string>
 
+    <string name="lbl_note_and_qnt">NOTE AND QUANTITY</string>
+    <string name="hint_add_note">Add a note</string>
+    <string name="label_for_here">For Here</string>
+    <string name="label_to_go">To Go</string>
+    <string name="label_delivery">Delivery</string>
+    <string name="btn_txt_add">Add</string>
 </resources>
