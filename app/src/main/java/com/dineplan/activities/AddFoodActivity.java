@@ -1,5 +1,6 @@
 package com.dineplan.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -55,6 +56,7 @@ public class AddFoodActivity extends BaseActivity implements View.OnClickListene
         switch (view.getId()){
             case R.id.tv_signin:
                 /// Do add product.
+                startActivity(new Intent(this, Payment1Activity.class));
                 break;
             case R.id.iv_minus:
                 calCulateQuanity(false);

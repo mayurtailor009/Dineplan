@@ -38,10 +38,24 @@
 
     <string name="choose_location">Choose Location</string>
 
+    <!-- ADD FOOD -->
     <string name="lbl_note_and_qnt">NOTE AND QUANTITY</string>
     <string name="hint_add_note">Add a note</string>
     <string name="label_for_here">For Here</string>
     <string name="label_to_go">To Go</string>
     <string name="label_delivery">Delivery</string>
     <string name="btn_txt_add">Add</string>
+
+    <!-- PAYMENT -->
+    <string name="btn_txt_split">Split</string>
+    <string name="label_record_card_payment">Record Card Payment</string>
+    <string name="label_cash">Cash</string>
+    <string name="label_other">Other</string>
+    <string name="label_amount_tracking">Amount entered is for tracking purpose only. You will not receive a deposit for this transaction.</string>
+    <string name="btn_txt_record_payment">Record Payment</string>
+    <string name="label_any_amount">Any amount over #amount# will recorded as tip.</string>
+    <string name="btn_txt_tender">Tender</string>
+    <string name="label_gift_card">Gift Card</string>
+    <string name="label_check">Check</string>
+    <string name="hint_optional_note">Optional Note</string>
 </resources>
