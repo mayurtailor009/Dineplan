@@ -7,7 +7,7 @@
     android:orientation="vertical"
     tools:context="com.dineplan.activities.AddFoodActivity">
 
-    <include layout="@layout/header" />
+    <include layout="@layout/header_add_food" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -23,40 +23,11 @@
                 style="@style/tv_medium"
                 android:text="BIRYANI CHOOSE MANY" />
 
-            <RelativeLayout
+            <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_10"
-                android:background="@drawable/rect_border_bg"
-                android:padding="@dimen/margin_15">
-
-                <TextView
-                    android:id="@+id/tv_dish_name"
-                    style="@style/tv_normal"
-                    android:text="EGG"
-                    android:textStyle="bold" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_10"
-                android:background="@drawable/rect_border_bg"
-                android:padding="@dimen/margin_15">
-
-                <TextView
-                    android:id="@+id/tv_dish_name1"
-                    style="@style/tv_normal"
-                    android:text="NON EGG"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tv_price"
-                    style="@style/tv_normal"
-                    android:layout_alignParentRight="true"
-                    android:text="$10.00"
-                    android:textStyle="normal" />
-            </RelativeLayout>
+                android:id="@+id/recycler_view"
+                android:layout_height="wrap_content"/>
 
             <TextView
                 style="@style/tv_medium"
