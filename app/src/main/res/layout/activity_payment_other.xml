@@ -31,7 +31,7 @@
                 android:textStyle="bold" />
 
             <RadioButton
-                android:id="@+id/rd_gift_card"
+                android:id="@+id/rb_gift_card"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -56,7 +56,7 @@
                 android:textStyle="bold" />
 
             <RadioButton
-                android:id="@+id/rd_check"
+                android:id="@+id/rb_check"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -81,7 +81,7 @@
                 android:textStyle="bold" />
 
             <RadioButton
-                android:id="@+id/rd_other"
+                android:id="@+id/rb_other"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"

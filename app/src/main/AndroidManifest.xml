@@ -29,7 +29,8 @@
         <activity android:name=".activities.Payment1Activity" />
         <activity android:name=".activities.PaymentRecordCardActivity" />
         <activity android:name=".activities.PaymentCashActivity" />
-        <activity android:name=".activities.PaymentOtherActivity"></activity>
+        <activity android:name=".activities.PaymentOtherActivity" />
+        <activity android:name=".activities.PaymentReceiptActivity"></activity>
     </application>
 
 </manifest>

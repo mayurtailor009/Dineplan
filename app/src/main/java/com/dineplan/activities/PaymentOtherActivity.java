@@ -5,12 +5,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.dineplan.R;
 
 public class PaymentOtherActivity extends BaseActivity {
 
+    RadioButton rbCheck, rbOther,rbGiftCard;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,6 +32,14 @@ public class PaymentOtherActivity extends BaseActivity {
         ImageView ivclose = ((ImageView)toolbar.findViewById(R.id.iv_close));
         ivclose.setOnClickListener(this);
         ivclose.setImageResource(R.drawable.back_btn);
+
+        rbCheck = (RadioButton) findViewById(R.id.rb_check);
+        rbOther = (RadioButton) findViewById(R.id.rb_other);
+        rbGiftCard = (RadioButton) findViewById(R.id.rb_gift_card);
+
+        rbCheck.setOnClickListener(this);
+        rbOther.setOnClickListener(this);
+        rbGiftCard.setOnClickListener(this);
     }
 
     @Override
@@ -42,6 +52,28 @@ public class PaymentOtherActivity extends BaseActivity {
             case R.id.iv_close:
                 finish();
                 break;
+            case R.id.rb_check:
+                SetCheckRadio();
+                break;
+            case R.id.rb_gift_card:
+                SetGiftCardRadio();
+                break;
+            case R.id.rb_other:
+                SetOtherRadio();
+                break;
         }
+    }
+
+    public void SetCheckRadio(){
+        rbOther.setChecked(false);
+        rbGiftCard.setChecked(false);
+    }
+    public void SetOtherRadio(){
+        rbCheck.setChecked(false);
+        rbGiftCard.setChecked(false);
+    }
+    public void SetGiftCardRadio(){
+        rbOther.setChecked(false);
+        rbCheck.setChecked(false);
     }
 }

@@ -58,4 +58,11 @@
     <string name="label_gift_card">Gift Card</string>
     <string name="label_check">Check</string>
     <string name="hint_optional_note">Optional Note</string>
+    <string name="btn_new_sale">New Sale</string>
+    <string name="label_no_change">No change out of #amount#</string>
+    <string name="label_how_would">How would you like you receipt?</string>
+    <string name="hint_email_receipt">Email Receipt</string>
+    <string name="label_no_receipt">No Receipt</string>
+    <string name="label_by_providing">By providing your contact information, you agree businesses you frequent may send you
+    digital receipts, marketing, and messages via Squares. See your digital receipts for privacy and prefrences</string>
 </resources>
