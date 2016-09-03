@@ -65,4 +65,9 @@
     <string name="label_no_receipt">No Receipt</string>
     <string name="label_by_providing">By providing your contact information, you agree businesses you frequent may send you
     digital receipts, marketing, and messages via Squares. See your digital receipts for privacy and prefrences</string>
+    
+    <!-- SHIFT -->
+    <string name="label_shift">Shift</string>
+    <string name="btn_txt_start_shift">START SHIFT</string>
+    <string name="btn_txt_end_shift">END SHIFT</string>
 </resources>
