@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context="com.dineplan.activities.PaymentCashActivity">
+
+    <include layout="@layout/header_add_food" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/margin_25"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/tv_heading"
+                android:layout_gravity="center"
+                android:text="@string/label_shift_end"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/et_cash"
+                style="@style/et_style"
+                android:layout_marginTop="@dimen/margin_10"
+                android:background="@drawable/et_mahroon_bg"
+                android:hint="@string/hint_cash"
+                android:imeOptions="actionNext"
+                android:inputType="numberDecimal" />
+
+            <EditText
+                android:id="@+id/et_visa"
+                style="@style/et_style"
+                android:layout_marginTop="@dimen/margin_10"
+                android:background="@drawable/et_mahroon_bg"
+                android:hint="@string/hint_visa" />
+
+            <EditText
+                android:id="@+id/et_master"
+                style="@style/et_style"
+                android:layout_marginTop="@dimen/margin_10"
+                android:background="@drawable/et_mahroon_bg"
+                android:hint="@string/hint_master"
+                android:imeOptions="actionNext" />
+
+            <EditText
+                android:id="@+id/et_amex"
+                style="@style/et_style"
+                android:layout_marginTop="@dimen/margin_10"
+                android:background="@drawable/et_mahroon_bg"
+                android:hint="@string/hint_amex"
+                android:imeOptions="actionDone" />
+
+            <Button
+                android:id="@+id/btn_end_shift"
+                style="@style/btn_style"
+                android:layout_marginTop="@dimen/margin_20"
+                android:text="@string/btn_txt_endworkshift"
+                android:textColor="@color/mahroon" />
+
+            <Button
+                android:id="@+id/btn_cancel"
+                style="@style/btn_style"
+                android:layout_marginTop="@dimen/margin_10"
+                android:text="@string/btn_txt_cancel"
+                android:textColor="@color/mahroon" />
+
+            <Button
+                android:id="@+id/btn_open_till"
+                style="@style/btn_style"
+                android:layout_marginTop="@dimen/margin_10"
+                android:text="@string/btn_txt_open_till"
+                android:textColor="@color/mahroon" />
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

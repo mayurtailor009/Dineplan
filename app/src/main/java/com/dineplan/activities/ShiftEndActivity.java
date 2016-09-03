@@ -1,6 +1,5 @@
 package com.dineplan.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -10,14 +9,15 @@ import android.widget.TextView;
 
 import com.dineplan.R;
 
-public class ShiftActivity extends BaseActivity {
+public class ShiftEndActivity extends BaseActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_shift);
+        setContentView(R.layout.activity_shift_end);
 
         init();
+
     }
 
     private void init(){
@@ -31,21 +31,25 @@ public class ShiftActivity extends BaseActivity {
         ivBack.setImageResource(R.drawable.back_btn);
 
         setTouchNClick(R.id.btn_end_shift);
-        setTouchNClick(R.id.btn_start_shift);
+        setTouchNClick(R.id.btn_cancel);
+        setTouchNClick(R.id.btn_open_till);
 
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()){
-            case R.id.btn_end_shift:
-                startActivity(new Intent(this, ShiftEndActivity.class));
+            case R.id.iv_close:
+                finish();
                 break;
-            case R.id.btn_start_shift:
+            case R.id.btn_end_shift:
 
                 break;
-            case R.id.iv_close:
-                finish();;
+            case R.id.btn_cancel:
+
+                break;
+            case R.id.btn_open_till:
+
                 break;
         }
     }

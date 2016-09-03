@@ -17,8 +17,28 @@
 
         <TextView
             style="@style/tv_heading"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/margin_10"
             android:text="@string/label_shift"
+            android:textColor="@color/black"
             android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btn_start_shift"
+            style="@style/btn_style"
+            android:layout_marginTop="@dimen/margin_30"
+            android:text="@string/btn_txt_start_shift"
+            android:textColor="@color/mahroon"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btn_end_shift"
+            style="@style/btn_style"
+            android:layout_marginTop="@dimen/margin_30"
+            android:text="@string/btn_txt_end_shift"
+            android:textColor="@color/mahroon"
+            android:textStyle="bold" />
+
     </LinearLayout>
 
 </LinearLayout>
