@@ -7,6 +7,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.TextView;
 
 import com.dineplan.R;
 import com.dineplan.fragments.FoodListFragment;
@@ -17,6 +18,7 @@ public class HomeActivity extends BaseActivity {
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
     private Toolbar toolbar;
+    private TextView tvCount;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,6 +32,7 @@ public class HomeActivity extends BaseActivity {
     private void setupDrawer(){
 
         toolbar = getToolbar();
+        tvCount = (TextView) toolbar.findViewById(R.id.tv_count);
         toolbar.setNavigationIcon(R.drawable.splashlogo);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.drawer_open,
@@ -103,4 +106,7 @@ public class HomeActivity extends BaseActivity {
         }
     }
 
+    public TextView getTargetView(){
+        return tvCount;
+    }
 }
