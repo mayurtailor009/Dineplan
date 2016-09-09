@@ -48,12 +48,15 @@ public class Payment1Activity extends BaseActivity {
                 break;
             case R.id.ll_card_payment:
                 startActivity(new Intent(this, PaymentRecordCardActivity.class));
+                finish();
                 break;
             case R.id.ll_cash_payment:
                 startActivity(new Intent(this, PaymentCashActivity.class));
+                finish();
                 break;
             case R.id.ll_other_payment:
                 startActivity(new Intent(this, PaymentOtherActivity.class));
+                finish();
                 break;
         }
     }

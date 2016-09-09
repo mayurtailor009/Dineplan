@@ -19,6 +19,7 @@
     <string name="password_required">Password required.</string>
     <string name="url_required">Url required.</string>
     <string name="tenant_required">Tenant erquired.</string>
+    <string name="prompt_floating_amount">Float amount</string>
 
 
     <string name="current_sale">Current Sale</string>
@@ -78,4 +79,17 @@
     <string name="btn_txt_endworkshift">END WORKSHIFT</string>
     <string name="btn_txt_cancel">CANCEL</string>
     <string name="btn_txt_open_till">OPEN TILL</string>
+
+    <string name="enter_float_amount">Enter float amount</string>
+
+    <string name="network_not_available">You\’re not connected to the internet. Please try later.</string>
+    <string name="network_error">Network Error</string>
+    <string name="done">Done</string>
+    <string name="no_sale">No Sale</string>
+
+
+
+
+
+
 </resources>

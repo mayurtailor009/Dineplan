@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Environment;
 import android.text.TextUtils;
@@ -18,6 +19,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.NumberPicker;
 
 import com.dineplan.R;
+import com.dineplan.model.User;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,6 +30,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.nio.channels.FileChannel;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -60,6 +64,16 @@ public class Utils {
                 break;
             }
         }
+    }
+    public static boolean isNetworkConnected(Context context) {
+
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo ni = cm.getActiveNetworkInfo();
+        if (ni == null) {
+            // There are no active networks.
+            return false;
+        } else
+            return true;
     }
 
 
@@ -207,7 +221,7 @@ public class Utils {
 
     public static void showOkDialog(Context context, String title, String message) {
         //android.R.style.Theme_Material_Light_Dialog
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context,android.R.style.Theme_Holo_Light_Dialog);
         builder.setTitle(title);
         builder.setMessage(message);
         builder.setPositiveButton(context.getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
@@ -219,6 +233,14 @@ public class Utils {
         Dialog dialog = builder.create();
         dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         dialog.show();
+
+    }
+
+    public static Map<String,String> getHeader(User user) {
+        Map<String,String> header=new HashMap<>();
+       // header.put("Content-Type","application/json");
+        header.put("Authorization","Bearer "+user.getResult());
+        return header;
 
     }
 }

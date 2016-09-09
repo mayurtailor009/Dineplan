@@ -1,36 +1,88 @@
 package com.dineplan.activities;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.EditText;
+import android.widget.TextView;
 
+import com.dineplan.AddSaleItem;
 import com.dineplan.R;
+import com.dineplan.dbHandler.DbHandler;
 import com.dineplan.fragments.FoodListFragment;
+import com.dineplan.model.Category;
+import com.dineplan.model.Location;
+import com.dineplan.model.Syncer;
+import com.dineplan.model.User;
+import com.dineplan.rest.Constant;
+import com.dineplan.rest.RequestCall;
+import com.dineplan.rest.listener.AsyncTaskCompleteListener;
+import com.dineplan.utility.Constants;
 import com.dineplan.utility.Utils;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
-public class HomeActivity extends BaseActivity {
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.lang.reflect.Type;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+
+
+public class HomeActivity extends BaseActivity implements AsyncTaskCompleteListener<String>,AddSaleItem {
 
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
     private Toolbar toolbar;
+    private SharedPreferences preferences;
+    private Dialog dialog;
+    private User user;
+    private final int SYNC_MENU=3;
+    private int itemCount=0;
+    private TextView tv_count,tv_sale;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
         setupDrawer();
+        init(savedInstanceState);
+    }
 
-        addFragment(new FoodListFragment(), true);
+    private void init(Bundle savedInstanceState) {
+
+        preferences=getSharedPreferences(Constants.PREF_NAME,MODE_PRIVATE);
+        user=new Gson().fromJson(preferences.getString("user","{}"),User.class);
+        if(preferences.getInt("workPeriodId",0)==0){
+                findViewById(R.id.lay_shift).setVisibility(View.VISIBLE);
+                findViewById(R.id.lay_shift).setOnClickListener(this);
+        }else{
+            if(savedInstanceState==null)
+           addFragment(new FoodListFragment(), true);
+        }
+
+        findViewById(R.id.btn_start_shift).setOnClickListener(this);
     }
 
     private void setupDrawer(){
 
         toolbar = getToolbar();
         toolbar.setNavigationIcon(R.drawable.splashlogo);
+        tv_count=(TextView) toolbar.findViewById(R.id.tv_count);
+        tv_sale=(TextView) toolbar.findViewById(R.id.tv_sale);
+
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.drawer_open,
                 R.string.drawer_close){
@@ -62,6 +114,7 @@ public class HomeActivity extends BaseActivity {
         setTouchNClick(R.id.ll_logout);
         setTouchNClick(R.id.ll_setting);
         setTouchNClick(R.id.ll_reports);
+        setTouchNClick(R.id.ll_register);
     }
 
     @Override
@@ -72,6 +125,9 @@ public class HomeActivity extends BaseActivity {
     @Override
     public void onClick(View view) {
         switch (view.getId()){
+            case R.id.ll_register:
+                toggleDrawer();
+                break;
             case R.id.ll_shift:
                 toggleDrawer();
                 startActivity(new Intent(this, ShiftActivity.class));
@@ -89,6 +145,37 @@ public class HomeActivity extends BaseActivity {
             case R.id.ll_reports:
                 toggleDrawer();
                 break;
+            case R.id.btn_start_shift:
+                dialog=new Dialog(this);
+                dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                dialog.setContentView(R.layout.float_amount);
+                Window window = dialog.getWindow();
+                window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                window.setGravity(Gravity.CENTER_VERTICAL);
+                dialog.show();
+                dialog.findViewById(R.id.btn_done).setOnClickListener(this);
+                break;
+            case R.id.btn_done:
+              String floatAmount=((EditText)((ViewGroup)view.getParent()).findViewById(R.id.float_amt)).getText().toString();
+                dialog.cancel();
+                try {
+                    SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd");
+                    SharedPreferences preferences=getSharedPreferences(Constants.PREF_NAME,MODE_PRIVATE);
+                    Gson gson=new Gson();
+                    Location location=gson.fromJson(preferences.getString("location","{}"),Location.class);
+                    JSONObject  jsonObject=new JSONObject();
+                    jsonObject.put("tenantId",user.getTenantId());
+                    jsonObject.put("userId",user.getUserId());
+                    jsonObject.put("locationId",location.getId());
+                    jsonObject.put("float",floatAmount);
+                    jsonObject.put("userName",user.getUserName());
+                    jsonObject.put("startTime",dateFormat.format(new Date()));
+                    new RequestCall(preferences.getString("url",Constant.BASE_URL)+"api/services/app/workPeriod/StartWorkPeriod", this, jsonObject, ShiftActivity.class.getName(), this, 2, true,Utils.getHeader(user));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                break;
         }
     }
 
@@ -103,4 +190,121 @@ public class HomeActivity extends BaseActivity {
         }
     }
 
+    @Override
+    public void onTaskComplete(String result, int fromCalling) {
+        switch (fromCalling) {
+            case SYNC_MENU:
+                if (result.toString() != null) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(result);
+                        if (jsonObject.getBoolean("success")) {
+                            Type type=new TypeToken<ArrayList<Category>>(){}.getType();
+                            ArrayList<Category> items=new Gson().fromJson(jsonObject.getJSONObject("result").getJSONArray("categories").toString(),type);
+                            new DbHandler(this).SyncMenuCategories(items);
+                            addFragment(new FoodListFragment(), true);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            break;
+            case 1:
+            if (result.toString() != null) {
+                try {
+                    JSONObject jsonObject = new JSONObject(result);
+                    if (jsonObject.getBoolean("success")) {
+                        Type type = new TypeToken<ArrayList<Syncer>>() {
+                        }.getType();
+                        ArrayList<Syncer> sync = new Gson().fromJson(jsonObject.getJSONObject("result").getJSONArray("items").toString(), type);
+                        new DbHandler(this).isSyncNeeded(sync);
+                        for(Syncer syncer:sync){
+                            if(syncer.getName().equalsIgnoreCase("menu") & syncer.isSyncNeeded()){
+                                try {
+                                    jsonObject=new JSONObject();
+                                    Location location=new Gson().fromJson(preferences.getString("location","{}"),Location.class);
+                                    jsonObject.put("locationId",location.getId());
+                                    new RequestCall(preferences.getString("url", Constant.BASE_URL)+"api/services/app/menuItem/ApiGetMenuForLocation", this, jsonObject, ShiftActivity.class.getName(), this,SYNC_MENU, true,Utils.getHeader(user));
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                        //addFragment(new FoodListFragment(), true);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+                break;
+            case 2:
+                if(result!=null){
+                    try {
+                        JSONObject jsonObject=new JSONObject(result);
+                        if(jsonObject.getBoolean("success")){
+                            preferences.edit().putInt("workPeriodId",jsonObject.getJSONObject("result").getInt("workPeriodId")).commit();
+                            findViewById(R.id.lay_shift).setVisibility(View.GONE);
+                            try {
+                                 jsonObject=new JSONObject();
+                                jsonObject.put("tenantId",user.getTenantId());
+                                new RequestCall(preferences.getString("url", Constant.BASE_URL)+"api/services/app/sync/GetAll", this, jsonObject, ShiftActivity.class.getName(), this, 1, true,Utils.getHeader(user));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }else{
+                            Utils.showOkDialog(this,jsonObject.getJSONObject("error").getString("message"),jsonObject.getJSONObject("error").getString("details"));
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                break;
+        }
+    }
+
+    @Override
+    public void AddItem() {
+        ++itemCount;
+        tv_sale.setText(getResources().getText(R.string.current_sale));
+        tv_count.setText(String.valueOf(itemCount));
+        tv_count.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void removeItem() {
+        --itemCount;
+        if(itemCount==0){
+            tv_sale.setText(getResources().getText(R.string.no_sale));
+            tv_count.setText(String.valueOf(itemCount));
+            tv_count.setVisibility(View.GONE);
+        }
+
+
+
+
+
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+    }
+
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        if(savedInstanceState!=null)
+        {
+            itemCount=savedInstanceState.getInt("itemCount");
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
+        outState.putInt("itemCount",itemCount);
+    }
 }

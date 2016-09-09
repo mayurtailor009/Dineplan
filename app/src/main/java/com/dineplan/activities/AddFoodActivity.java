@@ -13,50 +13,63 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.dineplan.AddOrderTag;
 import com.dineplan.R;
 import com.dineplan.adpaters.ChooseFoodAdapter;
+import com.dineplan.dbHandler.DbHandler;
+import com.dineplan.model.MenuItem;
+import com.dineplan.model.OrderItem;
+import com.dineplan.model.OrderTag;
 
-public class AddFoodActivity extends BaseActivity implements View.OnClickListener{
+import java.util.ArrayList;
+
+public class AddFoodActivity extends BaseActivity implements View.OnClickListener, AddOrderTag {
 
     private EditText etQuantity, etNotes;
     private LinearLayout llChoseFood;
-
+    private DbHandler dbHandler;
+    private TextView tv_title;
+    private MenuItem menuItem;
+    private float price;
+    private int quantiy;
+    private OrderItem orderItem;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_food);
-
         init();
-
         SetChooseFoodList();
     }
 
     private void init(){
+        menuItem=(MenuItem) getIntent().getExtras().get("menuItem");
+        price=menuItem.getPrice();
+        orderItem=new OrderItem();
+        dbHandler=new DbHandler(this);
         Toolbar toolbar = getToolbar();
         Button btnAdd = (Button) toolbar.findViewById(R.id.tv_signin);
         btnAdd.setOnClickListener(this);
         btnAdd.setText(getString(R.string.btn_txt_add));
-
-        ((TextView)toolbar.findViewById(R.id.tv_title)).setText("ACCHARI TIKKA $200.00");
+        tv_title=((TextView)toolbar.findViewById(R.id.tv_title));
+        tv_title.setText(menuItem.getName()+" $"+price);
         ((ImageView)toolbar.findViewById(R.id.iv_close)).setOnClickListener(this);
-
         setTouchNClick(R.id.iv_minus);
         setTouchNClick(R.id.iv_plus);
         setTouchNClick(R.id.tv_togo);
         setTouchNClick(R.id.tv_delivery);
-
         etQuantity = (EditText) findViewById(R.id.et_quantity);
         etNotes = (EditText) findViewById(R.id.et_notes);
-
-        //llChoseFood = (LinearLayout) findViewById(R.id.ll_choose);
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.tv_signin:
-                /// Do add product.
-                startActivity(new Intent(this, Payment1Activity.class));
+                orderItem.setPrice(price);
+                Intent intent=new Intent();
+                intent.putExtra("data",orderItem);
+                setResult(RESULT_OK,intent);
+                finish();
                 break;
             case R.id.iv_minus:
                 calCulateQuanity(false);
@@ -65,10 +78,8 @@ public class AddFoodActivity extends BaseActivity implements View.OnClickListene
                 calCulateQuanity(true);
                 break;
             case R.id.tv_togo:
-
                 break;
             case R.id.tv_delivery:
-
                 break;
             case R.id.iv_close:
                 finish();
@@ -81,7 +92,7 @@ public class AddFoodActivity extends BaseActivity implements View.OnClickListene
         if(etQuantity.getText().toString().equals(""))
             return;
 
-        int quantiy = Integer.parseInt(etQuantity.getText().toString());
+         quantiy = Integer.parseInt(etQuantity.getText().toString());
 
         if(plus){
             quantiy++;
@@ -91,16 +102,39 @@ public class AddFoodActivity extends BaseActivity implements View.OnClickListene
             quantiy--;
         }
         etQuantity.setText(""+quantiy);
+        price=menuItem.getPrice()*quantiy;
+        if(orderItem.getOrderTags()!=null) {
+            for (OrderTag tag:orderItem.getOrderTags()){
+                price+=tag.getPrice();
+            }
+        }
+        tv_title.setText(menuItem.getName()+" $"+price);
+
     }
 
     public void SetChooseFoodList(){
-
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        ChooseFoodAdapter chooseFoodAdapter = new ChooseFoodAdapter(this);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.rec_portions);
+        ChooseFoodAdapter chooseFoodAdapter = new ChooseFoodAdapter(this,menuItem.getOrderTagGroups(),this);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(chooseFoodAdapter);
+    }
+
+    @Override
+    public void addOrderTag(OrderTag orderTag) {
+        if(orderItem.getOrderTags()==null)
+            orderItem.setOrderTags(new ArrayList<OrderTag>());
+        orderItem.getOrderTags().add(orderTag);
+        price=price+orderTag.getPrice();
+        tv_title.setText(menuItem.getName()+" $"+price);
+    }
+
+    @Override
+    public void removeOrderTag(OrderTag orderTag) {
+        price=price-orderTag.getPrice();
+        orderItem.getOrderTags().remove(orderTag);
+        tv_title.setText(menuItem.getName()+" $"+price);
     }
 }

@@ -50,6 +50,8 @@
             android:layout_toRightOf="@id/iv_close"
             android:text="Title" />
 
+
+
         <View
             android:id="@+id/ll_bor"
             android:layout_width="fill_parent"

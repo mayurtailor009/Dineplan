@@ -13,38 +13,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+
+
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="@dimen/margin_20">
-
-            <TextView
-                style="@style/tv_medium"
-                android:text="BIRYANI CHOOSE MANY" />
-
-            <android.support.v7.widget.RecyclerView
-                android:layout_width="match_parent"
-                android:layout_marginTop="@dimen/margin_10"
-                android:id="@+id/recycler_view"
-                android:layout_height="wrap_content"/>
-
-            <TextView
-                style="@style/tv_medium"
-                android:layout_marginTop="@dimen/margin_20"
-                android:text="@string/lbl_note_and_qnt"
-                android:textStyle="bold" />
-
-
-            <EditText
-                android:id="@+id/et_notes"
-                style="@style/et_style"
-                android:layout_marginTop="@dimen/margin_10"
-                android:hint="@string/hint_add_note"
-                android:imeOptions="actionNext"
-                android:inputType="textCapSentences"
-                android:maxLength="6"
-                android:typeface="monospace" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -94,6 +70,31 @@
                     android:src="@drawable/plus_icon" />
 
             </LinearLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/margin_10"
+                android:id="@+id/rec_portions"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                style="@style/tv_medium"
+                android:layout_marginTop="@dimen/margin_20"
+                android:text="@string/lbl_note_and_qnt"
+                android:textStyle="bold" />
+
+
+            <EditText
+                android:id="@+id/et_notes"
+                style="@style/et_style"
+                android:layout_marginTop="@dimen/margin_10"
+                android:hint="@string/hint_add_note"
+                android:imeOptions="actionNext"
+                android:inputType="textCapSentences"
+                android:maxLength="6"
+                android:typeface="monospace" />
+
+
 
             <TextView
                 style="@style/tv_medium"

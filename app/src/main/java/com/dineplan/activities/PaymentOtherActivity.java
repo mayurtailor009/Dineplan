@@ -1,5 +1,6 @@
 package com.dineplan.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -46,8 +47,8 @@ public class PaymentOtherActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.tv_signin:
-                /// TENDER CLICK.
-
+                startActivity(new Intent(this, PaymentReceiptActivity.class));
+                finish();
                 break;
             case R.id.iv_close:
                 finish();

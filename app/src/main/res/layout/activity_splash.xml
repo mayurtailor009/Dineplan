@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
     tools:context="com.dineplan.activities.SplashActivity">
 
     <ImageView
@@ -11,5 +10,5 @@
         android:layout_centerInParent="true"
         android:layout_height="120dp"
         android:scaleType="fitXY"
-        android:src="@drawable/splashlogo"/>
+        android:src="@drawable/logo"/>
 </RelativeLayout>

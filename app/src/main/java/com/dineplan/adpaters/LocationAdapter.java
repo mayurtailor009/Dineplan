@@ -10,7 +10,9 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.dineplan.R;
+import com.dineplan.model.Location;
 
+import java.util.ArrayList;
 
 
 /**
@@ -20,16 +22,28 @@ public class LocationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     private Context context;
     private RadioButton selectedRadioButton=null;
-    public LocationAdapter(Context context){
+    private ArrayList<Location> locations;
+    private Location selectedLocation=null;
+    private View vi;
+    public LocationAdapter(Context context, ArrayList<Location> locations,View vi,Location selectedLocation){
         this.context= context;
+        this.locations=locations;
+        this.vi=vi;
+        this.selectedLocation=selectedLocation;
     }
 
     @Override
     public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
         if(b) {
+            vi.setVisibility(View.VISIBLE);
+            Location location=(Location)compoundButton.getTag();
             if (selectedRadioButton != null)
                 selectedRadioButton.setChecked(false);
             selectedRadioButton=(RadioButton)compoundButton;
+            for(Location loc:locations){
+                location.setSelected(false);
+            }
+            location.setSelected(b);
         }
     }
 
@@ -41,12 +55,13 @@ public class LocationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             super(itemView);
             tvItemName = (TextView) itemView.findViewById(R.id.tv_item_name);
             radioButton = (RadioButton)itemView.findViewById(R.id.rd_btn);
+
         }
     }
 
     @Override
     public int getItemCount() {
-        return 20;
+        return locations.size();
     }
 
     @Override
@@ -55,6 +70,7 @@ public class LocationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         View v = null;
         v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_location, parent, false);
+
         return new ViewHolderFood(v);
     }
 
@@ -62,8 +78,14 @@ public class LocationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         ViewHolderFood viewHolderFood = (ViewHolderFood) holder;
+        viewHolderFood.radioButton.setTag(locations.get(position));
+        viewHolderFood.tvItemName.setText(locations.get(position).getName());
+        if(selectedLocation!=null && selectedLocation.getId()==locations.get(position).getId()) {
+            vi.setVisibility(View.VISIBLE);
+            viewHolderFood.radioButton.setChecked(true);
+            locations.get(position).setSelected(true);
+        }
         viewHolderFood.radioButton.setOnCheckedChangeListener(this);
-
     }
 
 }

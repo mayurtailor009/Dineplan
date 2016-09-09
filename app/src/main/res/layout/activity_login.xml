@@ -26,6 +26,7 @@
                 android:id="@+id/et_url"
                 style="@style/et_style"
                 android:hint="Url"
+                android:text="http://dc.dynns.com/"
                 android:typeface="monospace"
                 android:imeOptions="actionNext" />
         </android.support.design.widget.TextInputLayout>

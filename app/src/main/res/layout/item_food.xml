@@ -14,6 +14,7 @@
             android:background="@color/category_bg_color"
             android:padding="@dimen/margin_15"
             android:text="AL"
+            android:id="@+id/tv_subheading"
             android:textColor="@color/white" />
 
         <LinearLayout
@@ -36,6 +37,7 @@
                 style="@style/tv_subheading"
                 android:layout_width="0dp"
                 android:layout_weight="3"
+                android:gravity="right"
                 android:text="$120.00"
                 android:textStyle="normal" />
         </LinearLayout>

@@ -26,14 +26,23 @@
 
                 <ImageButton
                     android:id="@+id/btn_select_location"
-                    android:layout_width="70dp"
+                    android:layout_width="30dp"
                     android:layout_height="match_parent"
                     android:layout_gravity="right"
+                    android:layout_marginRight="@dimen/mini_common_margin"
+                    android:background="@null"
                     android:layout_alignParentRight="true"
-                    android:background="@color/mahroon"
                     android:scaleType="centerInside"
-                    android:src="@drawable/big_right_check"
+                    android:src="@drawable/right"
                     />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/common_margin"
+                    android:id="@+id/btn_back"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/back_btn"/>
 
 </RelativeLayout>
 </android.support.v7.widget.Toolbar>

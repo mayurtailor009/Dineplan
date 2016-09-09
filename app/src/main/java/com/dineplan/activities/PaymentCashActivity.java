@@ -44,6 +44,7 @@ public class PaymentCashActivity extends BaseActivity {
             case R.id.tv_signin:
                 /// TENDER CLICK.
                 startActivity(new Intent(this, PaymentReceiptActivity.class));
+                finish();
                 break;
             case R.id.iv_close:
                 finish();

@@ -6,11 +6,21 @@ package com.dineplan.model;
 public class User {
 
     private int userId;
-    private int tantantId;
+    private int tenantId;
     private boolean success;
     private String result;
     private String error;
     private boolean unAuthorizedRequest;
+    private String userName;
+
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 
     public int getUserId() {
         return userId;
@@ -20,12 +30,12 @@ public class User {
         this.userId = userId;
     }
 
-    public int getTantantId() {
-        return tantantId;
+    public int getTenantId() {
+        return tenantId;
     }
 
-    public void setTantantId(int tantantId) {
-        this.tantantId = tantantId;
+    public void setTenantId(int tenantId) {
+        this.tenantId = tenantId;
     }
 
     public boolean isSuccess() {
