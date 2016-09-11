@@ -8,11 +8,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import com.dineplan.R;
-import com.dineplan.adpaters.FoodAdapter;
 import com.dineplan.adpaters.LocationAdapter;
 import com.dineplan.model.Location;
 import com.dineplan.model.User;
@@ -29,14 +27,13 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 
 public class SelectLocation extends BaseActivity implements AsyncTaskCompleteListener<String> {
 
     private LocationAdapter locationAdapter;
     private RecyclerView rec_location;
-    private ImageButton btn_select_location;
+    private ImageView ivSelectLocation;
     private ArrayList<Location> locations;
     private SharedPreferences preferences;
     @Override
@@ -49,10 +46,10 @@ public class SelectLocation extends BaseActivity implements AsyncTaskCompleteLis
     private void init() {
         Toolbar toolbar = getToolbar();
         toolbar.setContentInsetsAbsolute(0,0);
-        btn_select_location=(ImageButton) toolbar.findViewById(R.id.btn_select_location);
+        ivSelectLocation =(ImageView) toolbar.findViewById(R.id.btn_next);
         rec_location=(RecyclerView)findViewById(R.id.rec_location);
-        btn_select_location.setOnClickListener(this);
-        btn_select_location.setVisibility(View.GONE);
+        ivSelectLocation.setOnClickListener(this);
+        ivSelectLocation.setVisibility(View.GONE);
         findViewById(R.id.btn_back).setOnClickListener(this);
 
 
@@ -70,7 +67,7 @@ public class SelectLocation extends BaseActivity implements AsyncTaskCompleteLis
 
     private void setLocationList() {
         Location location=new Gson().fromJson(preferences.getString("location","{}"),Location.class);
-        locationAdapter = new LocationAdapter(this,locations,btn_select_location,location);
+        locationAdapter = new LocationAdapter(this,locations, ivSelectLocation,location);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
         rec_location.setHasFixedSize(true);
         rec_location.setLayoutManager(mLayoutManager);
@@ -85,7 +82,7 @@ public class SelectLocation extends BaseActivity implements AsyncTaskCompleteLis
             case R.id.btn_back:
                 finish();
                 break;
-            case R.id.btn_select_location:
+            case R.id.btn_next:
                 Location locate=null;
                 for(Location l:locations){
                     if(l.isSelected()){

@@ -9,12 +9,11 @@
     <include layout="@layout/header" />
 
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
         android:layout_centerVertical="true"
+        android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:orientation="vertical">
 
@@ -22,51 +21,55 @@
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <EditText
                 android:id="@+id/et_url"
                 style="@style/et_style"
                 android:hint="Url"
+                android:imeOptions="actionNext"
                 android:text="http://dc.dynns.com/"
-                android:typeface="monospace"
-                android:imeOptions="actionNext" />
+                android:typeface="monospace" />
         </android.support.design.widget.TextInputLayout>
 
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <EditText
                 android:id="@+id/et_tenant"
                 style="@style/et_style"
                 android:layout_marginTop="5dp"
                 android:hint="Tenant"
-                android:typeface="monospace"
                 android:imeOptions="actionNext"
-                android:inputType="text" />
+                android:inputType="text"
+                android:typeface="monospace" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-        <EditText
-            android:id="@+id/et_username"
-            style="@style/et_style"
-            android:hint="User"
-            android:typeface="monospace"
-            android:imeOptions="actionNext" />
+
+            <EditText
+                android:id="@+id/et_username"
+                style="@style/et_style"
+                android:hint="User"
+                android:imeOptions="actionNext"
+                android:typeface="monospace" />
         </android.support.design.widget.TextInputLayout>
+
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
 
-        <EditText
-            android:id="@+id/et_password"
-            style="@style/et_style"
-            android:layout_marginTop="5dp"
-            android:hint="Password"
-            android:imeOptions="actionDone"
-            android:typeface="monospace" />
+            <EditText
+                android:id="@+id/et_password"
+                style="@style/et_style"
+                android:layout_marginTop="5dp"
+                android:hint="Password"
+                android:imeOptions="actionGo"
+                android:typeface="monospace" />
 
         </android.support.design.widget.TextInputLayout>
 
@@ -76,12 +79,12 @@
     <TextView
         android:id="@+id/tv_help"
         style="@style/tv_big_heading"
-        android:layout_gravity="center"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="15dp"
         android:layout_alignParentBottom="true"
-        android:typeface="monospace"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_marginBottom="15dp"
         android:gravity="center_horizontal"
         android:text="Help"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:typeface="monospace" />
 </RelativeLayout>

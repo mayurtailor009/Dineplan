@@ -10,7 +10,9 @@ import android.widget.TextView;
 import com.dineplan.R;
 import com.dineplan.ShowPortions;
 import com.dineplan.dbHandler.DbHandler;
+import com.dineplan.model.Category;
 import com.dineplan.model.MenuItem;
+import com.dineplan.model.MenuPortion;
 import com.dineplan.model.OrderItem;
 
 import java.util.ArrayList;
@@ -25,7 +27,7 @@ public class FoodAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  
 
     public FoodAdapter(Context context,ArrayList<MenuItem> items,ShowPortions showPortions){
         this.context= context;
-        this.items=items;
+        this.items=new ArrayList<MenuItem>(items);
         dbHandler=new DbHandler(context);
         this.showPortions=showPortions;
     }
@@ -83,4 +85,51 @@ public class FoodAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  
         });
     }
 
+    public void filter(String query, Category category, ArrayList<MenuItem> fullList){
+
+        if(fullList!=null && fullList.size()>0){
+            this.items.clear();
+            boolean categoryIgnore = false;
+            if(category.getId() == 0)
+                categoryIgnore = true;
+            query = query.toLowerCase();
+            for(MenuItem dto : fullList){
+                if(categoryIgnore){
+                    if(dto.getName()!=null
+                            && dto.getName().toLowerCase().contains(query)){
+                        items.add(dto);
+                    }else{
+                        if(dto.getMenuPortions()!=null && dto.getMenuPortions().size()>0){
+                            for(MenuPortion menuPortion : dto.getMenuPortions()){
+                                if(menuPortion.getPortionName()!=null &&
+                                        menuPortion.getPortionName().toLowerCase().contains(query)){
+                                    items.add(dto);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+                else{
+                    if(category.getId() ==dto.getCategoryId() && dto.getName()!=null
+                            && dto.getName().toLowerCase().contains(query)){
+                        items.add(dto);
+                    }
+                    else{
+                        if(dto.getMenuPortions()!=null && dto.getMenuPortions().size()>0){
+                            for(MenuPortion menuPortion : dto.getMenuPortions()){
+                                if(menuPortion.getPortionName()!=null &&
+                                        menuPortion.getPortionName().toLowerCase().contains(query)){
+                                    items.add(dto);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        notifyDataSetChanged();
+
+    }
 }

@@ -5,7 +5,9 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -36,12 +38,23 @@ public class LoginActivity extends BaseActivity implements AsyncTaskCompleteList
     private void init(){
         Toolbar toolbar = getToolbar();
         toolbar.setContentInsetsAbsolute(0,0);
-        TextView tvSignin = (TextView) toolbar.findViewById(R.id.tv_signin);
+        final TextView tvSignin = (TextView) toolbar.findViewById(R.id.tv_signin);
         tvSignin.setOnClickListener(this);
         etUsername = (EditText) findViewById(R.id.et_username);
         etPassword = (EditText) findViewById(R.id.et_password);
         etPassword.setInputType(InputType.TYPE_CLASS_TEXT |
                 InputType.TYPE_TEXT_VARIATION_PASSWORD);
+
+        etPassword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_GO) {
+                    tvSignin.performClick();
+                    return true;
+                }
+                return false;
+            }
+        });
+
         etTenant = (EditText) findViewById(R.id.et_tenant);
         url= (EditText) findViewById(R.id.et_url);
         setClick(R.id.tv_help);

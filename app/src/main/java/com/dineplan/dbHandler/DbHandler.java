@@ -222,7 +222,7 @@ public class DbHandler extends SQLiteOpenHelper {
     public ArrayList<MenuItem> getMenuItemList(){
         Cursor mcursor = null;
         ArrayList<MenuItem> menuItems=new ArrayList<>();
-        String selectQuery = "SELECT * FROM "+DATABASE_TABLE03;
+        String selectQuery = "SELECT * FROM "+DATABASE_TABLE03+" order by name asc";
         SQLiteDatabase myDataBase = this.getReadableDatabase();
         try {
             mcursor = myDataBase.rawQuery(selectQuery, null);

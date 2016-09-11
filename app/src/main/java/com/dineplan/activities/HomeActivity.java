@@ -245,7 +245,7 @@ public class HomeActivity extends BaseActivity implements AsyncTaskCompleteListe
                             preferences.edit().putInt("workPeriodId",jsonObject.getJSONObject("result").getInt("workPeriodId")).commit();
                             findViewById(R.id.lay_shift).setVisibility(View.GONE);
                             try {
-                                 jsonObject=new JSONObject();
+                                jsonObject=new JSONObject();
                                 jsonObject.put("tenantId",user.getTenantId());
                                 new RequestCall(preferences.getString("url", Constant.BASE_URL)+"api/services/app/sync/GetAll", this, jsonObject, ShiftActivity.class.getName(), this, 1, true,Utils.getHeader(user));
                             } catch (JSONException e) {

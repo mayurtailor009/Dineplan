@@ -6,11 +6,14 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -28,7 +31,6 @@ import com.dineplan.adpaters.MenuPortionAdapter;
 import com.dineplan.dbHandler.DbHandler;
 import com.dineplan.model.Category;
 import com.dineplan.model.MenuItem;
-import com.dineplan.model.MenuPortion;
 import com.dineplan.model.OrderItem;
 
 import java.util.ArrayList;
@@ -52,6 +54,8 @@ public class FoodListFragment extends BaseFragment implements AdapterView.OnItem
     private Button cancel;
     private RelativeLayout searchLayout;
     private LinearLayout categoryLayout;
+    private EditText etSearch;
+    private Category selectedCategory;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,6 +83,7 @@ public class FoodListFragment extends BaseFragment implements AdapterView.OnItem
         sp_category=(Spinner)view.findViewById(R.id.sp_category);
         cate=dbHandler.getCategoryList();
         cate.add(0,new Category("All"));
+        selectedCategory = cate.get(0);
         sp_category.setAdapter(new CategoryAdapter(getActivity(),cate));
         sp_category.setOnItemSelectedListener(this);
         tv_charge=(TextView)view.findViewById(R.id.tv_charge);
@@ -94,7 +99,25 @@ public class FoodListFragment extends BaseFragment implements AdapterView.OnItem
         searchLayout=(RelativeLayout) view.findViewById(R.id.ll_search);
         searchLayout.setOnClickListener(this);
 
+        etSearch = (EditText) view.findViewById(R.id.et_search);
 
+        etSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(charSequence.toString().trim().length()>=0)
+                foodAdapter.filter(charSequence.toString(), selectedCategory, items);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
     }
 
     @Override
@@ -112,6 +135,7 @@ public class FoodListFragment extends BaseFragment implements AdapterView.OnItem
     public void onClick(View view) {
             switch (view.getId()){
                 case R.id.btn_cancel:
+                    etSearch.setText("");
                     searchLayout.setVisibility(View.GONE);
                     categoryLayout.setVisibility(View.VISIBLE);
                     break;
@@ -143,11 +167,11 @@ public class FoodListFragment extends BaseFragment implements AdapterView.OnItem
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-            Category category=cate.get(i);
-        if(category.getId()!=0) {
+            selectedCategory=cate.get(i);
+        if(selectedCategory.getId()!=0) {
             ArrayList<MenuItem> item = (ArrayList<MenuItem>) items.clone();
             for (MenuItem it : items) {
-                if (it.getCategoryId() != category.getId()) {
+                if (it.getCategoryId() != selectedCategory.getId()) {
                     item.remove(it);
                 }
             }

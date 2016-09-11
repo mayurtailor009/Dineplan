@@ -2,47 +2,49 @@
 <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/toolbar"
+    app:contentInsetEnd="0dp"
+    app:contentInsetLeft="0dp"
+    app:contentInsetRight="0dp"
+    app:contentInsetStart="0dp"
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
     android:minHeight="?attr/actionBarSize">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize">
+
         <LinearLayout
+            android:id="@+id/ll_bor"
             android:layout_width="fill_parent"
             android:layout_height="1dp"
-            android:id="@+id/ll_bor"
-            android:orientation="horizontal"
             android:layout_alignParentBottom="true"
-            android:background="@color/action_border"/>
+            android:background="@color/action_border"
+            android:orientation="horizontal" />
+
         <TextView
             style="@style/tv_heading"
-            android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
-            android:text="@string/choose_location"
+            android:layout_centerVertical="true"
             android:layout_gravity="center"
-            />
+            android:text="@string/choose_location" />
 
-                <ImageButton
-                    android:id="@+id/btn_select_location"
-                    android:layout_width="30dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="right"
-                    android:layout_marginRight="@dimen/mini_common_margin"
-                    android:background="@null"
-                    android:layout_alignParentRight="true"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/right"
-                    />
+        <ImageView
+            android:id="@+id/btn_next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:padding="@dimen/common_margin"
+            android:src="@drawable/arrow_right" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/common_margin"
-                    android:id="@+id/btn_back"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/back_btn"/>
+        <ImageView
+            android:id="@+id/btn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:padding="@dimen/common_margin"
+            android:src="@drawable/back_btn" />
 
-</RelativeLayout>
+    </RelativeLayout>
 </android.support.v7.widget.Toolbar>
