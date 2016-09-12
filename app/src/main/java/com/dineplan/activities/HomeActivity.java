@@ -22,7 +22,10 @@ import com.dineplan.dbHandler.DbHandler;
 import com.dineplan.fragments.FoodListFragment;
 import com.dineplan.model.Category;
 import com.dineplan.model.Location;
+import com.dineplan.model.PaymentType;
 import com.dineplan.model.Syncer;
+import com.dineplan.model.Tax;
+import com.dineplan.model.TransactionType;
 import com.dineplan.model.User;
 import com.dineplan.rest.Constant;
 import com.dineplan.rest.RequestCall;
@@ -41,7 +44,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 
-public class HomeActivity extends BaseActivity implements AsyncTaskCompleteListener<String>,AddSaleItem {
+public class HomeActivity extends BaseActivity implements AsyncTaskCompleteListener<String>, AddSaleItem {
 
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
@@ -49,10 +52,12 @@ public class HomeActivity extends BaseActivity implements AsyncTaskCompleteListe
     private SharedPreferences preferences;
     private Dialog dialog;
     private User user;
-    private final int SYNC_MENU=3;
-    private int itemCount=0;
-    private TextView tv_count,tv_sale;
+    private final int REQ_SYNC_MENU = 3, REQ_SYNC_PAYMENT = 4, REQ_START_SHIFT = 2, REQ_SYNC_STATUS = 1
+            , REQ_SYNC_TRANSACTION = 5, REQ_SYNC_TAX = 6;
+    private int itemCount = 0;
+    private TextView tv_count, tv_sale;
 
+    private int syncCounter=0, totalSyncCount=0;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,29 +68,29 @@ public class HomeActivity extends BaseActivity implements AsyncTaskCompleteListe
 
     private void init(Bundle savedInstanceState) {
 
-        preferences=getSharedPreferences(Constants.PREF_NAME,MODE_PRIVATE);
-        user=new Gson().fromJson(preferences.getString("user","{}"),User.class);
-        if(preferences.getInt("workPeriodId",0)==0){
-                findViewById(R.id.lay_shift).setVisibility(View.VISIBLE);
-                findViewById(R.id.lay_shift).setOnClickListener(this);
-        }else{
-            if(savedInstanceState==null)
-           addFragment(new FoodListFragment(), true);
+        preferences = getSharedPreferences(Constants.PREF_NAME, MODE_PRIVATE);
+        user = new Gson().fromJson(preferences.getString("user", "{}"), User.class);
+        if (preferences.getInt("workPeriodId", 0) == 0) {
+            findViewById(R.id.lay_shift).setVisibility(View.VISIBLE);
+            findViewById(R.id.lay_shift).setOnClickListener(this);
+        } else {
+            if (savedInstanceState == null)
+                addFragment(new FoodListFragment(), true);
         }
 
         findViewById(R.id.btn_start_shift).setOnClickListener(this);
     }
 
-    private void setupDrawer(){
+    private void setupDrawer() {
 
         toolbar = getToolbar();
         toolbar.setNavigationIcon(R.drawable.splashlogo);
-        tv_count=(TextView) toolbar.findViewById(R.id.tv_count);
-        tv_sale=(TextView) toolbar.findViewById(R.id.tv_sale);
+        tv_count = (TextView) toolbar.findViewById(R.id.tv_count);
+        tv_sale = (TextView) toolbar.findViewById(R.id.tv_sale);
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.drawer_open,
-                R.string.drawer_close){
+                R.string.drawer_close) {
             /* Called when drawer is closed */
             public void onDrawerClosed(View view) {
                 //Put your code here
@@ -124,7 +129,7 @@ public class HomeActivity extends BaseActivity implements AsyncTaskCompleteListe
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.ll_register:
                 toggleDrawer();
                 break;
@@ -146,7 +151,7 @@ public class HomeActivity extends BaseActivity implements AsyncTaskCompleteListe
                 toggleDrawer();
                 break;
             case R.id.btn_start_shift:
-                dialog=new Dialog(this);
+                dialog = new Dialog(this);
                 dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -158,21 +163,21 @@ public class HomeActivity extends BaseActivity implements AsyncTaskCompleteListe
                 dialog.findViewById(R.id.btn_done).setOnClickListener(this);
                 break;
             case R.id.btn_done:
-              String floatAmount=((EditText)((ViewGroup)view.getParent()).findViewById(R.id.float_amt)).getText().toString();
+                String floatAmount = ((EditText) ((ViewGroup) view.getParent()).findViewById(R.id.float_amt)).getText().toString();
                 dialog.cancel();
                 try {
-                    SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd");
-                    SharedPreferences preferences=getSharedPreferences(Constants.PREF_NAME,MODE_PRIVATE);
-                    Gson gson=new Gson();
-                    Location location=gson.fromJson(preferences.getString("location","{}"),Location.class);
-                    JSONObject  jsonObject=new JSONObject();
-                    jsonObject.put("tenantId",user.getTenantId());
-                    jsonObject.put("userId",user.getUserId());
-                    jsonObject.put("locationId",location.getId());
-                    jsonObject.put("float",floatAmount);
-                    jsonObject.put("userName",user.getUserName());
-                    jsonObject.put("startTime",dateFormat.format(new Date()));
-                    new RequestCall(preferences.getString("url",Constant.BASE_URL)+"api/services/app/workPeriod/StartWorkPeriod", this, jsonObject, ShiftActivity.class.getName(), this, 2, true,Utils.getHeader(user));
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                    SharedPreferences preferences = getSharedPreferences(Constants.PREF_NAME, MODE_PRIVATE);
+                    Gson gson = new Gson();
+                    Location location = gson.fromJson(preferences.getString("location", "{}"), Location.class);
+                    JSONObject jsonObject = new JSONObject();
+                    jsonObject.put("tenantId", user.getTenantId());
+                    jsonObject.put("userId", user.getUserId());
+                    jsonObject.put("locationId", location.getId());
+                    jsonObject.put("float", floatAmount);
+                    jsonObject.put("userName", user.getUserName());
+                    jsonObject.put("startTime", dateFormat.format(new Date()));
+                    new RequestCall(preferences.getString("url", Constant.BASE_URL) + "api/services/app/workPeriod/StartWorkPeriod", this, jsonObject, ShiftActivity.class.getName(), this, REQ_START_SHIFT, true, Utils.getHeader(user));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -183,7 +188,7 @@ public class HomeActivity extends BaseActivity implements AsyncTaskCompleteListe
     /**
      * Open or close left drawer
      */
-    private void toggleDrawer(){
+    private void toggleDrawer() {
         if (drawerLayout.isDrawerOpen(Gravity.LEFT)) {
             drawerLayout.closeDrawer(Gravity.LEFT);
         } else {
@@ -194,71 +199,117 @@ public class HomeActivity extends BaseActivity implements AsyncTaskCompleteListe
     @Override
     public void onTaskComplete(String result, int fromCalling) {
         switch (fromCalling) {
-            case SYNC_MENU:
+
+            case REQ_START_SHIFT:
+                if (result != null) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(result);
+                        if (jsonObject.getBoolean("success")) {
+                            preferences.edit().putInt("workPeriodId", jsonObject.getJSONObject("result").getInt("workPeriodId")).commit();
+                            findViewById(R.id.lay_shift).setVisibility(View.GONE);
+
+                            callSyncStatusApi();
+
+                        } else {
+                            Utils.showOkDialog(this, jsonObject.getJSONObject("error").getString("message"), jsonObject.getJSONObject("error").getString("details"));
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                break;
+            case REQ_SYNC_STATUS:
                 if (result.toString() != null) {
                     try {
                         JSONObject jsonObject = new JSONObject(result);
                         if (jsonObject.getBoolean("success")) {
-                            Type type=new TypeToken<ArrayList<Category>>(){}.getType();
-                            ArrayList<Category> items=new Gson().fromJson(jsonObject.getJSONObject("result").getJSONArray("categories").toString(),type);
-                            new DbHandler(this).SyncMenuCategories(items);
-                            addFragment(new FoodListFragment(), true);
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            break;
-            case 1:
-            if (result.toString() != null) {
-                try {
-                    JSONObject jsonObject = new JSONObject(result);
-                    if (jsonObject.getBoolean("success")) {
-                        Type type = new TypeToken<ArrayList<Syncer>>() {
-                        }.getType();
-                        ArrayList<Syncer> sync = new Gson().fromJson(jsonObject.getJSONObject("result").getJSONArray("items").toString(), type);
-                        new DbHandler(this).isSyncNeeded(sync);
-                        for(Syncer syncer:sync){
-                            if(syncer.getName().equalsIgnoreCase("menu") & syncer.isSyncNeeded()){
-                                try {
-                                    jsonObject=new JSONObject();
-                                    Location location=new Gson().fromJson(preferences.getString("location","{}"),Location.class);
-                                    jsonObject.put("locationId",location.getId());
-                                    new RequestCall(preferences.getString("url", Constant.BASE_URL)+"api/services/app/menuItem/ApiGetMenuForLocation", this, jsonObject, ShiftActivity.class.getName(), this,SYNC_MENU, true,Utils.getHeader(user));
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }
-                        //addFragment(new FoodListFragment(), true);
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                            Type type = new TypeToken<ArrayList<Syncer>>() {
+                            }.getType();
+                            ArrayList<Syncer> sync = new Gson().fromJson(jsonObject.getJSONObject("result").getJSONArray("items").toString(), type);
+                            new DbHandler(this).isSyncNeeded(sync);
 
-            }
+                            handleSyncStatusResponse(sync);
+
+                            //addFragment(new FoodListFragment(), true);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
                 break;
-            case 2:
-                if(result!=null){
+
+            case REQ_SYNC_MENU:
+                if (result.toString() != null) {
                     try {
-                        JSONObject jsonObject=new JSONObject(result);
-                        if(jsonObject.getBoolean("success")){
-                            preferences.edit().putInt("workPeriodId",jsonObject.getJSONObject("result").getInt("workPeriodId")).commit();
-                            findViewById(R.id.lay_shift).setVisibility(View.GONE);
-                            try {
-                                jsonObject=new JSONObject();
-                                jsonObject.put("tenantId",user.getTenantId());
-                                new RequestCall(preferences.getString("url", Constant.BASE_URL)+"api/services/app/sync/GetAll", this, jsonObject, ShiftActivity.class.getName(), this, 1, true,Utils.getHeader(user));
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }else{
-                            Utils.showOkDialog(this,jsonObject.getJSONObject("error").getString("message"),jsonObject.getJSONObject("error").getString("details"));
+                        JSONObject jsonObject = new JSONObject(result);
+                        if (jsonObject.getBoolean("success")) {
+                            Type type = new TypeToken<ArrayList<Category>>() {
+                            }.getType();
+                            ArrayList<Category> items = new Gson().fromJson(jsonObject.getJSONObject("result").getJSONArray("categories").toString(), type);
+                            new DbHandler(this).SyncMenuCategories(items);
+                            startJourney();
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
+                syncCounter=syncCounter+1;
+                startJourney();
+                break;
+
+            case REQ_SYNC_PAYMENT:
+                if (result.toString() != null) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(result);
+                        if (jsonObject.getBoolean("success")) {
+                            Type type = new TypeToken<ArrayList<PaymentType>>() {
+                            }.getType();
+                            ArrayList<PaymentType> items = new Gson().fromJson(jsonObject.getJSONObject("result").getJSONArray("items").toString(), type);
+                            new DbHandler(this).syncPaymentType(items);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                syncCounter=syncCounter+1;
+                startJourney();
+                break;
+
+            case REQ_SYNC_TRANSACTION:
+                if (result.toString() != null) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(result);
+                        if (jsonObject.getBoolean("success")) {
+                            Type type = new TypeToken<ArrayList<TransactionType>>() {
+                            }.getType();
+                            ArrayList<TransactionType> items = new Gson().fromJson(jsonObject.getJSONObject("result").getJSONArray("items").toString(), type);
+                            new DbHandler(this).syncTransactionType(items);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                syncCounter=syncCounter+1;
+                startJourney();
+                break;
+
+            case REQ_SYNC_TAX:
+                if (result.toString() != null) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(result);
+                        if (jsonObject.getBoolean("success")) {
+                            Type type = new TypeToken<ArrayList<Tax>>() {
+                            }.getType();
+                            ArrayList<Tax> items = new Gson().fromJson(jsonObject.getJSONObject("result").getJSONArray("items").toString(), type);
+                            new DbHandler(this).syncTaxType(items);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                syncCounter=syncCounter+1;
+                startJourney();
                 break;
         }
     }
@@ -274,14 +325,11 @@ public class HomeActivity extends BaseActivity implements AsyncTaskCompleteListe
     @Override
     public void removeItem() {
         --itemCount;
-        if(itemCount==0){
+        if (itemCount == 0) {
             tv_sale.setText(getResources().getText(R.string.no_sale));
             tv_count.setText(String.valueOf(itemCount));
             tv_count.setVisibility(View.GONE);
         }
-
-
-
 
 
     }
@@ -297,15 +345,132 @@ public class HomeActivity extends BaseActivity implements AsyncTaskCompleteListe
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        if(savedInstanceState!=null)
-        {
-            itemCount=savedInstanceState.getInt("itemCount");
+        if (savedInstanceState != null) {
+            itemCount = savedInstanceState.getInt("itemCount");
         }
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
         super.onSaveInstanceState(outState, outPersistentState);
-        outState.putInt("itemCount",itemCount);
+        outState.putInt("itemCount", itemCount);
+    }
+
+    public void callSyncStatusApi() {
+        try {
+            if (!Utils.isOnline(this)) {
+                return;
+            }
+
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("tenantId", user.getTenantId());
+            new RequestCall(preferences.getString("url", Constant.BASE_URL) + "api/services/app/sync/GetAll", this, jsonObject, ShiftActivity.class.getName(), this, REQ_SYNC_STATUS, true, Utils.getHeader(user));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void handleSyncStatusResponse(ArrayList<Syncer> list){
+        try{
+
+            for (Syncer syncer : list) {
+                if (syncer.isSyncNeeded()) {
+                    totalSyncCount++;
+                }
+            }
+
+            for (Syncer syncer : list) {
+                if (syncer.getName().equalsIgnoreCase("menu") & syncer.isSyncNeeded()) {
+
+                    callGetMenuApi();
+                }
+
+                else if (syncer.getName().equalsIgnoreCase("PAYMENTTYPE") & syncer.isSyncNeeded()) {
+
+                    callGetPaymentTypeApi();
+                }
+
+                else if (syncer.getName().equalsIgnoreCase("TRANSACTIONTYPE") & syncer.isSyncNeeded()) {
+
+                    callGetTransactionTypeApi();
+                }
+
+                else if (syncer.getName().equalsIgnoreCase("TAX") & syncer.isSyncNeeded()) {
+
+                    callGetTaxApi();
+                }
+            }
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public void callGetMenuApi() {
+        try {
+            if (!Utils.isOnline(this)) {
+                return;
+            }
+            JSONObject jsonObject = new JSONObject();
+            Location location = new Gson().fromJson(preferences.getString("location", "{}"), Location.class);
+            jsonObject.put("locationId", location.getId());
+            new RequestCall(preferences.getString("url", Constant.BASE_URL) + "api/services/app/menuItem/ApiGetMenuForLocation", this, jsonObject, ShiftActivity.class.getName(), this, REQ_SYNC_MENU, true, Utils.getHeader(user));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void callGetPaymentTypeApi() {
+        try {
+            if (!Utils.isOnline(this)) {
+                return;
+            }
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("tenantId", user.getTenantId());
+            new RequestCall(preferences.getString("url", Constant.BASE_URL) + "api/services/app/paymentType/ApiGetAll", this, jsonObject, ShiftActivity.class.getName(), this, REQ_SYNC_PAYMENT, true, Utils.getHeader(user));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void callGetTransactionTypeApi() {
+        try {
+            if (!Utils.isOnline(this)) {
+                return;
+            }
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("tenantId", user.getTenantId());
+            new RequestCall(preferences.getString("url", Constant.BASE_URL) + "api/services/app/transactionType/ApiGetAll", this, jsonObject, ShiftActivity.class.getName(), this, REQ_SYNC_TRANSACTION, true, Utils.getHeader(user));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void callGetTaxApi() {
+        try {
+            if (!Utils.isOnline(this)) {
+                return;
+            }
+            JSONObject jsonObject = new JSONObject();
+            Location location = new Gson().fromJson(preferences.getString("location", "{}"), Location.class);
+            jsonObject.put("locationId", location.getId());
+            new RequestCall(preferences.getString("url", Constant.BASE_URL) + "api/services/app/dinePlanTax/ApiGetAll", this, jsonObject, ShiftActivity.class.getName(), this, REQ_SYNC_TAX, true, Utils.getHeader(user));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void startJourney(){
+
+        if(syncCounter == totalSyncCount)
+        addFragment(new FoodListFragment(), true);
     }
 }
+
