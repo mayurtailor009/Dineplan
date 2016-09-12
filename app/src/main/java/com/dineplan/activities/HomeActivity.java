@@ -148,6 +148,7 @@ public class HomeActivity extends BaseActivity implements AsyncTaskCompleteListe
             case R.id.btn_start_shift:
                 dialog=new Dialog(this);
                 dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
                 dialog.setContentView(R.layout.float_amount);
                 Window window = dialog.getWindow();
