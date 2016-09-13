@@ -19,6 +19,7 @@
             android:id="@+id/tv_charge"
             style="@style/tv_big_headingx"
             android:text="Charge $0.00"
+            android:typeface="monospace"
             android:textColor="@color/white" />
 
         <TextView
@@ -43,16 +44,25 @@
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:gravity="center_vertical"
-            android:paddingLeft="@dimen/margin_15"
-            android:paddingRight="@dimen/margin_15">
-
+            >
 
             <Spinner
                 android:id="@+id/sp_category"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:dropDownWidth="fill_parent"
+                android:background="@null"
                 android:layout_weight="1" />
 
+
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:src="@drawable/down_arrow_icon"
+                android:layout_alignParentRight="true"
+                android:padding="@dimen/common_margin"/>
 
         </RelativeLayout>
 

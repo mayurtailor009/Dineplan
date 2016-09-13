@@ -5,7 +5,7 @@
     <!-- TEXTVIEWS -->
     <dimen name="tv_big_headingx">26sp</dimen>
     <dimen name="tv_big_heading">24sp</dimen>
-    <dimen name="tv_heading">22sp</dimen>
+    <dimen name="tv_heading">18sp</dimen>
     <dimen name="tv_subheading">15sp</dimen>
     <dimen name="tv_normal">16sp</dimen>
     <dimen name="tv_medium">16sp</dimen>

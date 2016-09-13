@@ -16,8 +16,11 @@ import android.widget.TextView;
 import com.dineplan.AddOrderTag;
 import com.dineplan.R;
 import com.dineplan.adpaters.ChooseFoodAdapter;
+import com.dineplan.adpaters.MenuAdapt;
+import com.dineplan.adpaters.MenuPortionAdapter;
 import com.dineplan.dbHandler.DbHandler;
 import com.dineplan.model.MenuItem;
+import com.dineplan.model.MenuPortion;
 import com.dineplan.model.OrderItem;
 import com.dineplan.model.OrderTag;
 
@@ -33,6 +36,8 @@ public class AddFoodActivity extends BaseActivity implements View.OnClickListene
     private float price;
     private int quantiy;
     private OrderItem orderItem;
+    private RecyclerView rec_menu_portions;
+    private MenuPortionAdapter menuPortionAdapter;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +64,17 @@ public class AddFoodActivity extends BaseActivity implements View.OnClickListene
         setTouchNClick(R.id.tv_delivery);
         etQuantity = (EditText) findViewById(R.id.et_quantity);
         etNotes = (EditText) findViewById(R.id.et_notes);
+
+        if(menuItem.getMenuPortions().size()>1) {
+            rec_menu_portions = (RecyclerView) findViewById(R.id.rec_menu_portions);
+            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
+            rec_menu_portions.setHasFixedSize(true);
+            rec_menu_portions.setLayoutManager(mLayoutManager);
+            rec_menu_portions.setItemAnimator(new DefaultItemAnimator());
+            menuPortionAdapter = new MenuPortionAdapter(this,menuItem.getMenuPortions(),this);
+            rec_menu_portions.setAdapter(menuPortionAdapter);
+        }
+
     }
 
     @Override
@@ -136,5 +152,10 @@ public class AddFoodActivity extends BaseActivity implements View.OnClickListene
         price=price-orderTag.getPrice();
         orderItem.getOrderTags().remove(orderTag);
         tv_title.setText(menuItem.getName()+" $"+price);
+    }
+
+    @Override
+    public void addPortions(MenuPortion menuPortions) {
+        orderItem.setMenuPortion(menuPortions);
     }
 }

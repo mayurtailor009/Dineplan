@@ -19,15 +19,18 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/location_icon" />
+            android:src="@drawable/location_icon"
+            />
 
         <TextView
             android:typeface="monospace"
             style="@style/tv_heading"
             android:layout_marginLeft="@dimen/margin_20"
             android:text="@string/menu_location"
-            android:textColor="@color/white"
-            android:textStyle="bold" />
+
+            android:textColor="@color/drawer_color"
+
+            />
     </LinearLayout>
 
     <LinearLayout
@@ -48,8 +51,8 @@
             style="@style/tv_heading"
             android:layout_marginLeft="@dimen/margin_20"
             android:text="@string/menu_shift"
-            android:textColor="@color/white"
-            android:textStyle="bold" />
+            android:textColor="@color/drawer_color"
+             />
     </LinearLayout>
 
     <LinearLayout
@@ -70,8 +73,8 @@
             style="@style/tv_heading"
             android:layout_marginLeft="@dimen/margin_20"
             android:text="@string/menu_register"
-            android:textColor="@color/white"
-            android:textStyle="bold" />
+            android:textColor="@color/drawer_color"
+         />
     </LinearLayout>
 
     <LinearLayout
@@ -92,8 +95,8 @@
             style="@style/tv_heading"
             android:layout_marginLeft="@dimen/margin_20"
             android:text="@string/menu_reports"
-            android:textColor="@color/white"
-            android:textStyle="bold" />
+            android:textColor="@color/drawer_color"
+             />
     </LinearLayout>
 
     <LinearLayout
@@ -114,8 +117,8 @@
             style="@style/tv_heading"
             android:layout_marginLeft="@dimen/margin_20"
             android:text="@string/menu_setting"
-            android:textColor="@color/white"
-            android:textStyle="bold" />
+            android:textColor="@color/drawer_color"
+           />
     </LinearLayout>
 
     <LinearLayout
@@ -136,7 +139,7 @@
             style="@style/tv_heading"
             android:layout_marginLeft="@dimen/margin_20"
             android:text="@string/menu_logout"
-            android:textColor="@color/white"
-            android:textStyle="bold" />
+            android:textColor="@color/drawer_color"
+             />
     </LinearLayout>
 </LinearLayout>

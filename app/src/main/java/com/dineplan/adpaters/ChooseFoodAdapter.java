@@ -99,12 +99,12 @@ public class ChooseFoodAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                         view.setSelected(false);
                         ((TextView) view.findViewById(R.id.tv_dish_name1)).setTextColor(context.getResources().getColor(R.color.black));
                         ((TextView) view.findViewById(R.id.tv_price)).setTextColor(context.getResources().getColor(R.color.black));
-                        addOrderTag.removeOrderTag(orderTags.get(posit))  ;
+                        addOrderTag.removeOrderTag(orderTags.get(posit));
                     }else {
                         view.setSelected(true);
                         ((TextView) view.findViewById(R.id.tv_dish_name1)).setTextColor(context.getResources().getColor(R.color.white));
                         ((TextView) view.findViewById(R.id.tv_price)).setTextColor(context.getResources().getColor(R.color.white));
-                        addOrderTag.addOrderTag(orderTags.get(posit));  ;
+                        addOrderTag.addOrderTag(orderTags.get(posit));
                     }
                 }
             });

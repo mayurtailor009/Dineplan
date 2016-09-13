@@ -9,5 +9,6 @@
         android:padding="@dimen/common_margin"
         android:textStyle="bold"
         android:text="@string/enter_float_amount"
+        android:typeface="monospace"
         />
 </LinearLayout>

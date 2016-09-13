@@ -27,7 +27,7 @@ import com.dineplan.activities.AddFoodActivity;
 import com.dineplan.activities.Payment1Activity;
 import com.dineplan.adpaters.CategoryAdapter;
 import com.dineplan.adpaters.FoodAdapter;
-import com.dineplan.adpaters.MenuPortionAdapter;
+import com.dineplan.adpaters.MenuAdapt;
 import com.dineplan.dbHandler.DbHandler;
 import com.dineplan.model.Category;
 import com.dineplan.model.MenuItem;
@@ -192,7 +192,7 @@ public class FoodListFragment extends BaseFragment implements AdapterView.OnItem
 
     @Override
     public void showPortions(MenuItem menuItem) {
-        MenuPortionAdapter menuPortionAdapter = new MenuPortionAdapter(menuItem,getActivity(),this);
+        MenuAdapt menuPortionAdapter = new MenuAdapt(menuItem,getActivity(),this);
         recyclerView.setAdapter(menuPortionAdapter);
     }
 

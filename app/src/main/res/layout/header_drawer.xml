@@ -27,6 +27,7 @@
             android:background="@drawable/top_tab_icon"
             android:gravity="center"
             android:text="3"
+            android:typeface="monospace"
             android:textStyle="bold" />
     </LinearLayout>
 </android.support.v7.widget.Toolbar>

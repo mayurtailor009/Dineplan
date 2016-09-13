@@ -56,5 +56,6 @@ public class CategoryAdapter extends BaseAdapter{
 
     class ViewHolder{
         private TextView category;
+
     }
 }

@@ -14,7 +14,8 @@
             android:text="Location"
             android:background="@color/card_color"
             android:id="@+id/tv_item_name"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:typeface="monospace"/>
 
         <RadioButton
             android:id="@+id/rd_btn"

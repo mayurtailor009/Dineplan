@@ -34,10 +34,9 @@ public class FoodAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  
 
 
     class ViewHolderFood extends RecyclerView.ViewHolder {
-        private TextView tvItemName, tvPrice,tv_subheading;
+        private TextView tvItemName, tvPrice;
         public ViewHolderFood(View itemView) {
             super(itemView);
-            tv_subheading=(TextView) itemView.findViewById(R.id.tv_subheading);
             tvItemName = (TextView) itemView.findViewById(R.id.tv_item_name);
             tvPrice = (TextView) itemView.findViewById(R.id.tv_price);
         }
@@ -63,7 +62,6 @@ public class FoodAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  
         ViewHolderFood viewHolderFood = (ViewHolderFood) holder;
         viewHolderFood.tvItemName.setText(items.get(position).getName());
         viewHolderFood.tvPrice.setText("$"+String.valueOf(items.get(position).getPrice()));
-        viewHolderFood.tv_subheading.setText(items.get(position).getAliasCode());
         final int pos=position;
         viewHolderFood.itemView.setOnClickListener(new View.OnClickListener() {
             int posit=pos;
@@ -72,7 +70,7 @@ public class FoodAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  
                 MenuItem menuItem=items.get(posit);
                 MenuItem item=dbHandler.getMenuItemDetail(menuItem);
                 if(item.getMenuPortions().size()>1){
-                    showPortions.showPortions(menuItem);
+                    showPortions.addFoodOrder(menuItem);
                 }else
                 if(menuItem.getOrderTagGroups().size()>0){
                     showPortions.addFoodOrder(menuItem);
