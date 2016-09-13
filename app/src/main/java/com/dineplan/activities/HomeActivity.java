@@ -21,6 +21,7 @@ import com.dineplan.R;
 import com.dineplan.dbHandler.DbHandler;
 import com.dineplan.fragments.FoodListFragment;
 import com.dineplan.model.Category;
+import com.dineplan.model.Department;
 import com.dineplan.model.Location;
 import com.dineplan.model.PaymentType;
 import com.dineplan.model.Syncer;
@@ -53,7 +54,7 @@ public class HomeActivity extends BaseActivity implements AsyncTaskCompleteListe
     private Dialog dialog;
     private User user;
     private final int REQ_SYNC_MENU = 3, REQ_SYNC_PAYMENT = 4, REQ_START_SHIFT = 2, REQ_SYNC_STATUS = 1
-            , REQ_SYNC_TRANSACTION = 5, REQ_SYNC_TAX = 6;
+            , REQ_SYNC_TRANSACTION = 5, REQ_SYNC_TAX = 6, REQ_SYNC_DEPARTMENT = 7;
     private int itemCount = 0;
     private TextView tv_count, tv_sale;
 
@@ -64,6 +65,8 @@ public class HomeActivity extends BaseActivity implements AsyncTaskCompleteListe
         setContentView(R.layout.activity_home);
         setupDrawer();
         init(savedInstanceState);
+
+        //Utils.exportDatabse("dineplan", this);
     }
 
     private void init(Bundle savedInstanceState) {
@@ -77,7 +80,6 @@ public class HomeActivity extends BaseActivity implements AsyncTaskCompleteListe
             if (savedInstanceState == null)
                 addFragment(new FoodListFragment(), true);
         }
-
         findViewById(R.id.btn_start_shift).setOnClickListener(this);
     }
 
@@ -254,7 +256,7 @@ public class HomeActivity extends BaseActivity implements AsyncTaskCompleteListe
                         e.printStackTrace();
                     }
                 }
-                syncCounter=syncCounter+1;
+                syncCounter=syncCounter+2;
                 startJourney();
                 break;
 
@@ -303,6 +305,23 @@ public class HomeActivity extends BaseActivity implements AsyncTaskCompleteListe
                             }.getType();
                             ArrayList<Tax> items = new Gson().fromJson(jsonObject.getJSONObject("result").getJSONArray("items").toString(), type);
                             new DbHandler(this).syncTaxType(items);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                syncCounter=syncCounter+1;
+                startJourney();
+
+            case REQ_SYNC_DEPARTMENT:
+                if (result.toString() != null) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(result);
+                        if (jsonObject.getBoolean("success")) {
+                            Type type = new TypeToken<ArrayList<Department>>() {
+                            }.getType();
+                            ArrayList<Department> items = new Gson().fromJson(jsonObject.getJSONObject("result").getJSONArray("items").toString(), type);
+                            new DbHandler(this).syncDepartment(items);
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -400,7 +419,13 @@ public class HomeActivity extends BaseActivity implements AsyncTaskCompleteListe
 
                     callGetTaxApi();
                 }
+
+                else if (syncer.getName().equalsIgnoreCase("DEPARTMENT") & syncer.isSyncNeeded()) {
+
+                    callGetDepartmentApi();
+                }
             }
+            startJourney();
 
         }
         catch (Exception e){
@@ -460,7 +485,21 @@ public class HomeActivity extends BaseActivity implements AsyncTaskCompleteListe
             JSONObject jsonObject = new JSONObject();
             Location location = new Gson().fromJson(preferences.getString("location", "{}"), Location.class);
             jsonObject.put("locationId", location.getId());
-            new RequestCall(preferences.getString("url", Constant.BASE_URL) + "api/services/app/dinePlanTax/ApiGetAll", this, jsonObject, ShiftActivity.class.getName(), this, REQ_SYNC_TAX, true, Utils.getHeader(user));
+            new RequestCall(preferences.getString("url", Constant.BASE_URL) + "api/services/app/dinePlanTax/ApiGetTaxes", this, jsonObject, ShiftActivity.class.getName(), this, REQ_SYNC_TAX, true, Utils.getHeader(user));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void callGetDepartmentApi() {
+        try {
+            if (!Utils.isOnline(this)) {
+                return;
+            }
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("tenantId", user.getTenantId());
+            new RequestCall(preferences.getString("url", Constant.BASE_URL) + "api/services/app/department/ApiGetAll", this, jsonObject, ShiftActivity.class.getName(), this, REQ_SYNC_DEPARTMENT, true, Utils.getHeader(user));
 
         } catch (Exception e) {
             e.printStackTrace();

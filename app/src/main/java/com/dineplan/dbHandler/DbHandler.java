@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.dineplan.model.Category;
+import com.dineplan.model.Department;
 import com.dineplan.model.MenuItem;
 import com.dineplan.model.MenuPortion;
 import com.dineplan.model.OrderTag;
@@ -35,6 +36,7 @@ public class DbHandler extends SQLiteOpenHelper {
     public static final String DATABASE_TABLE_PAYEMENT_TYPE="payment_type";
     public static final String DATABASE_TABLE_TRANSACTION_TYPE="transaction_type";
     public static final String DATABASE_TABLE_TAX="tax";
+    public static final String DATABASE_TABLE_DEPARTMENT="department";
     private Context context;
     public DbHandler(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -56,6 +58,8 @@ public class DbHandler extends SQLiteOpenHelper {
                 "(id INTEGER ,name TEXT)";
         String CREATE_TABLE_TAX="CREATE TABLE "+DATABASE_TABLE_TAX+" " +
                 "(id INTEGER ,name TEXT, percentage integer, categoryId integer, categoryName text, menuItemId integer, menuItemName text)";
+        String CREATE_TABLE_DEPARTMENT="CREATE TABLE "+DATABASE_TABLE_DEPARTMENT+" " +
+                "(id INTEGER ,name TEXT)";
         sqLiteDatabase.execSQL(SYNCER);
         sqLiteDatabase.execSQL(CATEGORY);
         sqLiteDatabase.execSQL(MENUITEM);
@@ -65,6 +69,7 @@ public class DbHandler extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(CREATE_TABLE_PAYMENT_TYPE);
         sqLiteDatabase.execSQL(CREATE_TABLE_TRANSACTION_TYPE);
         sqLiteDatabase.execSQL(CREATE_TABLE_TAX);
+        sqLiteDatabase.execSQL(CREATE_TABLE_DEPARTMENT);
     }
 
     public void isSyncNeeded(ArrayList<Syncer> syncer){
@@ -530,6 +535,57 @@ public class DbHandler extends SQLiteOpenHelper {
 
             for(Tax tax : list){
                 insertTax(tax);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    private void insertDepartment(Department department) {
+        SQLiteDatabase myDataBase = this.getReadableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("id", department.getId());
+        values.put("name", department.getName());
+        myDataBase.insert(DATABASE_TABLE_DEPARTMENT, null, values);
+    }
+
+    public ArrayList<Department> getDepartmentList() {
+        Cursor mcursor = null;
+        ArrayList<Department> list = new ArrayList<>();
+        String selectQuery = "SELECT * FROM "+DATABASE_TABLE_DEPARTMENT;
+        SQLiteDatabase myDataBase = this.getReadableDatabase();
+        try {
+            mcursor = myDataBase.rawQuery(selectQuery, null);
+            if (mcursor.moveToFirst()) {
+                do {
+                    Department data = new Department();
+                    data.setId(mcursor.getInt(mcursor.getColumnIndex("id")));
+                    data.setName(mcursor.getString(mcursor.getColumnIndex("name")));
+                    list.add(data) ;
+                }while (mcursor.moveToNext());
+            }
+            //myDataBase.close();
+        } catch (Exception exp) {
+            exp.printStackTrace();
+        } finally {
+            if (mcursor != null)
+                mcursor.close();
+        }
+        return list;
+    }
+
+    private void clearDepartmentTable() {
+        SQLiteDatabase myDataBase = this.getReadableDatabase();
+        myDataBase.execSQL("delete from "+DATABASE_TABLE_DEPARTMENT);
+    }
+
+    public void syncDepartment(ArrayList<Department> list){
+
+        try{
+            clearTransactionTypeTable();
+
+            for(Department department : list){
+                insertDepartment(department);
             }
         }catch (Exception e){
             e.printStackTrace();
