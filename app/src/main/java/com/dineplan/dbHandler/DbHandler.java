@@ -7,11 +7,15 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.dineplan.model.Category;
+import com.dineplan.model.Department;
 import com.dineplan.model.MenuItem;
 import com.dineplan.model.MenuPortion;
 import com.dineplan.model.OrderTag;
 import com.dineplan.model.OrderTagGroup;
+import com.dineplan.model.PaymentType;
 import com.dineplan.model.Syncer;
+import com.dineplan.model.Tax;
+import com.dineplan.model.TransactionType;
 
 import java.util.ArrayList;
 
@@ -29,6 +33,10 @@ public class DbHandler extends SQLiteOpenHelper {
     public static final String DATABASE_TABLE04="menu_portions";
     public static final String DATABASE_TABLE05="OrderTagGroups";
     public static final String DATABASE_TABLE06="orderTags";
+    public static final String DATABASE_TABLE_PAYEMENT_TYPE="payment_type";
+    public static final String DATABASE_TABLE_TRANSACTION_TYPE="transaction_type";
+    public static final String DATABASE_TABLE_TAX="tax";
+    public static final String DATABASE_TABLE_DEPARTMENT="department";
     private Context context;
     public DbHandler(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -44,12 +52,24 @@ public class DbHandler extends SQLiteOpenHelper {
         String MENU_PORTION="CREATE TABLE menu_portions (portionId INTEGER PRIMARY KEY AUTOINCREMENT,id INTEGER, portionName TEXT, price TEXT, menuId INTEGER)";
         String TAGGROUPS="CREATE TABLE OrderTagGroups (tagGrpId INTEGER PRIMARY KEY AUTOINCREMENT,id INTEGER , name TEXT, minSelectItems INTEGER, maxSelectItems INTEGER, addPriceToOrder BOOLEAN, sortOrder INTEGER, categoryId INTEGER, menuItemId INTEGER)";
         String ORDERTAG="CREATE TABLE orderTags (orderTagId INTEGER PRIMARY KEY AUTOINCREMENT,id INTEGER , price INTEGER, name TEXT, sortOrder INTEGER, tagGroupId INTEGER)";
+        String CREATE_TABLE_PAYMENT_TYPE="CREATE TABLE "+DATABASE_TABLE_PAYEMENT_TYPE+" " +
+                "(id INTEGER ,name TEXT, acceptChange INTEGER, sortOrder INTEGER)";
+        String CREATE_TABLE_TRANSACTION_TYPE="CREATE TABLE "+DATABASE_TABLE_TRANSACTION_TYPE+" " +
+                "(id INTEGER ,name TEXT)";
+        String CREATE_TABLE_TAX="CREATE TABLE "+DATABASE_TABLE_TAX+" " +
+                "(id INTEGER ,name TEXT, percentage integer, categoryId integer, categoryName text, menuItemId integer, menuItemName text)";
+        String CREATE_TABLE_DEPARTMENT="CREATE TABLE "+DATABASE_TABLE_DEPARTMENT+" " +
+                "(id INTEGER ,name TEXT)";
         sqLiteDatabase.execSQL(SYNCER);
         sqLiteDatabase.execSQL(CATEGORY);
         sqLiteDatabase.execSQL(MENUITEM);
         sqLiteDatabase.execSQL(MENU_PORTION);
         sqLiteDatabase.execSQL(TAGGROUPS);
         sqLiteDatabase.execSQL(ORDERTAG);
+        sqLiteDatabase.execSQL(CREATE_TABLE_PAYMENT_TYPE);
+        sqLiteDatabase.execSQL(CREATE_TABLE_TRANSACTION_TYPE);
+        sqLiteDatabase.execSQL(CREATE_TABLE_TAX);
+        sqLiteDatabase.execSQL(CREATE_TABLE_DEPARTMENT);
     }
 
     public void isSyncNeeded(ArrayList<Syncer> syncer){
@@ -351,5 +371,224 @@ public class DbHandler extends SQLiteOpenHelper {
                 mcursor.close();
         }
         return menuItem;
+    }
+
+    private void insertPaymentType(PaymentType paymentType) {
+        SQLiteDatabase myDataBase = this.getReadableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("id", paymentType.getId());
+        values.put("name", paymentType.getName());
+        values.put("acceptChange", paymentType.isAcceptChange());
+        values.put("sortOrder", paymentType.getSortOrder());
+        myDataBase.insert(DATABASE_TABLE_PAYEMENT_TYPE, null, values);
+    }
+
+    public ArrayList<PaymentType> getPaymentTypeList() {
+        Cursor mcursor = null;
+        ArrayList<PaymentType> list = new ArrayList<>();
+        String selectQuery = "SELECT * FROM "+DATABASE_TABLE_PAYEMENT_TYPE;
+        SQLiteDatabase myDataBase = this.getReadableDatabase();
+        try {
+            mcursor = myDataBase.rawQuery(selectQuery, null);
+            if (mcursor.moveToFirst()) {
+                do {
+                    PaymentType data = new PaymentType();
+                    data.setId(mcursor.getInt(mcursor.getColumnIndex("id")));
+                    data.setSortOrder(mcursor.getInt(mcursor.getColumnIndex("sortOrder")));
+                    data.setName(mcursor.getString(mcursor.getColumnIndex("name")));
+                    data.setAcceptChange(mcursor.getInt(mcursor.getColumnIndex("acceptChange"))==0 ? false: true);
+                    list.add(data) ;
+                }while (mcursor.moveToNext());
+            }
+            //myDataBase.close();
+        } catch (Exception exp) {
+            exp.printStackTrace();
+        } finally {
+            if (mcursor != null)
+                mcursor.close();
+        }
+        return list;
+    }
+
+    private void clearPaymentTypeTable() {
+        SQLiteDatabase myDataBase = this.getReadableDatabase();
+        myDataBase.execSQL("delete from "+DATABASE_TABLE_PAYEMENT_TYPE);
+    }
+
+    public void syncPaymentType(ArrayList<PaymentType> list){
+
+        try{
+            clearPaymentTypeTable();
+
+            for(PaymentType paymentType : list){
+                insertPaymentType(paymentType);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+
+    private void insertTransactionType(TransactionType transactionType) {
+        SQLiteDatabase myDataBase = this.getReadableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("id", transactionType.getId());
+        values.put("name", transactionType.getName());
+        myDataBase.insert(DATABASE_TABLE_TRANSACTION_TYPE, null, values);
+    }
+
+    public ArrayList<TransactionType> getTransactionTypeList() {
+        Cursor mcursor = null;
+        ArrayList<TransactionType> list = new ArrayList<>();
+        String selectQuery = "SELECT * FROM "+DATABASE_TABLE_TRANSACTION_TYPE;
+        SQLiteDatabase myDataBase = this.getReadableDatabase();
+        try {
+            mcursor = myDataBase.rawQuery(selectQuery, null);
+            if (mcursor.moveToFirst()) {
+                do {
+                    TransactionType data = new TransactionType();
+                    data.setId(mcursor.getInt(mcursor.getColumnIndex("id")));
+                    data.setName(mcursor.getString(mcursor.getColumnIndex("name")));
+                    list.add(data) ;
+                }while (mcursor.moveToNext());
+            }
+            //myDataBase.close();
+        } catch (Exception exp) {
+            exp.printStackTrace();
+        } finally {
+            if (mcursor != null)
+                mcursor.close();
+        }
+        return list;
+    }
+
+    private void clearTransactionTypeTable() {
+        SQLiteDatabase myDataBase = this.getReadableDatabase();
+        myDataBase.execSQL("delete from "+DATABASE_TABLE_TRANSACTION_TYPE);
+    }
+
+    public void syncTransactionType(ArrayList<TransactionType> list){
+
+        try{
+            clearTransactionTypeTable();
+
+            for(TransactionType transactionType : list){
+                insertTransactionType(transactionType);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    private void insertTax(Tax tax) {
+        SQLiteDatabase myDataBase = this.getReadableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("id", tax.getId());
+        values.put("name", tax.getName());
+        values.put("percentage", tax.getPercentage());
+        values.put("categoryId", tax.getCategoryId());
+        values.put("categoryName", tax.getCategoryName());
+        values.put("menuItemId", tax.getMenuItemId());
+        values.put("menuItemName", tax.getMenuItemName());
+        myDataBase.insert(DATABASE_TABLE_TAX, null, values);
+    }
+
+    public ArrayList<Tax> getTaxList() {
+        Cursor mcursor = null;
+        ArrayList<Tax> list = new ArrayList<>();
+        String selectQuery = "SELECT * FROM "+DATABASE_TABLE_TAX;
+        SQLiteDatabase myDataBase = this.getReadableDatabase();
+        try {
+            mcursor = myDataBase.rawQuery(selectQuery, null);
+            if (mcursor.moveToFirst()) {
+                do {
+                    Tax data = new Tax();
+                    data.setId(mcursor.getInt(mcursor.getColumnIndex("id")));
+                    data.setName(mcursor.getString(mcursor.getColumnIndex("name")));
+                    data.setPercentage(mcursor.getInt(mcursor.getColumnIndex("percentage")));
+                    data.setCategoryId(mcursor.getInt(mcursor.getColumnIndex("categoryId")));
+                    data.setCategoryName(mcursor.getString(mcursor.getColumnIndex("categoryName")));
+                    data.setMenuItemId(mcursor.getInt(mcursor.getColumnIndex("menuItemId")));
+                    data.setMenuItemName(mcursor.getString(mcursor.getColumnIndex("menuItemName")));
+                    list.add(data) ;
+                }while (mcursor.moveToNext());
+            }
+            //myDataBase.close();
+        } catch (Exception exp) {
+            exp.printStackTrace();
+        } finally {
+            if (mcursor != null)
+                mcursor.close();
+        }
+        return list;
+    }
+
+    private void clearTaxTable() {
+        SQLiteDatabase myDataBase = this.getReadableDatabase();
+        myDataBase.execSQL("delete from "+DATABASE_TABLE_TAX);
+    }
+
+    public void syncTaxType(ArrayList<Tax> list){
+
+        try{
+            clearTransactionTypeTable();
+
+            for(Tax tax : list){
+                insertTax(tax);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    private void insertDepartment(Department department) {
+        SQLiteDatabase myDataBase = this.getReadableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("id", department.getId());
+        values.put("name", department.getName());
+        myDataBase.insert(DATABASE_TABLE_DEPARTMENT, null, values);
+    }
+
+    public ArrayList<Department> getDepartmentList() {
+        Cursor mcursor = null;
+        ArrayList<Department> list = new ArrayList<>();
+        String selectQuery = "SELECT * FROM "+DATABASE_TABLE_DEPARTMENT;
+        SQLiteDatabase myDataBase = this.getReadableDatabase();
+        try {
+            mcursor = myDataBase.rawQuery(selectQuery, null);
+            if (mcursor.moveToFirst()) {
+                do {
+                    Department data = new Department();
+                    data.setId(mcursor.getInt(mcursor.getColumnIndex("id")));
+                    data.setName(mcursor.getString(mcursor.getColumnIndex("name")));
+                    list.add(data) ;
+                }while (mcursor.moveToNext());
+            }
+            //myDataBase.close();
+        } catch (Exception exp) {
+            exp.printStackTrace();
+        } finally {
+            if (mcursor != null)
+                mcursor.close();
+        }
+        return list;
+    }
+
+    private void clearDepartmentTable() {
+        SQLiteDatabase myDataBase = this.getReadableDatabase();
+        myDataBase.execSQL("delete from "+DATABASE_TABLE_DEPARTMENT);
+    }
+
+    public void syncDepartment(ArrayList<Department> list){
+
+        try{
+            clearTransactionTypeTable();
+
+            for(Department department : list){
+                insertDepartment(department);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }
