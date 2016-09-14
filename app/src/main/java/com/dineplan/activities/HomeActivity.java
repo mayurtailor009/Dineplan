@@ -59,6 +59,7 @@ public class HomeActivity extends BaseActivity implements AsyncTaskCompleteListe
     private TextView tv_count, tv_sale;
 
     private int syncCounter=0, totalSyncCount=0;
+    private ArrayList<Syncer> sync;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,7 +67,7 @@ public class HomeActivity extends BaseActivity implements AsyncTaskCompleteListe
         setupDrawer();
         init(savedInstanceState);
 
-        //Utils.exportDatabse("dineplan", this);
+        Utils.exportDatabse("dineplan", this);
     }
 
     private void init(Bundle savedInstanceState) {
@@ -227,7 +228,7 @@ public class HomeActivity extends BaseActivity implements AsyncTaskCompleteListe
                         if (jsonObject.getBoolean("success")) {
                             Type type = new TypeToken<ArrayList<Syncer>>() {
                             }.getType();
-                            ArrayList<Syncer> sync = new Gson().fromJson(jsonObject.getJSONObject("result").getJSONArray("items").toString(), type);
+                            sync = new Gson().fromJson(jsonObject.getJSONObject("result").getJSONArray("items").toString(), type);
                             new DbHandler(this).isSyncNeeded(sync);
 
                             handleSyncStatusResponse(sync);
@@ -254,6 +255,8 @@ public class HomeActivity extends BaseActivity implements AsyncTaskCompleteListe
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
+                        Syncer syncer = getSyncObj("MENU");
+                        new DbHandler(this).updateSyncRequire(syncer.getId());
                     }
                 }
                 syncCounter=syncCounter+2;
@@ -272,6 +275,8 @@ public class HomeActivity extends BaseActivity implements AsyncTaskCompleteListe
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
+                        Syncer syncer = getSyncObj("PAYMENTTYPE");
+                        new DbHandler(this).updateSyncRequire(syncer.getId());
                     }
                 }
                 syncCounter=syncCounter+1;
@@ -290,6 +295,8 @@ public class HomeActivity extends BaseActivity implements AsyncTaskCompleteListe
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
+                        Syncer syncer = getSyncObj("TRANSACTIONTYPE");
+                        new DbHandler(this).updateSyncRequire(syncer.getId());
                     }
                 }
                 syncCounter=syncCounter+1;
@@ -303,16 +310,18 @@ public class HomeActivity extends BaseActivity implements AsyncTaskCompleteListe
                         if (jsonObject.getBoolean("success")) {
                             Type type = new TypeToken<ArrayList<Tax>>() {
                             }.getType();
-                            ArrayList<Tax> items = new Gson().fromJson(jsonObject.getJSONObject("result").getJSONArray("items").toString(), type);
+                            ArrayList<Tax> items = new Gson().fromJson(jsonObject.getJSONArray("result").toString(), type);
                             new DbHandler(this).syncTaxType(items);
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
+                        Syncer syncer = getSyncObj("TAX");
+                        new DbHandler(this).updateSyncRequire(syncer.getId());
                     }
                 }
                 syncCounter=syncCounter+1;
                 startJourney();
-
+                break;
             case REQ_SYNC_DEPARTMENT:
                 if (result.toString() != null) {
                     try {
@@ -325,6 +334,8 @@ public class HomeActivity extends BaseActivity implements AsyncTaskCompleteListe
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
+                        Syncer syncer = getSyncObj("DEPARTMENT");
+                        new DbHandler(this).updateSyncRequire(syncer.getId());
                     }
                 }
                 syncCounter=syncCounter+1;
@@ -508,8 +519,19 @@ public class HomeActivity extends BaseActivity implements AsyncTaskCompleteListe
 
     public void startJourney(){
 
-        if(syncCounter == totalSyncCount)
+        if(syncCounter >= totalSyncCount)
         addFragment(new FoodListFragment(), true);
+    }
+
+    public Syncer getSyncObj(String syncType){
+        if(sync == null)
+            return null;
+        for(Syncer syncer : sync){
+            if(syncer!=null && syncer.getName()!=null && syncer.getName().equalsIgnoreCase(syncType)){
+                return syncer;
+            }
+        }
+        return null;
     }
 }
 
