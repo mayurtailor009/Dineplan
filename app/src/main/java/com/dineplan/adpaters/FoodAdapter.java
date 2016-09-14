@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.widget.TextView;
 
 import com.dineplan.R;
@@ -76,9 +77,19 @@ public class FoodAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  
                     showPortions.addFoodOrder(menuItem);
                 }else{
                     OrderItem orderItem=new OrderItem();
+                    orderItem.setItemName(menuItem.getName());
+                    orderItem.setPrice(menuItem.getMenuPortions().get(0).getPrice());
                     orderItem.setMenuPortion(menuItem.getMenuPortions().get(0));
                     showPortions.AddItem(orderItem);
                 }
+
+               /* Animations anim = new Animations();
+                Animation a = anim.fromAtoB(view.getX(), view.getY(),1000,0,null,750);
+                a.setDuration(2000);
+                a.setFillAfter(false);
+                view.setAnimation(a);
+                a.startNow();*/
+
             }
         });
     }
@@ -129,5 +140,29 @@ public class FoodAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  
         }
         notifyDataSetChanged();
 
+    }
+
+
+    class AniList implements Animation.AnimationListener{
+
+
+        private View vi;
+        public AniList(View vi){
+            this.vi=vi;
+        }
+        @Override
+        public void onAnimationStart(Animation animation) {
+
+        }
+
+        @Override
+        public void onAnimationEnd(Animation animation) {
+
+        }
+
+        @Override
+        public void onAnimationRepeat(Animation animation) {
+                vi.clearAnimation();
+        }
     }
 }

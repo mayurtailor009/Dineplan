@@ -12,7 +12,25 @@ public class OrderItem implements Serializable{
     private ArrayList<OrderTag> orderTags;
     private MenuPortion menuPortion;
     private String note;
+    private String itemName;
+    private String orderType;
 
+
+    public String getOrderType() {
+        return orderType;
+    }
+
+    public void setOrderType(String orderType) {
+        this.orderType = orderType;
+    }
+
+    public String getItemName() {
+        return itemName;
+    }
+
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
+    }
 
     public MenuPortion getMenuPortion() {
         return menuPortion;

@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.dineplan.AddSaleItem;
@@ -52,6 +53,8 @@ public class HomeActivity extends BaseActivity implements AsyncTaskCompleteListe
     private Toolbar toolbar;
     private SharedPreferences preferences;
     private Dialog dialog;
+    private LinearLayout ll_sale;
+    private  FoodListFragment foodListFragment;
     private User user;
     private final int REQ_SYNC_MENU = 3, REQ_SYNC_PAYMENT = 4, REQ_START_SHIFT = 2, REQ_SYNC_STATUS = 1
             , REQ_SYNC_TRANSACTION = 5, REQ_SYNC_TAX = 6, REQ_SYNC_DEPARTMENT = 7;
@@ -66,21 +69,30 @@ public class HomeActivity extends BaseActivity implements AsyncTaskCompleteListe
         setupDrawer();
         init(savedInstanceState);
 
+
         //Utils.exportDatabse("dineplan", this);
     }
 
     private void init(Bundle savedInstanceState) {
-
+        ll_sale=(LinearLayout)findViewById(R.id.ll_sale);
         preferences = getSharedPreferences(Constants.PREF_NAME, MODE_PRIVATE);
         user = new Gson().fromJson(preferences.getString("user", "{}"), User.class);
         if (preferences.getInt("workPeriodId", 0) == 0) {
             findViewById(R.id.lay_shift).setVisibility(View.VISIBLE);
             findViewById(R.id.lay_shift).setOnClickListener(this);
         } else {
-            if (savedInstanceState == null)
-                addFragment(new FoodListFragment(), true);
+            if (savedInstanceState == null) {
+                foodListFragment=new FoodListFragment();
+                addFragment(foodListFragment, true);
+                ll_sale.setOnClickListener(foodListFragment);
+            }
         }
         findViewById(R.id.btn_start_shift).setOnClickListener(this);
+
+        if(foodListFragment!=null)
+        ll_sale.setOnClickListener(foodListFragment);
+
+
     }
 
     private void setupDrawer() {
@@ -364,15 +376,23 @@ public class HomeActivity extends BaseActivity implements AsyncTaskCompleteListe
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
+        float x = tv_count.getX();
+        float y=tv_count.getY();
+
         if (savedInstanceState != null) {
             itemCount = savedInstanceState.getInt("itemCount");
+            if (itemCount == 0) {
+                tv_sale.setText(getResources().getText(R.string.no_sale));
+                tv_count.setText(String.valueOf(itemCount));
+                tv_count.setVisibility(View.GONE);
+            }
         }
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
         super.onSaveInstanceState(outState, outPersistentState);
-        outState.putInt("itemCount", itemCount);
+
     }
 
     public void callSyncStatusApi() {
@@ -508,8 +528,11 @@ public class HomeActivity extends BaseActivity implements AsyncTaskCompleteListe
 
     public void startJourney(){
 
-        if(syncCounter == totalSyncCount)
-        addFragment(new FoodListFragment(), true);
+        if(syncCounter == totalSyncCount) {
+            foodListFragment=new FoodListFragment();
+            addFragment(foodListFragment, true);
+            ll_sale.setOnClickListener(foodListFragment);
+        }
     }
 }
 

@@ -14,13 +14,14 @@
 
     <color name="black">#000000</color>
 
-    <color name="color_drawer">#1F2226</color>
 
 
     <!-- EDITTEXT COLOR -->
     <color name="et_bg_color">#ffffff</color>
     <color name="et_text_color">#000000</color>
     <color name="et_text_hint_color">#6c454545</color>
+    <color name="color_drawer">#1F2226</color>
+
     <color name="et_border">#c4c4c4</color>
 
     <!-- TEXTVIEW COLOR -->

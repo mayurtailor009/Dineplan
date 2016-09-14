@@ -20,6 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/location_icon"
+            android:tint="@color/drawer_color"
             />
 
         <TextView
@@ -44,6 +45,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:tint="@color/drawer_color"
             android:src="@drawable/shift_icon" />
 
         <TextView
@@ -66,6 +68,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:tint="@color/drawer_color"
             android:src="@drawable/register_icon" />
 
         <TextView
@@ -88,6 +91,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:tint="@color/drawer_color"
             android:src="@drawable/report_icon" />
 
         <TextView
@@ -110,6 +114,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:tint="@color/drawer_color"
             android:src="@drawable/setting_icon" />
 
         <TextView
@@ -131,6 +136,7 @@
 
         <ImageView
             android:layout_width="wrap_content"
+            android:tint="@color/drawer_color"
             android:layout_height="wrap_content"
             android:src="@drawable/sign_out_icon" />
 

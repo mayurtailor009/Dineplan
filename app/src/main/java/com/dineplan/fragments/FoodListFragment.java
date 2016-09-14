@@ -25,6 +25,7 @@ import com.dineplan.R;
 import com.dineplan.ShowPortions;
 import com.dineplan.activities.AddFoodActivity;
 import com.dineplan.activities.Payment1Activity;
+import com.dineplan.activities.SaleActivity;
 import com.dineplan.adpaters.CategoryAdapter;
 import com.dineplan.adpaters.FoodAdapter;
 import com.dineplan.adpaters.MenuAdapt;
@@ -56,6 +57,7 @@ public class FoodListFragment extends BaseFragment implements AdapterView.OnItem
     private LinearLayout categoryLayout;
     private EditText etSearch;
     private Category selectedCategory;
+    private int SALE_ACTIVITY=2;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,7 +71,11 @@ public class FoodListFragment extends BaseFragment implements AdapterView.OnItem
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putFloat("sale",currentSale);
-        outState.putSerializable("orderItems",orderItems);
+        if(orderItems!=null){
+            outState.putSerializable("orderItems", orderItems);
+            outState.putInt("itemCount", orderItems.size());
+        }
+
     }
 
     @Override
@@ -128,8 +134,13 @@ public class FoodListFragment extends BaseFragment implements AdapterView.OnItem
             view = inflater.inflate(R.layout.fragment_food_list, container, false);
         }
 
+
+
         return view;
     }
+
+
+
 
     @Override
     public void onClick(View view) {
@@ -144,10 +155,17 @@ public class FoodListFragment extends BaseFragment implements AdapterView.OnItem
                     categoryLayout.setVisibility(View.GONE);
                     break;
                 case R.id.tv_charge:
-
                     break;
                 case R.id.ll_charge:
                         startActivity(new Intent(getActivity(), Payment1Activity.class));
+                    break;
+                case R.id.ll_sale:
+                    if(orderItems!=null && orderItems.size()>0) {
+                        Intent intent=new Intent(getActivity(), SaleActivity.class);
+                        intent.putExtra("sale",orderItems);
+                        startActivityForResult(intent,SALE_ACTIVITY);
+                       }
+
                     break;
             }
     }
@@ -209,6 +227,7 @@ public class FoodListFragment extends BaseFragment implements AdapterView.OnItem
         tv_charge.setText("Charge $"+currentSale);
         taxStatus.setText("Including Tax");
         ((AddSaleItem)getActivity()).AddItem();
+        orderItems.add(orderItem);
     }
 
     @Override
@@ -223,19 +242,32 @@ public class FoodListFragment extends BaseFragment implements AdapterView.OnItem
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         //super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode==getActivity().RESULT_OK) {
-            OrderItem orderItem = (OrderItem) data.getExtras().get("data");
+        if(requestCode==SALE_ACTIVITY) {
+            
+        }else{
+            if (resultCode == getActivity().RESULT_OK) {
+                OrderItem orderItem = (OrderItem) data.getExtras().get("data");
 
-            if(orderItems==null)
-                orderItems=new ArrayList<>();
+                if (orderItems == null)
+                    orderItems = new ArrayList<>();
 
-            orderItems.add(orderItem);
-            currentSale = currentSale+orderItem.getPrice();
-            tv_charge.setText("Charge $" + currentSale);
-            taxStatus.setText("Including Tax");
-            ((AddSaleItem)getActivity()).AddItem();
+                orderItems.add(orderItem);
+                currentSale = currentSale + orderItem.getPrice();
+                tv_charge.setText("Charge $" + currentSale);
+                taxStatus.setText("Including Tax");
+                ((AddSaleItem) getActivity()).AddItem();
+            } else {
+                tv_charge.setText("Charge $" + currentSale);
+                taxStatus.setText("Including Tax");
+            }
         }
     }
+
+
+
+
+
+
 
 
 

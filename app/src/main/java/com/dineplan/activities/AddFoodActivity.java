@@ -47,9 +47,11 @@ public class AddFoodActivity extends BaseActivity implements View.OnClickListene
     }
 
     private void init(){
+        quantiy=1;
         menuItem=(MenuItem) getIntent().getExtras().get("menuItem");
         price=menuItem.getPrice();
         orderItem=new OrderItem();
+        orderItem.setItemName(menuItem.getName());
         dbHandler=new DbHandler(this);
         Toolbar toolbar = getToolbar();
         Button btnAdd = (Button) toolbar.findViewById(R.id.tv_signin);
@@ -157,5 +159,13 @@ public class AddFoodActivity extends BaseActivity implements View.OnClickListene
     @Override
     public void addPortions(MenuPortion menuPortions) {
         orderItem.setMenuPortion(menuPortions);
+        price=menuPortions.getPrice();
+        if(orderItem.getOrderTags()!=null){
+            for(OrderTag tag:orderItem.getOrderTags()){
+               price+=tag.getPrice();
+            }
+        }
+        price=price*quantiy;
+        tv_title.setText(menuItem.getName()+" $"+price);
     }
 }
