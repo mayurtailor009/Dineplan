@@ -80,7 +80,7 @@ public class DbHandler extends SQLiteOpenHelper {
                     insertSyncer(sync);
                     sync.setSyncNeeded(true);
                 }else
-                if(!sc.getSyncerGuid().equals(sc.getSyncerGuid())){
+                if(!sc.getSyncerGuid().equals(sync.getSyncerGuid())){
                     sync.setSyncNeeded(true);
                     updateSyncer(sync);
                 }
@@ -587,6 +587,17 @@ public class DbHandler extends SQLiteOpenHelper {
             for(Department department : list){
                 insertDepartment(department);
             }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public void updateSyncRequire(int id){
+        try{
+            SQLiteDatabase myDataBase = this.getReadableDatabase();
+            ContentValues values = new ContentValues();
+            values.put("syncerGuid", "");
+            myDataBase.update(DATABASE_TABLE01, values,"id=?",new String[]{String.valueOf(id)});
         }catch (Exception e){
             e.printStackTrace();
         }
