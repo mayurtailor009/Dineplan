@@ -34,6 +34,7 @@ import com.dineplan.rest.RequestCall;
 import com.dineplan.rest.listener.AsyncTaskCompleteListener;
 import com.dineplan.utility.Constants;
 import com.dineplan.utility.Utils;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -63,19 +64,22 @@ public class HomeActivity extends BaseActivity implements AsyncTaskCompleteListe
 
     private int syncCounter=0, totalSyncCount=0;
     private ArrayList<Syncer> sync;
+
+    private FirebaseAnalytics mFirebaseAnalytics;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+
         setContentView(R.layout.activity_home);
         setupDrawer();
         init(savedInstanceState);
 
-<<<<<<< HEAD
 
         //Utils.exportDatabse("dineplan", this);
-=======
-        Utils.exportDatabse("dineplan", this);
->>>>>>> e2ca164287f7d8d5df54e6653eb60bd7dc5db495
+        logEvent();
     }
 
     private void init(Bundle savedInstanceState) {
@@ -543,16 +547,12 @@ public class HomeActivity extends BaseActivity implements AsyncTaskCompleteListe
 
     public void startJourney(){
 
-<<<<<<< HEAD
-        if(syncCounter == totalSyncCount) {
+        if(syncCounter >= totalSyncCount) {
             foodListFragment=new FoodListFragment();
             addFragment(foodListFragment, true);
             ll_sale.setOnClickListener(foodListFragment);
         }
-=======
-        if(syncCounter >= totalSyncCount)
-        addFragment(new FoodListFragment(), true);
->>>>>>> e2ca164287f7d8d5df54e6653eb60bd7dc5db495
+
     }
 
     public Syncer getSyncObj(String syncType){
@@ -564,6 +564,14 @@ public class HomeActivity extends BaseActivity implements AsyncTaskCompleteListe
             }
         }
         return null;
+    }
+
+    public void logEvent(){
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "home");
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "HomeActivity");
+        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "Screen");
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
     }
 }
 

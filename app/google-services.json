@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "491764662981",
+    "firebase_url": "https://dineplan-eca7c.firebaseio.com",
+    "project_id": "dineplan-eca7c",
+    "storage_bucket": "dineplan-eca7c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:491764662981:android:85d570633755385e",
+        "android_client_info": {
+          "package_name": "com.dineplan"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "491764662981-mp59mlb7ejsbka4iclskj87gltsk39is.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDGjxbnseYv8eIMP9m4KN8r3fbp1uCCU44"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
