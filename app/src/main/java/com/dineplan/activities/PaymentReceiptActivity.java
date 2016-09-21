@@ -1,5 +1,7 @@
 package com.dineplan.activities;
 
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -31,7 +33,12 @@ public class PaymentReceiptActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.tv_right:
-               finish();
+                Intent intent=new Intent(this,HomeActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    finishAffinity();
+                }
                 break;
         }
     }

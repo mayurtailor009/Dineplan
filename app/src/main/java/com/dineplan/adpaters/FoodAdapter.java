@@ -15,6 +15,9 @@ import com.dineplan.model.Category;
 import com.dineplan.model.MenuItem;
 import com.dineplan.model.MenuPortion;
 import com.dineplan.model.OrderItem;
+import com.dineplan.model.Tax;
+import com.dineplan.utility.Animations;
+import com.dineplan.utility.Utils;
 
 import java.util.ArrayList;
 
@@ -62,7 +65,7 @@ public class FoodAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         ViewHolderFood viewHolderFood = (ViewHolderFood) holder;
         viewHolderFood.tvItemName.setText(items.get(position).getName());
-        viewHolderFood.tvPrice.setText("$"+String.valueOf(items.get(position).getPrice()));
+        viewHolderFood.tvPrice.setText("$"+Utils.roundTwoDecimals(items.get(position).getPrice()));
         final int pos=position;
         viewHolderFood.itemView.setOnClickListener(new View.OnClickListener() {
             int posit=pos;
@@ -78,12 +81,21 @@ public class FoodAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  
                 }else{
                     OrderItem orderItem=new OrderItem();
                     orderItem.setItemName(menuItem.getName());
+                    orderItem.setItemId(menuItem.getId());
+                    orderItem.setQuantity(1);
                     orderItem.setPrice(menuItem.getMenuPortions().get(0).getPrice());
                     orderItem.setMenuPortion(menuItem.getMenuPortions().get(0));
+                    float taxcount=0;
+                    for(Tax tax:menuItem.getTaxes()){
+                            taxcount+=((tax.getPercentage()*orderItem.getMenuPortion().getPrice())/100);
+                    }
+                    orderItem.setTaxAmount(taxcount);
                     showPortions.AddItem(orderItem);
                 }
 
-               /* Animations anim = new Animations();
+                View.DragShadowBuilder dsb = new View.DragShadowBuilder(view);
+/*
+                Animations anim = new Animations();
                 Animation a = anim.fromAtoB(view.getX(), view.getY(),1000,0,null,750);
                 a.setDuration(2000);
                 a.setFillAfter(false);

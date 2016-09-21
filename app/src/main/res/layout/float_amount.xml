@@ -12,10 +12,6 @@
         android:background="@drawable/floating_amount"
         android:layout_height="wrap_content">
 
-        <TextView
-            style="@style/tv_heading"
-            android:text="@string/enter_float_amount"
-            />
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"

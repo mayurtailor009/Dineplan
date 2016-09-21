@@ -16,13 +16,29 @@
         android:layout_weight="3"
         android:id="@+id/tv_price"/>
 
+
+
+
     <TextView
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="item"
-        android:layout_toLeftOf="@+id/tv_price"
         style="@style/tv_heading"
         android:id="@+id/tv_item"/>
+
+
+    <TextView
+        android:layout_width="fill_parent"
+        style="@style/tv_heading"
+        android:text=""
+        android:textColor="@color/drawer_color"
+         android:layout_toRightOf="@+id/tv_item"
+        android:layout_toLeftOf="@+id/tv_price"
+        android:layout_height="wrap_content"
+        android:layout_weight="3"
+        android:id="@+id/tv_quantity"/>
+
+
 
 
 

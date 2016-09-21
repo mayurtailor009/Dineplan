@@ -28,11 +28,15 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.math.BigDecimal;
 import java.nio.channels.FileChannel;
+import java.text.DateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.TimeZone;
 
 /**
  * Created by mayur.tailor on 21-03-2016.
@@ -245,4 +249,31 @@ public class Utils {
     }
 
 
+
+    /**
+     * Round to certain number of decimals
+     *
+     * @param d
+     * @param decimalPlace
+     * @return
+     */
+    public static float round(float d, int decimalPlace) {
+        BigDecimal bd = new BigDecimal(Float.toString(d));
+        bd = bd.setScale(decimalPlace, BigDecimal.ROUND_HALF_UP);
+        return bd.floatValue();
+    }
+
+
+
+    public static String roundTwoDecimals(float d) {
+       return String.format("%.2f", d);
+    }
+
+
+    public static String getCurrentUtcDate() {
+        DateFormat df = DateFormat.getTimeInstance();
+        df.setTimeZone(TimeZone.getTimeZone("gmt"));
+        String gmtTime = df.format(new Date());
+        return gmtTime;
+    }
 }

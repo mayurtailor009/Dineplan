@@ -1,5 +1,7 @@
 package com.dineplan.fragments;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -25,14 +27,16 @@ import com.dineplan.R;
 import com.dineplan.ShowPortions;
 import com.dineplan.activities.AddFoodActivity;
 import com.dineplan.activities.Payment1Activity;
-import com.dineplan.activities.SaleActivity;
+import com.dineplan.activities.SaleDialog;
 import com.dineplan.adpaters.CategoryAdapter;
 import com.dineplan.adpaters.FoodAdapter;
 import com.dineplan.adpaters.MenuAdapt;
 import com.dineplan.dbHandler.DbHandler;
 import com.dineplan.model.Category;
+import com.dineplan.model.Department;
 import com.dineplan.model.MenuItem;
 import com.dineplan.model.OrderItem;
+import com.dineplan.utility.Utils;
 
 import java.util.ArrayList;
 
@@ -58,12 +62,15 @@ public class FoodListFragment extends BaseFragment implements AdapterView.OnItem
     private EditText etSearch;
     private Category selectedCategory;
     private int SALE_ACTIVITY=2;
+    private ArrayList<Department> departments;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if(savedInstanceState!=null) {
             currentSale = savedInstanceState.getFloat("sale");
             orderItems=(ArrayList<OrderItem>) savedInstanceState.get("orderItems");
+            int itemCount = savedInstanceState.getInt("itemCount");
+             itemCount = savedInstanceState.getInt("itemCount");
         }
     }
 
@@ -86,6 +93,7 @@ public class FoodListFragment extends BaseFragment implements AdapterView.OnItem
         items=dbHandler.getMenuItemList();
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         setFoodList();
+        departments=new DbHandler(getActivity()).getDepartmentList();
         sp_category=(Spinner)view.findViewById(R.id.sp_category);
         cate=dbHandler.getCategoryList();
         cate.add(0,new Category("All"));
@@ -124,6 +132,14 @@ public class FoodListFragment extends BaseFragment implements AdapterView.OnItem
 
             }
         });
+
+
+        if(currentSale>0 && orderItems!=null && orderItems.size()>0){
+            tv_charge.setText("Charge $"+Utils.roundTwoDecimals(currentSale));
+            taxStatus.setText("Including Tax");
+            taxStatus.setVisibility(View.VISIBLE);
+
+        }
     }
 
     @Override
@@ -147,24 +163,50 @@ public class FoodListFragment extends BaseFragment implements AdapterView.OnItem
             switch (view.getId()){
                 case R.id.btn_cancel:
                     etSearch.setText("");
-                    searchLayout.setVisibility(View.GONE);
-                    categoryLayout.setVisibility(View.VISIBLE);
+                    searchLayout.animate()
+
+                            .translationY(0)
+                            .alpha(0.0f)
+                            .setListener(new AnimatorListenerAdapter() {
+                                @Override
+                                public void onAnimationEnd(Animator animation) {
+                                    super.onAnimationEnd(animation);
+                                    searchLayout.setVisibility(View.GONE);
+                                    searchLayout.setAlpha(1.0f);
+                                    categoryLayout.setVisibility(View.VISIBLE);
+                                }
+                            });
+
                     break;
                 case R.id.iv_search:
-                    searchLayout.setVisibility(View.VISIBLE);
-                    categoryLayout.setVisibility(View.GONE);
+
+                    categoryLayout.animate()
+                            .translationY(0)
+                            .alpha(0.0f)
+                            .setListener(new AnimatorListenerAdapter() {
+                                @Override
+                                public void onAnimationEnd(Animator animation) {
+                                    super.onAnimationEnd(animation);
+                                    categoryLayout.setVisibility(View.GONE);
+                                    categoryLayout.setAlpha(1.0f);
+                                    searchLayout.setVisibility(View.VISIBLE);
+                                }
+                            });
+
                     break;
                 case R.id.tv_charge:
+                    Intent intent=new Intent(getActivity(), Payment1Activity.class);
+                    intent.putExtra("amount",currentSale);
+                    intent.putExtra("order",orderItems);
+                    startActivity(intent);
                     break;
                 case R.id.ll_charge:
                         startActivity(new Intent(getActivity(), Payment1Activity.class));
                     break;
                 case R.id.ll_sale:
                     if(orderItems!=null && orderItems.size()>0) {
-                        Intent intent=new Intent(getActivity(), SaleActivity.class);
-                        intent.putExtra("sale",orderItems);
-                        startActivityForResult(intent,SALE_ACTIVITY);
-                       }
+                        new SaleDialog(getActivity(),orderItems,this).show();
+                    }
 
                     break;
             }
@@ -221,13 +263,23 @@ public class FoodListFragment extends BaseFragment implements AdapterView.OnItem
 
     @Override
     public void AddItem(OrderItem orderItem) {
+        orderItem.setDepartment(departments.get(0));
         if(orderItems==null)
             orderItems=new ArrayList<>();
-        currentSale=currentSale+orderItem.getMenuPortion().getPrice();
-        tv_charge.setText("Charge $"+currentSale);
-        taxStatus.setText("Including Tax");
+        currentSale=currentSale+orderItem.getMenuPortion().getPrice()+orderItem.getTaxAmount();
+        tv_charge.setText("Charge $"+Utils.roundTwoDecimals(currentSale));
+        if(orderItem.getTaxes()!=null && orderItem.getTaxes().size()>0) {
+            taxStatus.setText("Including Tax");
+            taxStatus.setVisibility(View.VISIBLE);
+        }
         ((AddSaleItem)getActivity()).AddItem();
-        orderItems.add(orderItem);
+
+        if(orderItems.contains(orderItem)){
+            OrderItem item= orderItems.get(orderItems.indexOf(orderItem));
+            item.setQuantity(item.getQuantity()+1);
+        }else {
+            orderItems.add(orderItem);
+        }
     }
 
     @Override
@@ -236,6 +288,15 @@ public class FoodListFragment extends BaseFragment implements AdapterView.OnItem
         intent.putExtra("menuItem", menuItem);
         startActivityForResult(intent,1);
 
+    }
+
+    @Override
+    public void resetOrderItems() {
+        orderItems.clear();
+        ((AddSaleItem)getActivity()).clearItems();
+        tv_charge.setText("$00.00");
+        taxStatus.setVisibility(View.GONE);
+        currentSale=0;
     }
 
 
@@ -252,13 +313,15 @@ public class FoodListFragment extends BaseFragment implements AdapterView.OnItem
                     orderItems = new ArrayList<>();
 
                 orderItems.add(orderItem);
-                currentSale = currentSale + orderItem.getPrice();
-                tv_charge.setText("Charge $" + currentSale);
+                currentSale = currentSale + orderItem.getPrice()+orderItem.getTaxAmount();
+                tv_charge.setText("Charge $" + Utils.roundTwoDecimals(currentSale));
                 taxStatus.setText("Including Tax");
+                taxStatus.setVisibility(View.VISIBLE);
                 ((AddSaleItem) getActivity()).AddItem();
             } else {
-                tv_charge.setText("Charge $" + currentSale);
+                tv_charge.setText("Charge $" + Utils.roundTwoDecimals(currentSale));
                 taxStatus.setText("Including Tax");
+                taxStatus.setVisibility(View.VISIBLE);
             }
         }
     }

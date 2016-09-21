@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dept_height"
+    android:layout_marginTop="@dimen/margin_10"
+    android:background="@drawable/selector_food"
+    android:padding="@dimen/common_margin">
+
+    <TextView
+        android:id="@+id/tv_department"
+        style="@style/tv_normal"
+        android:typeface="monospace"
+        />
+
+</RelativeLayout>

@@ -55,4 +55,8 @@
     <dimen name="margin_30">30dp</dimen>
 
     <dimen name="drawer_width">280dp</dimen>
+
+    <dimen name="dept_height">40dp</dimen>
+    <dimen name="charge_height">70dp</dimen>
+
 </resources>

@@ -1,9 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/toolbar"
+    app:contentInsetEnd="0dp"
+    app:contentInsetLeft="0dp"
+    app:contentInsetRight="0dp"
+    app:contentInsetStart="0dp"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    android:minHeight="?attr/actionBarSize">
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:minHeight="?attr/actionBarSize"
         android:layout_height="?attr/actionBarSize">
 
         <LinearLayout
@@ -18,10 +26,8 @@
             style="@style/tv_heading"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/btn_back"
-            android:text="@string/current_sale" />
-
-
+            android:layout_gravity="center"
+            android:text="@string/help" />
 
 
         <ImageView
@@ -30,19 +36,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:padding="@dimen/common_margin"
-            android:tint="@color/drawer_color"
-            android:src="@drawable/close_icon" />
+            android:src="@drawable/back_btn" />
 
-
-
-    <ImageView
-        android:id="@+id/btn_drop"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:padding="@dimen/common_margin"
-        android:tint="@color/drawer_color"
-        android:src="@drawable/down_arrow_icon" />
-
- </RelativeLayout>
+    </RelativeLayout>
+</android.support.v7.widget.Toolbar>

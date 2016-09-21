@@ -5,12 +5,12 @@
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:name=".rest.AppController"
         android:allowBackup="true"
-        android:icon="@drawable/logo"
+        android:icon="@drawable/splashlogo"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
@@ -33,10 +33,11 @@
         <activity android:name=".activities.PaymentCashActivity" />
         <activity android:name=".activities.PaymentOtherActivity" />
         <activity android:name=".activities.PaymentReceiptActivity" />
-        <activity android:name=".activities.SaleActivity" />
+        <activity android:name=".activities.SaleDialog" />
         <activity android:name=".activities.ShiftActivity" />
         <activity android:name=".activities.ShiftEndActivity" />
-        <activity android:name=".activities.AnimationActivity"></activity>
+        <activity android:name=".activities.AnimationActivity" />
+        <activity android:name=".activities.HelpActivity"></activity>
     </application>
 
 </manifest>

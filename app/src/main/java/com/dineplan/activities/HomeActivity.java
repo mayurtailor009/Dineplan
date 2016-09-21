@@ -1,11 +1,13 @@
 package com.dineplan.activities;
 
 import android.app.Dialog;
+import android.app.Fragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
@@ -70,12 +72,7 @@ public class HomeActivity extends BaseActivity implements AsyncTaskCompleteListe
         setupDrawer();
         init(savedInstanceState);
 
-<<<<<<< HEAD
-
-        //Utils.exportDatabse("dineplan", this);
-=======
         Utils.exportDatabse("dineplan", this);
->>>>>>> e2ca164287f7d8d5df54e6653eb60bd7dc5db495
     }
 
     private void init(Bundle savedInstanceState) {
@@ -94,6 +91,10 @@ public class HomeActivity extends BaseActivity implements AsyncTaskCompleteListe
         }
         findViewById(R.id.btn_start_shift).setOnClickListener(this);
 
+       int count= getSupportFragmentManager().getBackStackEntryCount();
+        if(count>0) {
+            foodListFragment = (FoodListFragment) getSupportFragmentManager().getFragments().get(0);
+        }
         if(foodListFragment!=null)
         ll_sale.setOnClickListener(foodListFragment);
 
@@ -134,7 +135,7 @@ public class HomeActivity extends BaseActivity implements AsyncTaskCompleteListe
         drawerToggle.syncState();
 
         setTouchNClick(R.id.ll_shift);
-        setTouchNClick(R.id.ll_location);
+       // setTouchNClick(R.id.ll_location);
         setTouchNClick(R.id.ll_logout);
         setTouchNClick(R.id.ll_setting);
         setTouchNClick(R.id.ll_reports);
@@ -156,10 +157,10 @@ public class HomeActivity extends BaseActivity implements AsyncTaskCompleteListe
                 toggleDrawer();
                 startActivity(new Intent(this, ShiftActivity.class));
                 break;
-            case R.id.ll_location:
+           /* case R.id.ll_location:
                 toggleDrawer();
                 startActivity(new Intent(this, SelectLocation.class));
-                break;
+                break;*/
             case R.id.ll_logout:
                 toggleDrawer();
                 break;
@@ -380,6 +381,13 @@ public class HomeActivity extends BaseActivity implements AsyncTaskCompleteListe
 
     }
 
+    @Override
+    public void clearItems() {
+        itemCount=0;
+        tv_sale.setText(getResources().getText(R.string.no_sale));
+        tv_count.setVisibility(View.GONE);
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -391,23 +399,26 @@ public class HomeActivity extends BaseActivity implements AsyncTaskCompleteListe
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        float x = tv_count.getX();
-        float y=tv_count.getY();
-
         if (savedInstanceState != null) {
-            itemCount = savedInstanceState.getInt("itemCount");
+            itemCount = savedInstanceState.getInt("cou");
             if (itemCount == 0) {
                 tv_sale.setText(getResources().getText(R.string.no_sale));
                 tv_count.setText(String.valueOf(itemCount));
                 tv_count.setVisibility(View.GONE);
+            }else{
+                tv_sale.setText(getResources().getText(R.string.current_sale));
+                tv_count.setText(String.valueOf(itemCount));
+                tv_count.setVisibility(View.VISIBLE);
             }
         }
+
+
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
-        super.onSaveInstanceState(outState, outPersistentState);
-
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("cou",itemCount);
     }
 
     public void callSyncStatusApi() {
@@ -543,16 +554,12 @@ public class HomeActivity extends BaseActivity implements AsyncTaskCompleteListe
 
     public void startJourney(){
 
-<<<<<<< HEAD
         if(syncCounter == totalSyncCount) {
             foodListFragment=new FoodListFragment();
             addFragment(foodListFragment, true);
             ll_sale.setOnClickListener(foodListFragment);
         }
-=======
-        if(syncCounter >= totalSyncCount)
-        addFragment(new FoodListFragment(), true);
->>>>>>> e2ca164287f7d8d5df54e6653eb60bd7dc5db495
+
     }
 
     public Syncer getSyncObj(String syncType){

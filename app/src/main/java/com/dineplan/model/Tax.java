@@ -14,6 +14,16 @@ public class Tax implements Serializable{
     private String categoryName;
     private int menuItemId;
     private String menuItemName;
+    private boolean checked=true;
+
+
+    public boolean isChecked() {
+        return checked;
+    }
+
+    public void setChecked(boolean checked) {
+        this.checked = checked;
+    }
 
     public int getId() {
         return id;

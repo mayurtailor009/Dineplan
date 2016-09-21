@@ -21,11 +21,21 @@ public class MenuItem implements Serializable{
     private int categoryId;
     private float price;
     private ArrayList<OrderTagGroup> orderTagGroups;
+    private ArrayList<Tax> taxes;
 
+
+    public ArrayList<Tax> getTaxes() {
+        return taxes;
+    }
+
+    public void setTaxes(ArrayList<Tax> taxes) {
+        this.taxes = taxes;
+    }
 
     public ArrayList<OrderTagGroup> getOrderTagGroups() {
         return orderTagGroups;
     }
+
 
     public void setOrderTagGroups(ArrayList<OrderTagGroup> orderTagGroups) {
         this.orderTagGroups = orderTagGroups;

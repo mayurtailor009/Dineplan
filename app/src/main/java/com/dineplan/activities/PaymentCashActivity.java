@@ -10,15 +10,23 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dineplan.R;
+import com.dineplan.model.OrderItem;
+import com.dineplan.model.OrderTicket;
+import com.dineplan.model.PaymentType;
+import com.dineplan.utility.Utils;
+
+import java.util.ArrayList;
 
 public class PaymentCashActivity extends BaseActivity {
 
+    private PaymentType paymentType;
     private EditText etPrice;
+    private float price;
+    private ArrayList<OrderItem> orderItems;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment_cash);
-
         init();
     }
 
@@ -28,12 +36,13 @@ public class PaymentCashActivity extends BaseActivity {
         Button btnRight = (Button) toolbar.findViewById(R.id.tv_signin);
         btnRight.setOnClickListener(this);
         btnRight.setText(getString(R.string.btn_txt_tender));
-
-        ((TextView)toolbar.findViewById(R.id.tv_title)).setText("$200.00");
+        paymentType=(PaymentType)getIntent().getExtras().get("payment");
+        price=getIntent().getExtras().getFloat("amount");
+        orderItems=(ArrayList<OrderItem>)getIntent().getExtras().get("orderItems");
+        ((TextView)toolbar.findViewById(R.id.tv_title)).setText("$"+ Utils.roundTwoDecimals(price));
         ImageView ivclose = ((ImageView)toolbar.findViewById(R.id.iv_close));
         ivclose.setOnClickListener(this);
         ivclose.setImageResource(R.drawable.back_btn);
-
         etPrice = (EditText) findViewById(R.id.et_price);
 
     }
@@ -42,7 +51,7 @@ public class PaymentCashActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.tv_signin:
-                /// TENDER CLICK.
+                OrderTicket orderTicket=new OrderTicket();
                 startActivity(new Intent(this, PaymentReceiptActivity.class));
                 finish();
                 break;

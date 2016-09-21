@@ -4,31 +4,35 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/ll_charge"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/charge_height"
         android:layout_marginLeft="@dimen/margin_15"
         android:layout_marginRight="@dimen/margin_15"
         android:background="@color/colorPrimary"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        android:padding="@dimen/margin_10">
+        android:gravity="center"
+        android:padding="@dimen/mini_common_margin">
 
         <TextView
             android:id="@+id/tv_charge"
             style="@style/tv_big_headingx"
-            android:text="Charge $0.00"
+            android:text="$0.00"
+            android:layout_centerHorizontal="true"
             android:typeface="monospace"
             android:textColor="@color/white" />
 
         <TextView
             android:id="@+id/tv_tax_status"
-            style="@style/tv_normal"
-            android:layout_marginTop="@dimen/margin_5"
+           android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:visibility="gone"
+            android:text="Hello"
+            android:layout_below="@id/tv_charge"
             android:textColor="@color/white"
             android:textStyle="bold" />
-    </LinearLayout>
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/ll_spinner"

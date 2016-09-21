@@ -8,4 +8,6 @@ public interface AddSaleItem {
 
     public void AddItem();
     public void removeItem();
+
+    void clearItems();
 }

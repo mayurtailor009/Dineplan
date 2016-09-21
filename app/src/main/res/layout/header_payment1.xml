@@ -43,7 +43,8 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/margin_5"
             android:layout_toRightOf="@id/iv_close"
-            android:text="Title" />
+            android:text="Title"
+            android:typeface="monospace"/>
 
         <View
             android:id="@+id/ll_bor"

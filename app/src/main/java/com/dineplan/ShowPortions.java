@@ -14,4 +14,7 @@ public interface ShowPortions {
     void AddItem(OrderItem orderItem);
 
     void addFoodOrder(MenuItem menuItem);
+
+
+    void resetOrderItems();
 }

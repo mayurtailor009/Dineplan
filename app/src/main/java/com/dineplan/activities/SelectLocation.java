@@ -91,6 +91,7 @@ public class SelectLocation extends BaseActivity implements AsyncTaskCompleteLis
                 }
                 if(locate!=null) {
                     Intent i = null;
+                    preferences.edit().putInt("locationId",locate.getId()).commit();
                     preferences.edit().putString("location",new Gson().toJson(locate)).commit();
                     i = new Intent(this, HomeActivity.class);
                     startActivity(i);

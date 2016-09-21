@@ -23,6 +23,7 @@
 
 
     <string name="current_sale">Current Sale</string>
+    <string name="clear_sale">Clear Sale</string>
 
     <string name="drawer_open">Open</string>
     <string name="drawer_close">Close</string>
@@ -87,7 +88,9 @@
     <string name="done">Done</string>
     <string name="no_sale">No Sale</string>
 
-
+    <string name="help">Help</string>
+    <string name="lable_taxes">Taxes</string>
+    <string name="lable_tax">Tax</string>
 
 
 

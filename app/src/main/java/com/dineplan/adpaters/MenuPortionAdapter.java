@@ -72,7 +72,8 @@ public class MenuPortionAdapter  extends RecyclerView.Adapter<RecyclerView.ViewH
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
         if(holder instanceof ViewHolder){
-          //  ((ViewHolder) holder).category.setText(orderTags.get(position).getName());
+          /*  ViewHolder viewHolder=(ViewHolder)holder;
+            viewHolder.category.setText();*/
 
         }else {
             ViewHolderFood viewHolderFood = (ViewHolderFood) holder;

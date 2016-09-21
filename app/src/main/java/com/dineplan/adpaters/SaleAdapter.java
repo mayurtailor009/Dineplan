@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import com.dineplan.R;
 import com.dineplan.model.OrderItem;
+import com.dineplan.model.OrderTag;
+import com.dineplan.utility.Utils;
 
 import java.util.ArrayList;
 
@@ -27,30 +29,128 @@ public class SaleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-       View v= LayoutInflater.from(context).inflate(R.layout.sale_item,null);
-        SaleHolder saleHolder=new SaleHolder(v);
-        return saleHolder;
+        if(viewType==0){
+            View v = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.sale_list_header, parent, false);
+            return new ViewHolder(v);
+        }else if(viewType==1){
+            View v = LayoutInflater.from(context).inflate(R.layout.sale_item, null);
+            TaxHolder saleHolder = new TaxHolder(v);
+            return saleHolder;
+        }else{
+            View v = LayoutInflater.from(context).inflate(R.layout.sale_item, null);
+            SaleHolder saleHolder = new SaleHolder(v);
+            return saleHolder;
+        }
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-            SaleHolder saleHolder=(SaleHolder)holder;
-        saleHolder.itemPrice.setText(String.valueOf(orderItems.get(position).getPrice()));
-        saleHolder.itemName.setText(orderItems.get(position).getItemName());
+        if(holder instanceof TaxHolder){
+            TaxHolder saleHolder = (TaxHolder) holder;
+            float tax=0;
+            for(OrderItem orderItem:orderItems){
+                        tax+=  orderItem.getTaxAmount();
+            }
+            saleHolder.itemPrice.setText("$" +Utils.roundTwoDecimals(tax));
+            saleHolder.itemName.setText(context.getResources().getText(R.string.lable_tax));
+            saleHolder.quantity.setText("");
+
+        }else
+        if(holder instanceof SaleHolder) {
+            SaleHolder saleHolder = (SaleHolder) holder;
+            saleHolder.itemPrice.setText("$" + calculatePrice(orderItems.get(position - 1)));
+            saleHolder.itemName.setText(orderItems.get(position - 1).getItemName());
+            if(orderItems.get(position - 1).getQuantity()>1)
+                saleHolder.quantity.setText(" X " + orderItems.get(position - 1).getQuantity());
+        }else{
+            ViewHolder viewHolder=(ViewHolder)holder;
+            viewHolder.category.setText(orderItems.get(0).getOrderType());
+        }
+    }
+
+
+    @Override
+    public int getItemViewType(int position) {
+        if(position==0)
+            return  0;
+        else if(position==orderItems.size()+1)
+            return 1;
+        else
+            return 2;
     }
 
     @Override
     public int getItemCount() {
-        return orderItems.size();
+        return orderItems.size()+2;
     }
 
 
     class SaleHolder extends RecyclerView.ViewHolder{
-        public TextView itemName,itemPrice;
+        public TextView itemName,itemPrice,quantity;
         public SaleHolder(View itemView) {
             super(itemView);
+            quantity=(TextView)itemView.findViewById(R.id.tv_quantity);
             itemName=(TextView) itemView.findViewById(R.id.tv_item);
             itemPrice=(TextView)itemView.findViewById(R.id.tv_price);
+
+        }
+    }
+
+
+    class TaxHolder extends RecyclerView.ViewHolder{
+        public TextView itemName,itemPrice,quantity;
+        public TaxHolder(View itemView) {
+            super(itemView);
+            quantity=(TextView)itemView.findViewById(R.id.tv_quantity);
+            itemName=(TextView) itemView.findViewById(R.id.tv_item);
+            itemPrice=(TextView)itemView.findViewById(R.id.tv_price);
+
+        }
+    }
+
+
+
+    public String calculatePrice(OrderItem orderItem){
+        float price=orderItem.getMenuPortion().getPrice();
+        if(orderItem.getOrderTags()!=null) {
+            for (OrderTag tag : orderItem.getOrderTags()) {
+                price=price+tag.getPrice();
+            }
+        }
+        if(orderItem.getOrderTags()!=null){
+            for(OrderTag tag:orderItem.getOrderTags()){
+                price+=tag.getPrice();
+            }
+        }
+        price=price*orderItem.getQuantity();
+        return Utils.roundTwoDecimals(price);
+    }
+
+
+    public float calculatefloatPrice(OrderItem orderItem){
+        float price=orderItem.getMenuPortion().getPrice();
+        if(orderItem.getOrderTags()!=null) {
+            for (OrderTag tag : orderItem.getOrderTags()) {
+                price=price+tag.getPrice();
+            }
+        }
+        if(orderItem.getOrderTags()!=null){
+            for(OrderTag tag:orderItem.getOrderTags()){
+                price+=tag.getPrice();
+            }
+        }
+        price=price*orderItem.getQuantity();
+        return  price;
+    }
+
+
+    class ViewHolder extends RecyclerView.ViewHolder{
+        public TextView category;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+            category=(TextView)itemView.findViewById(R.id.tv_category);
         }
     }
 }

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.dineplan.model.Category;
 import com.dineplan.model.Department;
@@ -242,24 +243,46 @@ public class DbHandler extends SQLiteOpenHelper {
     public ArrayList<MenuItem> getMenuItemList(){
         Cursor mcursor = null;
         ArrayList<MenuItem> menuItems=new ArrayList<>();
-        String selectQuery = "SELECT * FROM "+DATABASE_TABLE03+" order by name asc";
+        String selectQuery = "SELECT * FROM "+DATABASE_TABLE03+" I left join tax T on I.id=T.menuItemId or I.categoryId=T.categoryId order by I.name asc";
         SQLiteDatabase myDataBase = this.getReadableDatabase();
+        MenuItem data=null;
+        ArrayList<Tax> taxes=null;
         try {
             mcursor = myDataBase.rawQuery(selectQuery, null);
             if (mcursor.moveToFirst()) {
                 do {
-                    MenuItem data = new MenuItem();
-                    data.setId(mcursor.getInt(mcursor.getColumnIndex("id")));
-                    data.setName(mcursor.getString(mcursor.getColumnIndex("name")));
-                    data.setAliasCode(mcursor.getString(mcursor.getColumnIndex("aliasCode")));
-                    data.setAliasName(mcursor.getString(mcursor.getColumnIndex("aliasName")));
-                    data.setImagePath(mcursor.getString(mcursor.getColumnIndex("imagePath")));
-                    data.setDescription(mcursor.getString(mcursor.getColumnIndex("description")));
-                    data.setFavorite(mcursor.getInt(mcursor.getColumnIndex("isFavorite"))==1);
-                    data.setSortOrder(mcursor.getInt(mcursor.getColumnIndex("sortOrder")));
-                    data.setBarCode(mcursor.getString(mcursor.getColumnIndex("barCode")));
-                    data.setCategoryId(mcursor.getInt(mcursor.getColumnIndex("categoryId")));
-                    data.setPrice(mcursor.getInt(mcursor.getColumnIndex("price")));
+
+                   if(data==null || data.getId()!=mcursor.getInt(1)) {
+                       data = new MenuItem();
+                       taxes=new ArrayList<>();
+                       data.setTaxes(taxes);
+                       data.setId(mcursor.getInt(1));
+                       data.setName(mcursor.getString(2));
+                       data.setAliasCode(mcursor.getString(3));
+                       data.setAliasName(mcursor.getString(4));
+                       data.setImagePath(mcursor.getString(5));
+                       data.setDescription(mcursor.getString(6));
+                       data.setFavorite(mcursor.getInt(7) == 1);
+                       data.setSortOrder(mcursor.getInt(8));
+                       data.setBarCode(mcursor.getString(9));
+                       data.setCategoryId(mcursor.getInt(10));
+                       data.setPrice(mcursor.getInt(11));
+                   }
+
+
+                    if(mcursor.getInt(12)!=0) {
+                        Tax tax=new Tax();
+                        tax.setId(mcursor.getInt(12));
+                        tax.setName(mcursor.getString(13));
+                        tax.setPercentage(mcursor.getInt(14));
+                        tax.setCategoryId(mcursor.getInt(15));
+                        tax.setCategoryName(mcursor.getString(16));
+                        tax.setMenuItemId(mcursor.getInt(17));
+                        tax.setMenuItemName(mcursor.getString(18));
+                        taxes.add(tax);
+                    }
+
+                   if(!menuItems.contains(data))
                     menuItems.add(data) ;
 
                 }while (mcursor.moveToNext());

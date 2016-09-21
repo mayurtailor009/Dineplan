@@ -1,6 +1,8 @@
 package com.dineplan.activities;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -51,7 +53,6 @@ public class ShiftEndActivity extends BaseActivity implements AsyncTaskCompleteL
 
         setTouchNClick(R.id.btn_end_shift);
         setTouchNClick(R.id.btn_cancel);
-        setTouchNClick(R.id.btn_open_till);
 
     }
 
@@ -79,9 +80,7 @@ public class ShiftEndActivity extends BaseActivity implements AsyncTaskCompleteL
             case R.id.btn_cancel:
                 finish();
                 break;
-            case R.id.btn_open_till:
-                finish();
-                break;
+           
         }
     }
 
@@ -91,8 +90,14 @@ public class ShiftEndActivity extends BaseActivity implements AsyncTaskCompleteL
             try {
                 JSONObject jsonObject=new JSONObject(result);
                 if(jsonObject.getBoolean("success")){
-                    preferences.edit().remove("workPeriodId").commit();
-                    finish();
+                    preferences.edit().clear().commit();
+                    Intent intent=new Intent(this,LoginActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                        finishAffinity();
+                    }
 
                 }else{
                     Utils.showOkDialog(this,jsonObject.getJSONObject("error").getString("message"),jsonObject.getJSONObject("error").getString("details"));

@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import com.dineplan.R;
 import com.dineplan.utility.Constants;
+import com.dineplan.utility.Utils;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -29,6 +30,7 @@ public class SplashActivity extends BaseActivity {
         };
         timer = new Timer();
         timer.schedule(task, splashDelay);
+        Utils.exportDatabse("dineplan",this);
     }
 
     public void moveToNextActivity() {

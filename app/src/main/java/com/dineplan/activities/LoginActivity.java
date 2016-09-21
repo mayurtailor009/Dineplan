@@ -92,7 +92,7 @@ public class LoginActivity extends BaseActivity implements AsyncTaskCompleteList
                 }
             break;
             case R.id.tv_help:
-                startActivity(new Intent(this, AddFoodActivity.class));
+                startActivity(new Intent(this, HelpActivity.class));
                 break;
         }
     }
