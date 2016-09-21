@@ -1,13 +1,11 @@
 package com.dineplan.activities;
 
 import android.app.Dialog;
-import android.app.Fragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.PersistableBundle;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
@@ -65,14 +63,22 @@ public class HomeActivity extends BaseActivity implements AsyncTaskCompleteListe
 
     private int syncCounter=0, totalSyncCount=0;
     private ArrayList<Syncer> sync;
+
+    private FirebaseAnalytics mFirebaseAnalytics;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+
         setContentView(R.layout.activity_home);
         setupDrawer();
         init(savedInstanceState);
 
-        Utils.exportDatabse("dineplan", this);
+
+        //Utils.exportDatabse("dineplan", this);
+        logEvent();
     }
 
     private void init(Bundle savedInstanceState) {
@@ -135,7 +141,7 @@ public class HomeActivity extends BaseActivity implements AsyncTaskCompleteListe
         drawerToggle.syncState();
 
         setTouchNClick(R.id.ll_shift);
-       // setTouchNClick(R.id.ll_location);
+        setTouchNClick(R.id.ll_location);
         setTouchNClick(R.id.ll_logout);
         setTouchNClick(R.id.ll_setting);
         setTouchNClick(R.id.ll_reports);
@@ -157,10 +163,10 @@ public class HomeActivity extends BaseActivity implements AsyncTaskCompleteListe
                 toggleDrawer();
                 startActivity(new Intent(this, ShiftActivity.class));
                 break;
-           /* case R.id.ll_location:
+            case R.id.ll_location:
                 toggleDrawer();
                 startActivity(new Intent(this, SelectLocation.class));
-                break;*/
+                break;
             case R.id.ll_logout:
                 toggleDrawer();
                 break;
@@ -380,7 +386,6 @@ public class HomeActivity extends BaseActivity implements AsyncTaskCompleteListe
 
 
     }
-
     @Override
     public void clearItems() {
         itemCount=0;
@@ -411,7 +416,6 @@ public class HomeActivity extends BaseActivity implements AsyncTaskCompleteListe
                 tv_count.setVisibility(View.VISIBLE);
             }
         }
-
 
     }
 
@@ -558,9 +562,7 @@ public class HomeActivity extends BaseActivity implements AsyncTaskCompleteListe
             foodListFragment=new FoodListFragment();
             addFragment(foodListFragment, true);
             ll_sale.setOnClickListener(foodListFragment);
-        }
-
-    }
+        }  }
 
     public Syncer getSyncObj(String syncType){
         if(sync == null)
@@ -571,6 +573,14 @@ public class HomeActivity extends BaseActivity implements AsyncTaskCompleteListe
             }
         }
         return null;
+    }
+
+    public void logEvent(){
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "home");
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "HomeActivity");
+        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "Screen");
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
     }
 }
 
