@@ -76,6 +76,7 @@ public class HomeActivity extends BaseActivity implements AsyncTaskCompleteListe
         setupDrawer();
         init(savedInstanceState);
 
+        Utils.exportDatabse("dineplan", this);
 
         //Utils.exportDatabse("dineplan", this);
         logEvent();
@@ -386,6 +387,7 @@ public class HomeActivity extends BaseActivity implements AsyncTaskCompleteListe
 
 
     }
+
     @Override
     public void clearItems() {
         itemCount=0;
@@ -416,13 +418,12 @@ public class HomeActivity extends BaseActivity implements AsyncTaskCompleteListe
                 tv_count.setVisibility(View.VISIBLE);
             }
         }
-
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putInt("cou",itemCount);
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
+
     }
 
     public void callSyncStatusApi() {
@@ -558,11 +559,12 @@ public class HomeActivity extends BaseActivity implements AsyncTaskCompleteListe
 
     public void startJourney(){
 
-        if(syncCounter == totalSyncCount) {
+        if(syncCounter >= totalSyncCount) {
             foodListFragment=new FoodListFragment();
             addFragment(foodListFragment, true);
             ll_sale.setOnClickListener(foodListFragment);
-        }  }
+        }
+    }
 
     public Syncer getSyncObj(String syncType){
         if(sync == null)
