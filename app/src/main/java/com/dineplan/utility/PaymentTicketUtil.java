@@ -69,11 +69,10 @@ public class PaymentTicketUtil{
             ticketOrderItem.setCreatingUserName(user.getUserName());
             ticketOrderItem.setOrderCreatedTime(orderItem.getOrderTime());
             ticketOrderItem.setMenuItemPortionId(orderItem.getMenuPortion().getId());
+
+
+
          }
-
-
-
-
         orderTicket.setPayments(payments);
 
         orderTicket.setOrders(ticketOrderItems);
