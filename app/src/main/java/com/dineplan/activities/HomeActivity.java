@@ -1,5 +1,7 @@
 package com.dineplan.activities;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,6 +15,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.animation.LinearInterpolator;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -375,6 +378,8 @@ public class HomeActivity extends BaseActivity implements AsyncTaskCompleteListe
         tv_sale.setText(getResources().getText(R.string.current_sale));
         tv_count.setText(String.valueOf(itemCount));
         tv_count.setVisibility(View.VISIBLE);
+
+        animationScale(tv_count);
     }
 
     @Override
@@ -584,6 +589,33 @@ public class HomeActivity extends BaseActivity implements AsyncTaskCompleteListe
         bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "HomeActivity");
         bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "Screen");
         mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+    }
+
+    public TextView getTv_count(){
+        return tv_count;
+    }
+
+    private void animationScale(View source) {
+
+        AnimatorSet anim = new AnimatorSet();
+        AnimatorSet animDown = new AnimatorSet();
+        ObjectAnimator scaleDownX = ObjectAnimator.ofFloat(source, "scaleX", 0.5f);
+        ObjectAnimator scaleDownY = ObjectAnimator.ofFloat(source, "scaleY", 0.5f);
+
+        animDown.playTogether(scaleDownX, scaleDownY);
+        animDown.setInterpolator(new LinearInterpolator());
+        animDown.setDuration(300);
+
+        AnimatorSet animUp = new AnimatorSet();
+        ObjectAnimator scaleUpX = ObjectAnimator.ofFloat(source, "scaleX", 1f);
+        ObjectAnimator scaleUpY = ObjectAnimator.ofFloat(source, "scaleY", 1f);
+
+        animUp.playTogether(scaleUpX, scaleUpY);
+        animUp.setInterpolator(new LinearInterpolator());
+        animUp.setDuration(300);
+        //animSetXY.start();
+        anim.playSequentially(animDown, animUp);
+        anim.start();
     }
 }
 
