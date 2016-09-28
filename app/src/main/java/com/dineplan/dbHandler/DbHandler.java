@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import com.dineplan.model.Category;
 import com.dineplan.model.Department;
@@ -13,10 +12,12 @@ import com.dineplan.model.MenuItem;
 import com.dineplan.model.MenuPortion;
 import com.dineplan.model.OrderTag;
 import com.dineplan.model.OrderTagGroup;
+import com.dineplan.model.OrderTicket;
 import com.dineplan.model.PaymentType;
 import com.dineplan.model.Syncer;
 import com.dineplan.model.Tax;
 import com.dineplan.model.TransactionType;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -38,6 +39,7 @@ public class DbHandler extends SQLiteOpenHelper {
     public static final String DATABASE_TABLE_TRANSACTION_TYPE="transaction_type";
     public static final String DATABASE_TABLE_TAX="tax";
     public static final String DATABASE_TABLE_DEPARTMENT="department";
+    public static final String DATABASE_TABLE_TICKET="ticket";
     private Context context;
     public DbHandler(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -61,6 +63,10 @@ public class DbHandler extends SQLiteOpenHelper {
                 "(id INTEGER ,name TEXT, percentage integer, categoryId integer, categoryName text, menuItemId integer, menuItemName text)";
         String CREATE_TABLE_DEPARTMENT="CREATE TABLE "+DATABASE_TABLE_DEPARTMENT+" " +
                 "(id INTEGER ,name TEXT)";
+
+        String CREATE_TABLE_TICKET="CREATE TABLE "+DATABASE_TABLE_TICKET+" " +
+                "(id INTEGER PRIMARY KEY AUTOINCREMENT ,value TEXT)";
+
         sqLiteDatabase.execSQL(SYNCER);
         sqLiteDatabase.execSQL(CATEGORY);
         sqLiteDatabase.execSQL(MENUITEM);
@@ -71,6 +77,7 @@ public class DbHandler extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(CREATE_TABLE_TRANSACTION_TYPE);
         sqLiteDatabase.execSQL(CREATE_TABLE_TAX);
         sqLiteDatabase.execSQL(CREATE_TABLE_DEPARTMENT);
+        sqLiteDatabase.execSQL(CREATE_TABLE_TICKET);
     }
 
     public void isSyncNeeded(ArrayList<Syncer> syncer){
@@ -624,5 +631,42 @@ public class DbHandler extends SQLiteOpenHelper {
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    public long insertTicket(String ticketJson) {
+        SQLiteDatabase myDataBase = this.getReadableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("value", ticketJson);
+        long id = myDataBase.insert(DATABASE_TABLE_TICKET, null, values);
+        return id;
+    }
+
+    public void clearTicketTable() {
+        SQLiteDatabase myDataBase = this.getReadableDatabase();
+        myDataBase.execSQL("delete from "+DATABASE_TABLE_TICKET);
+    }
+
+    public ArrayList<OrderTicket> getTicketList() {
+        Cursor mcursor = null;
+        ArrayList<OrderTicket> list = new ArrayList<>();
+        Gson gson = new Gson();
+        String selectQuery = "SELECT * FROM "+DATABASE_TABLE_TICKET;
+        SQLiteDatabase myDataBase = this.getReadableDatabase();
+        try {
+            mcursor = myDataBase.rawQuery(selectQuery, null);
+            if (mcursor.moveToFirst()) {
+                do {
+                    String val = (mcursor.getString(mcursor.getColumnIndex("value")));
+                    OrderTicket data = gson.fromJson(val, OrderTicket.class);
+                    list.add(data) ;
+                }while (mcursor.moveToNext());
+            }
+        } catch (Exception exp) {
+            exp.printStackTrace();
+        } finally {
+            if (mcursor != null)
+                mcursor.close();
+        }
+        return list;
     }
 }

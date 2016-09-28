@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.dineplan.R;
 
-public class PaymentRecordCardActivity extends BaseActivity {
+public class PaymentSplitActivity extends BaseActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

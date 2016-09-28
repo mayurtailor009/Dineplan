@@ -78,7 +78,7 @@ public class HomeActivity extends BaseActivity implements AsyncTaskCompleteListe
         init(savedInstanceState);
 
         Utils.exportDatabse("dineplan", this);
-
+        new DbHandler(this).getTransactionTypeList();
         //Utils.exportDatabse("dineplan", this);
         logEvent();
     }
@@ -143,7 +143,7 @@ public class HomeActivity extends BaseActivity implements AsyncTaskCompleteListe
         drawerToggle.syncState();
 
         setTouchNClick(R.id.ll_shift);
-       // setTouchNClick(R.id.ll_location);
+        //setTouchNClick(R.id.ll_location);
         setTouchNClick(R.id.ll_logout);
         setTouchNClick(R.id.ll_setting);
         setTouchNClick(R.id.ll_reports);
@@ -165,7 +165,7 @@ public class HomeActivity extends BaseActivity implements AsyncTaskCompleteListe
                 toggleDrawer();
                 startActivity(new Intent(this, ShiftActivity.class));
                 break;
-           /* case R.id.ll_location:
+            /*case R.id.ll_location:
                 toggleDrawer();
                 startActivity(new Intent(this, SelectLocation.class));
                 break;*/

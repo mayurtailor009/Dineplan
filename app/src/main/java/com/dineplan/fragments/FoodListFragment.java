@@ -195,13 +195,10 @@ public class FoodListFragment extends BaseFragment implements AdapterView.OnItem
 
                     break;
                 case R.id.tv_charge:
-                    Intent intent=new Intent(getActivity(), Payment1Activity.class);
-                    intent.putExtra("amount",currentSale);
-                    intent.putExtra("order",orderItems);
-                    startActivity(intent);
+                    startPaymentActivity();
                     break;
                 case R.id.ll_charge:
-                        startActivity(new Intent(getActivity(), Payment1Activity.class));
+                    startPaymentActivity();
                     break;
                 case R.id.ll_sale:
                     if(orderItems!=null && orderItems.size()>0) {
@@ -326,7 +323,12 @@ public class FoodListFragment extends BaseFragment implements AdapterView.OnItem
         }
     }
 
-
+    public void startPaymentActivity(){
+        Intent intent=new Intent(getActivity(), Payment1Activity.class);
+        intent.putExtra("amount",currentSale);
+        intent.putExtra("order",orderItems);
+        startActivity(intent);
+    }
 
 
 

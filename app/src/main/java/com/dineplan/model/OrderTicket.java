@@ -35,14 +35,17 @@ public class OrderTicket {
 
 
     private ArrayList<TicketOrderItem> orders;
-    private ArrayList<Payment> payments;
+    private ArrayList<TicketOrderPayment> payments;
 
+    private ArrayList<TicketStates> ticketStates;
 
-    public ArrayList<Payment> getPayments() {
+    private ArrayList<TicketOrderTransaction> transactions;
+
+    public ArrayList<TicketOrderPayment> getPayments() {
         return payments;
     }
 
-    public void setPayments(ArrayList<Payment> payments) {
+    public void setPayments(ArrayList<TicketOrderPayment> payments) {
         this.payments = payments;
     }
 
@@ -196,5 +199,21 @@ public class OrderTicket {
 
     public void setWorkPeriodId(int workPeriodId) {
         WorkPeriodId = workPeriodId;
+    }
+
+    public ArrayList<TicketStates> getTicketStates() {
+        return ticketStates;
+    }
+
+    public void setTicketStates(ArrayList<TicketStates> ticketStates) {
+        this.ticketStates = ticketStates;
+    }
+
+    public ArrayList<TicketOrderTransaction> getTransactions() {
+        return transactions;
+    }
+
+    public void setTransactions(ArrayList<TicketOrderTransaction> transactions) {
+        this.transactions = transactions;
     }
 }

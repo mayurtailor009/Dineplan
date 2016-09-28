@@ -1,5 +1,7 @@
 package com.dineplan.model;
 
+import java.util.ArrayList;
+
 /**
  * Created by sandeepjoshi on 20/09/16.
  */
@@ -22,7 +24,8 @@ public class TicketOrderItem {
     private String  creatingUserName;
     private String  orderCreatedTime;
     private int menuItemPortionId;
-
+    private ArrayList<TicketOrderTax> taxes;
+    private ArrayList<TicketOrderTag> orderTags;
 
     public TicketOrderItem(){
         orderId=0;
@@ -171,8 +174,33 @@ public class TicketOrderItem {
         this.menuItemPortionId = menuItemPortionId;
     }
 
+    public ArrayList<TicketOrderTax> getTaxes() {
+        return taxes;
+    }
 
-    //        "taxes" : [{\"AT\":10,\"RN\":0,\"TN\":\"VAT\",\"TR\":2.00,\"TT\":1},{\"AT\":11,\"RN\":0,\"TN\":\"SERVICE TAX\",\"TR\":6.00,\"TT\":2}],
+    public void setTaxes(ArrayList<TicketOrderTax> taxes) {
+        this.taxes = taxes;
+    }
+
+    public ArrayList<TicketOrderTag> getOrderTags() {
+        return orderTags;
+    }
+
+    public void setOrderTags(ArrayList<TicketOrderTag> orderTags) {
+        this.orderTags = orderTags;
+    }
+
+    private ArrayList<TicketOrderStates> orderStates;
+
+    public ArrayList<TicketOrderStates> getOrderStates() {
+        return orderStates;
+    }
+
+    public void setOrderStates(ArrayList<TicketOrderStates> orderStates) {
+        this.orderStates = orderStates;
+    }
+
+
     //    "orderTags" : [{\"OI\":2,\"OK\":\"000010\",\"PR\":2.00,\"Q\":1,\"TN\":\"SAUCE\",\"TV\":\"STRAWBERRY\",\"UI\":1},{\"OI\":2,\"OK\":\"000020\",\"Q\":1,\"TN\":\"SAUCE\",\"TV\":\"PESTO\",\"UI\":1},{\"OI\":2,\"OK\":\"000030\",\"PR\":1.00,\"Q\":1,\"TN\":\"SAUCE\",\"TV\":\"TOMATO\",\"UI\":1}],
     //        "orderStates" : [{\"D\":\"\\\/Date(1474180957331+0530)\\\/\",\"OK\":\"000000\",\"S\":\"Submitted\",\"SN\":\"Status\",\"SV\":\"\",\"U\":1}],
 
