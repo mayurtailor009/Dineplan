@@ -7,22 +7,25 @@ import java.io.Serializable;
  */
 public class TicketOrderTransaction implements Serializable{
 
-    private int transactionTypeId;
-    private float amount;
+
+    // public int? Id { get; set; }
+
+    private int TransactionTypeId;
+    private float Amount;
 
     public int getTransactionTypeId() {
-        return transactionTypeId;
+        return TransactionTypeId;
     }
 
     public void setTransactionTypeId(int transactionTypeId) {
-        this.transactionTypeId = transactionTypeId;
+        TransactionTypeId = transactionTypeId;
     }
 
     public float getAmount() {
-        return amount;
+        return Amount;
     }
 
     public void setAmount(float amount) {
-        this.amount = amount;
+        Amount = amount;
     }
 }

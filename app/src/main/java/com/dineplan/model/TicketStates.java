@@ -12,6 +12,8 @@ public class TicketStates implements Serializable{
     private String SN;
     private String SV;
 
+
+
     public String getD() {
         return D;
     }

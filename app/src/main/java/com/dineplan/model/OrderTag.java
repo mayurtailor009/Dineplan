@@ -13,11 +13,20 @@ public class OrderTag implements Serializable {
     private int id;
     private int price;
     private int tagGroupId;
+    private String tagGroupName;
     private ArrayList<OrderTag> orderTags;
 
 
     public OrderTag(){
 
+    }
+
+    public String getTagGroupName() {
+        return tagGroupName;
+    }
+
+    public void setTagGroupName(String tagGroupName) {
+        this.tagGroupName = tagGroupName;
     }
 
     public OrderTag(String name){

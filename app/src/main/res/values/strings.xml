@@ -93,6 +93,13 @@
     <string name="lable_tax">Tax</string>
 
 
+    <string name="entered_amount_is_less_then_total">Entered amount is less then the total.</string>
+
+
+
+    <string name="account_type">com.android.dineplan.sync</string>
+    <string name="content_authority">com.dineplan.sync.StubProvider</string>
+
 
 
 </resources>

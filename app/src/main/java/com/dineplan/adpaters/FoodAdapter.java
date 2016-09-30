@@ -16,7 +16,6 @@ import com.dineplan.model.MenuItem;
 import com.dineplan.model.MenuPortion;
 import com.dineplan.model.OrderItem;
 import com.dineplan.model.Tax;
-import com.dineplan.utility.Animations;
 import com.dineplan.utility.Utils;
 
 import java.util.ArrayList;
@@ -92,16 +91,6 @@ public class FoodAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  
                     orderItem.setTaxAmount(taxcount);
                     showPortions.AddItem(orderItem);
                 }
-
-                View.DragShadowBuilder dsb = new View.DragShadowBuilder(view);
-/*
-                Animations anim = new Animations();
-                Animation a = anim.fromAtoB(view.getX(), view.getY(),1000,0,null,750);
-                a.setDuration(2000);
-                a.setFillAfter(false);
-                view.setAnimation(a);
-                a.startNow();*/
-
             }
         });
     }

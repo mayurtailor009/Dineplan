@@ -15,6 +15,8 @@ public class TicketOrderTag implements Serializable{
     public int Q;
     public int UI;
 
+
+
     public int getOI() {
         return OI;
     }

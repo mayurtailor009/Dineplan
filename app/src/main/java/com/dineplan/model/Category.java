@@ -25,6 +25,11 @@ public class Category {
     private ArrayList<OrderTagGroup> orderTagGroups;
 
 
+    private ArrayList<Tax> categoryTax;
+    private ArrayList<OrderTagGroup> catehoryTagGroup;
+
+
+
     public ArrayList<OrderTagGroup> getOrderTagGroups() {
         return orderTagGroups;
     }

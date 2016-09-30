@@ -30,10 +30,10 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.math.BigDecimal;
 import java.nio.channels.FileChannel;
-import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 import java.util.TimeZone;
@@ -271,9 +271,13 @@ public class Utils {
 
 
     public static String getCurrentUtcDate() {
-        DateFormat df = DateFormat.getTimeInstance();
-        df.setTimeZone(TimeZone.getTimeZone("gmt"));
-        String gmtTime = df.format(new Date());
-        return gmtTime;
+
+       // return  "2016-09-18T12:12:10.1485951+05:30";
+        TimeZone timeZone = TimeZone.getTimeZone("UTC");
+        Calendar calendar = Calendar.getInstance(timeZone);
+        SimpleDateFormat simpleDateFormat =
+                new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.s", Locale.ENGLISH);
+        simpleDateFormat.setTimeZone(timeZone);
+        return  simpleDateFormat.format(calendar.getTime());
     }
 }

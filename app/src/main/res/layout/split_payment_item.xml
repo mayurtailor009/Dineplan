@@ -1,6 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:padding="@dimen/activity_horizontal_margin"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tv_heading"
+        style="@style/tv_small"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="RECORD PAYMENT"
+
+        android:typeface="monospace"
+        android:textStyle="bold"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginTop="@dimen/mini_common_margin"
+        android:id="@+id/ll_top"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/iv_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/cash_icon"/>
+
+        <TextView
+            style="@style/tv_medium"
+            android:id="@+id/tv_record"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/common_margin"
+            android:text="Add Recorded Card Payment"/>
+
+        </LinearLayout>
+
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:visibility="gone"
+        android:id="@+id/rl_amount"
+        android:layout_height="wrap_content">
+
+
+            <ImageView
+                android:id="@+id/iv_close"
+                android:layout_width="25dp"
+                android:layout_centerVertical="true"
+                android:layout_height="25dp"
+                android:src="@drawable/close_icon"/>
+
+
+        <TextView
+            android:id="@+id/tv_amount_text"
+            style="@style/tv_small"
+            android:layout_toRightOf="@+id/iv_close"
+            android:layout_width="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/common_margin"
+            android:text="Amount Before Tip"
+            android:typeface="monospace"/>
+
+        <EditText
+            style="@style/tv_small"
+            android:id="@+id/et_amount"
+            android:layout_toRightOf="@+id/tv_amount_text"
+            android:gravity="right"
+            android:inputType="numberDecimal"
+            android:background="@null"
+            android:padding="@dimen/common_margin"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/common_margin"
+            android:hint="$00"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"/>
+
+
+
+        <LinearLayout
+            android:id="@+id/ll_line"
+            android:layout_below="@+id/et_amount"
+            android:layout_width="fill_parent"
+            android:layout_height="0.7dp"
+            android:layout_marginTop="@dimen/common_margin"
+            android:background="@color/colorAccent"/>
+
+
+
+        </RelativeLayout>
+
+
+
 
 </LinearLayout>

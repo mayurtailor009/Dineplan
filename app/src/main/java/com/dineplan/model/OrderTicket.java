@@ -8,189 +8,179 @@ import java.util.ArrayList;
 public class OrderTicket {
 
 
+    //TicketTypeName  , TicketTags,TicketLogs
+    // public virtual List<TicketTagValue> TTags { get; set; }
+    // public virtual bool PreOrder { get; set; }
+    //public virtual string TicketEntities { get; set; }
+
     public OrderTicket(){
-        isClosed=true;
-        isLocked=false;
+        IsClosed=true;
+        IsLocked=false;
     }
 
-    private int id;
-    private int locationId;
-    private int ticketId;
-    private int tenantId;
-    private int ticketNumber;
-    private String ticketCreatedTime;
-    private String lastUpdateTime;
-    private String lastOrderTime;
-    private String lastPaymentTime;
-    private boolean isClosed;
-    private boolean isLocked;
-    private float remainingAmount;
-    private float totalAmount;//Total ammount of order with the taxes
-    private String department;
-    private String note;
-    private String lastModifiedUserName;
-    private boolean taxIncluded;
+    private int Id;
+    private int LocationId;
+    private int TicketId;
+    private int TenantId;
+    private long TicketNumber;
+    private String TicketCreatedTime;
+    private String LastUpdateTime;
+    private String LastOrderTime;
+    private String LastPaymentTime;
+    private boolean IsClosed;
+    private boolean IsLocked;
+    private float RemainingAmount;
+    private float TotalAmount;//Total ammount of order with the taxes
+    private String DepartmentName;
+    private String Note;
+    private String LastModifiedUserName;
+    private boolean TaxIncluded;
     private int WorkPeriodId;
 
 
 
-    private ArrayList<TicketOrderItem> orders;
-    private ArrayList<TicketOrderPayment> payments;
+    private ArrayList<TicketOrderItem> Orders   ;
+    private ArrayList<TicketOrderPayment> Payments;
 
-    private ArrayList<TicketStates> ticketStates;
+    private ArrayList<TicketStates> TStates;
 
-    private ArrayList<TicketOrderTransaction> transactions;
 
-    public ArrayList<TicketOrderPayment> getPayments() {
-        return payments;
-    }
-
-    public void setPayments(ArrayList<TicketOrderPayment> payments) {
-        this.payments = payments;
-    }
-
-    public ArrayList<TicketOrderItem> getOrders() {
-        return orders;
-    }
-
-    public void setOrders(ArrayList<TicketOrderItem> orders) {
-        this.orders = orders;
-    }
+    private ArrayList<TicketOrderTransaction> Transactions;
 
     public int getId() {
-        return id;
+        return Id;
     }
 
     public void setId(int id) {
-        this.id = id;
+        Id = id;
     }
 
     public int getLocationId() {
-        return locationId;
+        return LocationId;
     }
 
     public void setLocationId(int locationId) {
-        this.locationId = locationId;
+        LocationId = locationId;
     }
 
     public int getTicketId() {
-        return ticketId;
+        return TicketId;
     }
 
     public void setTicketId(int ticketId) {
-        this.ticketId = ticketId;
+        TicketId = ticketId;
     }
 
     public int getTenantId() {
-        return tenantId;
+        return TenantId;
     }
 
     public void setTenantId(int tenantId) {
-        this.tenantId = tenantId;
+        TenantId = tenantId;
     }
 
-    public int getTicketNumber() {
-        return ticketNumber;
+    public long getTicketNumber() {
+        return TicketNumber;
     }
 
-    public void setTicketNumber(int ticketNumber) {
-        this.ticketNumber = ticketNumber;
+    public void setTicketNumber(long ticketNumber) {
+        TicketNumber = ticketNumber;
     }
 
     public String getTicketCreatedTime() {
-        return ticketCreatedTime;
+        return TicketCreatedTime;
     }
 
     public void setTicketCreatedTime(String ticketCreatedTime) {
-        this.ticketCreatedTime = ticketCreatedTime;
+        TicketCreatedTime = ticketCreatedTime;
     }
 
     public String getLastUpdateTime() {
-        return lastUpdateTime;
+        return LastUpdateTime;
     }
 
     public void setLastUpdateTime(String lastUpdateTime) {
-        this.lastUpdateTime = lastUpdateTime;
+        LastUpdateTime = lastUpdateTime;
     }
 
     public String getLastOrderTime() {
-        return lastOrderTime;
+        return LastOrderTime;
     }
 
     public void setLastOrderTime(String lastOrderTime) {
-        this.lastOrderTime = lastOrderTime;
+        LastOrderTime = lastOrderTime;
     }
 
     public String getLastPaymentTime() {
-        return lastPaymentTime;
+        return LastPaymentTime;
     }
 
     public void setLastPaymentTime(String lastPaymentTime) {
-        this.lastPaymentTime = lastPaymentTime;
+        LastPaymentTime = lastPaymentTime;
     }
 
     public boolean isClosed() {
-        return isClosed;
+        return IsClosed;
     }
 
     public void setClosed(boolean closed) {
-        isClosed = closed;
+        IsClosed = closed;
     }
 
     public boolean isLocked() {
-        return isLocked;
+        return IsLocked;
     }
 
     public void setLocked(boolean locked) {
-        isLocked = locked;
+        IsLocked = locked;
     }
 
     public float getRemainingAmount() {
-        return remainingAmount;
+        return RemainingAmount;
     }
 
     public void setRemainingAmount(float remainingAmount) {
-        this.remainingAmount = remainingAmount;
+        RemainingAmount = remainingAmount;
     }
 
     public float getTotalAmount() {
-        return totalAmount;
+        return TotalAmount;
     }
 
     public void setTotalAmount(float totalAmount) {
-        this.totalAmount = totalAmount;
+        TotalAmount = totalAmount;
     }
 
-    public String getDepartment() {
-        return department;
+    public String getDepartmentName() {
+        return DepartmentName;
     }
 
-    public void setDepartment(String department) {
-        this.department = department;
+    public void setDepartmentName(String departmentName) {
+        DepartmentName = departmentName;
     }
 
     public String getNote() {
-        return note;
+        return Note;
     }
 
     public void setNote(String note) {
-        this.note = note;
+        Note = note;
     }
 
     public String getLastModifiedUserName() {
-        return lastModifiedUserName;
+        return LastModifiedUserName;
     }
 
     public void setLastModifiedUserName(String lastModifiedUserName) {
-        this.lastModifiedUserName = lastModifiedUserName;
+        LastModifiedUserName = lastModifiedUserName;
     }
 
     public boolean isTaxIncluded() {
-        return taxIncluded;
+        return TaxIncluded;
     }
 
     public void setTaxIncluded(boolean taxIncluded) {
-        this.taxIncluded = taxIncluded;
+        TaxIncluded = taxIncluded;
     }
 
     public int getWorkPeriodId() {
@@ -201,19 +191,35 @@ public class OrderTicket {
         WorkPeriodId = workPeriodId;
     }
 
-    public ArrayList<TicketStates> getTicketStates() {
-        return ticketStates;
+    public ArrayList<TicketOrderItem> getOrders() {
+        return Orders;
     }
 
-    public void setTicketStates(ArrayList<TicketStates> ticketStates) {
-        this.ticketStates = ticketStates;
+    public void setOrders(ArrayList<TicketOrderItem> orders) {
+        Orders = orders;
+    }
+
+    public ArrayList<TicketOrderPayment> getPayments() {
+        return Payments;
+    }
+
+    public void setPayments(ArrayList<TicketOrderPayment> payments) {
+        Payments = payments;
+    }
+
+    public ArrayList<TicketStates> getTStates() {
+        return TStates;
+    }
+
+    public void setTStates(ArrayList<TicketStates> TStates) {
+        this.TStates = TStates;
     }
 
     public ArrayList<TicketOrderTransaction> getTransactions() {
-        return transactions;
+        return Transactions;
     }
 
     public void setTransactions(ArrayList<TicketOrderTransaction> transactions) {
-        this.transactions = transactions;
+        Transactions = transactions;
     }
 }

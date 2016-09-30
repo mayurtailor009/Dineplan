@@ -65,7 +65,7 @@ public class DbHandler extends SQLiteOpenHelper {
                 "(id INTEGER ,name TEXT)";
 
         String CREATE_TABLE_TICKET="CREATE TABLE "+DATABASE_TABLE_TICKET+" " +
-                "(id INTEGER PRIMARY KEY AUTOINCREMENT ,value TEXT)";
+                "(id INTEGER PRIMARY KEY AUTOINCREMENT ,ticketId INTEGER,value TEXT)";
 
         sqLiteDatabase.execSQL(SYNCER);
         sqLiteDatabase.execSQL(CATEGORY);
@@ -326,8 +326,11 @@ public class DbHandler extends SQLiteOpenHelper {
             if (mcursor != null)
                 mcursor.close();
         }
+
+
         return menuItems;
     }
+
 
     public MenuItem getMenuItemDetail(MenuItem menuItem) {
         Cursor mcursor = null;
@@ -668,5 +671,14 @@ public class DbHandler extends SQLiteOpenHelper {
                 mcursor.close();
         }
         return list;
+    }
+
+
+    public long updateTicketId(int ticketId, long ticketNumber) {
+        SQLiteDatabase myDataBase = this.getReadableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("ticketId", ticketId);
+        long id = myDataBase.update(DATABASE_TABLE_TICKET, values,"id=?",new String[]{String.valueOf(ticketNumber)});
+        return id;
     }
 }

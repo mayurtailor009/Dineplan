@@ -7,6 +7,15 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
+
+
+    <uses-permission
+        android:name="android.permission.READ_SYNC_SETTINGS"/>
+    <uses-permission
+        android:name="android.permission.WRITE_SYNC_SETTINGS"/>
+    <uses-permission
+        android:name="android.permission.AUTHENTICATE_ACCOUNTS"/>
+
     <application
         android:name=".rest.AppController"
         android:allowBackup="true"
@@ -29,7 +38,7 @@
         <activity android:name=".activities.SelectLocation" />
         <activity android:name=".activities.AddFoodActivity" />
         <activity android:name=".activities.Payment1Activity" />
-        <activity android:name=".activities.PaymentRecordCardActivity" />
+        <activity android:name=".activities.PaymentSplitActivity" />
         <activity android:name=".activities.PaymentCashActivity" />
         <activity android:name=".activities.PaymentOtherActivity" />
         <activity android:name=".activities.PaymentReceiptActivity" />
@@ -37,7 +46,40 @@
         <activity android:name=".activities.ShiftActivity" />
         <activity android:name=".activities.ShiftEndActivity" />
         <activity android:name=".activities.AnimationActivity" />
-        <activity android:name=".activities.HelpActivity"></activity>
+        <activity android:name=".activities.HelpActivity" />
+
+
+
+        <service
+            android:name="com.dineplan.sync.SyncService"
+            android:exported="true"
+            android:process=":sync">
+            <intent-filter>
+                <action android:name="com.SyncAdapter"/>
+            </intent-filter>
+            <meta-data android:name="android.content.SyncAdapter"
+                android:resource="@xml/syncadapter" />
+        </service>
+
+
+        <service
+            android:name="com.dineplan.sync.AuthenticatorService">
+            <intent-filter>
+                <action android:name="android.accounts.AccountAuthenticator"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.accounts.AccountAuthenticator"
+                android:resource="@xml/authenticator" />
+        </service>
+
+        <provider
+            android:name="com.dineplan.sync.StubProvider"
+            android:authorities="com.dineplan.android.datasync.provider"
+            android:exported="false"
+            android:syncable="true"/>
+
+
+
     </application>
 
 </manifest>

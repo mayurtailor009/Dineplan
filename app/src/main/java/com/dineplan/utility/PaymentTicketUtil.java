@@ -2,19 +2,21 @@ package com.dineplan.utility;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
+import com.dineplan.activities.PaymentSplitActivity;
 import com.dineplan.dbHandler.DbHandler;
 import com.dineplan.model.OrderItem;
 import com.dineplan.model.OrderTag;
-import com.dineplan.model.TicketOrderPayment;
-import com.dineplan.model.TicketOrderStates;
-import com.dineplan.model.TicketOrderTag;
-import com.dineplan.model.TicketOrderTax;
 import com.dineplan.model.OrderTicket;
 import com.dineplan.model.Payment;
 import com.dineplan.model.PaymentType;
 import com.dineplan.model.Tax;
 import com.dineplan.model.TicketOrderItem;
+import com.dineplan.model.TicketOrderPayment;
+import com.dineplan.model.TicketOrderStates;
+import com.dineplan.model.TicketOrderTag;
+import com.dineplan.model.TicketOrderTax;
 import com.dineplan.model.TicketOrderTransaction;
 import com.dineplan.model.TicketStates;
 import com.dineplan.model.TransactionType;
@@ -35,6 +37,7 @@ public class PaymentTicketUtil {
     private ArrayList<Payment> payments;
     private float taxAmount;
     private PaymentType paymentType;
+    private ArrayList<PaymentType> paymentTypes;
     Gson gson;
     DbHandler dbHandler;
     private OrderTicket orderTicket;
@@ -50,6 +53,16 @@ public class PaymentTicketUtil {
         ;
     }
 
+    public PaymentTicketUtil(PaymentSplitActivity context, ArrayList<OrderItem> orderItems,  float totalAmount,ArrayList<PaymentType> paymentTypes, ArrayList<Payment>  payments) {
+        this.context = context;
+        this.totalAmount = totalAmount;
+        this.orderItems = orderItems;
+        dbHandler = new DbHandler(context);
+        preferences = context.getSharedPreferences(Constants.PREF_NAME, context.MODE_PRIVATE);
+        this.paymentTypes=paymentTypes;
+        this.totalAmount=totalAmount;
+     }
+
 
     public OrderTicket generateTicket() {
         orderTicket = new OrderTicket();
@@ -62,7 +75,7 @@ public class PaymentTicketUtil {
         orderTicket.setLastOrderTime(orderItems.get(orderItems.size() - 1).getOrderTime());
         orderTicket.setLastPaymentTime(Utils.getCurrentUtcDate());
         orderTicket.setTotalAmount(totalAmount);
-        orderTicket.setDepartment(orderItems.get(0).getDepartment().getName());
+        orderTicket.setDepartmentName(orderItems.get(0).getDepartment().getName());
         orderTicket.setNote("");//from where we can get notes
         orderTicket.setLastModifiedUserName(user.getUserName());
         orderTicket.setTicketId(0);
@@ -88,18 +101,23 @@ public class PaymentTicketUtil {
             ticketOrderItem.setMenuItemPortionId(orderItem.getMenuPortion().getId());
 
             ticketOrderItem.setTaxes(getOrderTax(orderItem.getTaxes()));
-            ticketOrderItem.setOrderTags(getOrderTag(orderItem.getOrderTags()));
-            ticketOrderItem.setOrderStates(getOrderState());
+            ticketOrderItem.setOTags(getOrderTag(orderItem.getOrderTags()));
+            ticketOrderItem.setOStates(getOrderState());
 
             ticketOrderItems.add(ticketOrderItem);
         }
 
 
+
+
+        if(paymentTypes==null)
         orderTicket.setPayments(getTicketPayement());
+        else
+        orderTicket.setPayments(getSplitTicketPayments());
 
         orderTicket.setOrders(ticketOrderItems);
 
-        orderTicket.setTicketStates(getTicketState());
+        orderTicket.setTStates(getTicketState());
 
         orderTicket.setTransactions(getTransactionList());
 
@@ -138,7 +156,6 @@ public class PaymentTicketUtil {
         if(orderTags!=null) {
             for (OrderTag orderTag : orderTags) {
                 TicketOrderTag ticketOrderTag = new TicketOrderTag();
-
                 ticketOrderTag.setOI(orderTag.getId());
                 ticketOrderTag.setOK("");
                 ticketOrderTag.setPR(orderTag.getPrice());
@@ -146,7 +163,6 @@ public class PaymentTicketUtil {
                 ticketOrderTag.setTV(orderTag.getName());
                 ticketOrderTag.setQ(1);
                 ticketOrderTag.setUI(user.getUserId());
-
                 orderTagList.add(ticketOrderTag);
             }
         }
@@ -175,11 +191,11 @@ public class PaymentTicketUtil {
 
         TicketStates ticketStates = new TicketStates();
         ticketStates.setD(Utils.getCurrentUtcDate());
-        ticketStates.setS("PAID");
-        ticketStates.setSN("STATUS");
+        ticketStates.setS("Paid");
+        ticketStates.setSN("Status");
         ticketStates.setSV("");
         ticketStateList.add(ticketStates);
-
+        Log.d("state",ticketStates.toString());
         return ticketStateList;
     }
 
@@ -194,10 +210,7 @@ public class PaymentTicketUtil {
         ticketOrderPayment.setPaymentUserName(user.getUserName());
         ticketOrderPayment.setPaymentCreatedTime(Utils.getCurrentUtcDate());
         ticketOrderPayment.setAmount(totalAmount);
-
         ticketPaymentList.add(ticketOrderPayment);
-
-
         return ticketPaymentList;
     }
 
@@ -226,5 +239,24 @@ public class PaymentTicketUtil {
         }
 
         return transactionList;
+    }
+
+    public ArrayList<TicketOrderPayment> getSplitTicketPayments() {
+        ArrayList<TicketOrderPayment> ticketPaymentList = new ArrayList<>();
+        User user = gson.fromJson(preferences.getString("user", "{}"), User.class);
+
+        for(PaymentType pType:paymentTypes) {
+            TicketOrderPayment ticketOrderPayment = new TicketOrderPayment();
+            ticketOrderPayment.setPaymentTypeId(pType.getId());
+            ticketOrderPayment.setTenderedAmount(pType.getAmount());
+            ticketOrderPayment.setTerminalName("Server");
+            ticketOrderPayment.setPaymentUserName(user.getUserName());
+            ticketOrderPayment.setPaymentCreatedTime(Utils.getCurrentUtcDate());
+            ticketOrderPayment.setAmount(pType.getAmount());
+            ticketPaymentList.add(ticketOrderPayment);
+        }
+
+
+        return ticketPaymentList;
     }
 }

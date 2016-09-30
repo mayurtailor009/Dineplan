@@ -11,7 +11,16 @@ public class PaymentType implements Serializable{
     private String name;
     private boolean acceptChange;
     private int sortOrder;
+    private float amount;
 
+
+    public float getAmount() {
+        return amount;
+    }
+
+    public void setAmount(float amount) {
+        this.amount = amount;
+    }
 
     public int getId() {
         return id;

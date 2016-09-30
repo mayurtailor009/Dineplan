@@ -34,6 +34,7 @@ public class SplashActivity extends BaseActivity {
     }
 
     public void moveToNextActivity() {
+        preferences.edit().putString(Constants.AMOUNT_TYPE,"$").commit();
         if(preferences.getString("user",null)!=null){
             if(preferences.getString("location",null)!=null){
                 startActivity(new Intent(SplashActivity.this, HomeActivity.class));

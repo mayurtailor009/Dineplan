@@ -1,5 +1,6 @@
 package com.dineplan.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,7 +13,6 @@ import android.widget.TextView;
 import com.dineplan.R;
 import com.dineplan.adpaters.PaymentTypeAdapter;
 import com.dineplan.dbHandler.DbHandler;
-import com.dineplan.model.OrderItem;
 import com.dineplan.model.PaymentType;
 import com.dineplan.utility.Utils;
 
@@ -60,6 +60,11 @@ public class Payment1Activity extends BaseActivity {
                 finish();
                 break;
             case R.id.tv_right:
+                PaymentType paymentType=(PaymentType) view.getTag();
+                Intent intent=new Intent(this, PaymentSplitActivity.class);
+                intent.putExtra("payment",paymentType);
+                intent.putExtras((getIntent().getExtras()));
+                startActivity(intent);
                 break;
         }
     }

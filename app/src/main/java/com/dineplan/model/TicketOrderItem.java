@@ -7,201 +7,211 @@ import java.util.ArrayList;
  */
 public class TicketOrderItem {
 
-    private int orderId;
-    private int ticketId;
-    private String departmentName;
-    private int menuItemId;
-    private String menuItemName;
-    private String portionName;
-    private float price;
-    private int quantity;
-    private String note;
-    private boolean locked;
-    private boolean calculatePrice;
-    private boolean increaseInventory;
-    private boolean decreaseInventory;
-    private int orderNumber;//what is it
-    private String  creatingUserName;
-    private String  orderCreatedTime;
-    private int menuItemPortionId;
-    private ArrayList<TicketOrderTax> taxes;
-    private ArrayList<TicketOrderTag> orderTags;
 
-    public TicketOrderItem(){
-        orderId=0;
-        ticketId=0;
-        locked=true;
-        calculatePrice=true;
-        increaseInventory=false;
-        decreaseInventory=true;
-        orderNumber=0;
+    //public int? Id { get; set; }
+    //public decimal CostPrice { get; set; }
+    //public int PortionCount { get; set; }
+    //public string PriceTag { get; set; }
+    //public string Taxes { get; set; }
+    //public string OrderTags { get; set; }
 
+    //public List<OrderTagValue> OTags{ get; set; }
+    // public string OrderStates { get; set; }
+
+
+    // public bool IsPromotionOrder { get; set; }
+    //public decimal PromotionAmount { get; set; }
+
+    private int Location_Id;
+
+    private int OrderId;
+    private int TicketId;
+    private String DepartmentName;
+    private int MenuItemId;
+    private String MenuItemName;
+    private String PortionName;
+    private float Price;
+    private int Quantity;
+    private String Note;
+    private boolean Locked;
+    private boolean CalculatePrice;
+    private boolean IncreaseInventory;
+    private boolean DecreaseInventory;
+    private int OrderNumber;//what is it
+    private String  CreatingUserName;
+    private String  OrderCreatedTime;
+    private int MenuItemPortionId;
+    private ArrayList<TicketOrderTax> TTaxes;
+    private ArrayList<TicketOrderTag> OTags;
+
+    private ArrayList<TicketOrderStates> OStates;
+
+
+    public int getLocation_Id() {
+        return Location_Id;
+    }
+
+    public void setLocation_Id(int location_Id) {
+        Location_Id = location_Id;
     }
 
     public int getOrderId() {
-        return orderId;
+        return OrderId;
     }
 
     public void setOrderId(int orderId) {
-        this.orderId = orderId;
+        OrderId = orderId;
     }
 
     public int getTicketId() {
-        return ticketId;
+        return TicketId;
     }
 
     public void setTicketId(int ticketId) {
-        this.ticketId = ticketId;
+        TicketId = ticketId;
     }
 
     public String getDepartmentName() {
-        return departmentName;
+        return DepartmentName;
     }
 
     public void setDepartmentName(String departmentName) {
-        this.departmentName = departmentName;
+        DepartmentName = departmentName;
     }
 
     public int getMenuItemId() {
-        return menuItemId;
+        return MenuItemId;
     }
 
     public void setMenuItemId(int menuItemId) {
-        this.menuItemId = menuItemId;
+        MenuItemId = menuItemId;
     }
 
     public String getMenuItemName() {
-        return menuItemName;
+        return MenuItemName;
     }
 
     public void setMenuItemName(String menuItemName) {
-        this.menuItemName = menuItemName;
+        MenuItemName = menuItemName;
     }
 
     public String getPortionName() {
-        return portionName;
+        return PortionName;
     }
 
     public void setPortionName(String portionName) {
-        this.portionName = portionName;
+        PortionName = portionName;
     }
 
     public float getPrice() {
-        return price;
+        return Price;
     }
 
     public void setPrice(float price) {
-        this.price = price;
+        Price = price;
     }
 
     public int getQuantity() {
-        return quantity;
+        return Quantity;
     }
 
     public void setQuantity(int quantity) {
-        this.quantity = quantity;
+        Quantity = quantity;
     }
 
     public String getNote() {
-        return note;
+        return Note;
     }
 
     public void setNote(String note) {
-        this.note = note;
+        Note = note;
     }
 
     public boolean isLocked() {
-        return locked;
+        return Locked;
     }
 
     public void setLocked(boolean locked) {
-        this.locked = locked;
+        Locked = locked;
     }
 
     public boolean isCalculatePrice() {
-        return calculatePrice;
+        return CalculatePrice;
     }
 
     public void setCalculatePrice(boolean calculatePrice) {
-        this.calculatePrice = calculatePrice;
+        CalculatePrice = calculatePrice;
     }
 
     public boolean isIncreaseInventory() {
-        return increaseInventory;
+        return IncreaseInventory;
     }
 
     public void setIncreaseInventory(boolean increaseInventory) {
-        this.increaseInventory = increaseInventory;
+        IncreaseInventory = increaseInventory;
     }
 
     public boolean isDecreaseInventory() {
-        return decreaseInventory;
+        return DecreaseInventory;
     }
 
     public void setDecreaseInventory(boolean decreaseInventory) {
-        this.decreaseInventory = decreaseInventory;
+        DecreaseInventory = decreaseInventory;
     }
 
     public int getOrderNumber() {
-        return orderNumber;
+        return OrderNumber;
     }
 
     public void setOrderNumber(int orderNumber) {
-        this.orderNumber = orderNumber;
+        OrderNumber = orderNumber;
     }
 
     public String getCreatingUserName() {
-        return creatingUserName;
+        return CreatingUserName;
     }
 
     public void setCreatingUserName(String creatingUserName) {
-        this.creatingUserName = creatingUserName;
+        CreatingUserName = creatingUserName;
     }
 
     public String getOrderCreatedTime() {
-        return orderCreatedTime;
+        return OrderCreatedTime;
     }
 
     public void setOrderCreatedTime(String orderCreatedTime) {
-        this.orderCreatedTime = orderCreatedTime;
+        OrderCreatedTime = orderCreatedTime;
     }
 
     public int getMenuItemPortionId() {
-        return menuItemPortionId;
+        return MenuItemPortionId;
     }
 
     public void setMenuItemPortionId(int menuItemPortionId) {
-        this.menuItemPortionId = menuItemPortionId;
+        MenuItemPortionId = menuItemPortionId;
     }
 
     public ArrayList<TicketOrderTax> getTaxes() {
-        return taxes;
+        return TTaxes;
     }
 
     public void setTaxes(ArrayList<TicketOrderTax> taxes) {
-        this.taxes = taxes;
+        TTaxes = taxes;
     }
 
-    public ArrayList<TicketOrderTag> getOrderTags() {
-        return orderTags;
+    public ArrayList<TicketOrderTag> getOTags() {
+        return OTags;
     }
 
-    public void setOrderTags(ArrayList<TicketOrderTag> orderTags) {
-        this.orderTags = orderTags;
+    public void setOTags(ArrayList<TicketOrderTag> OTags) {
+        this.OTags = OTags;
     }
 
-    private ArrayList<TicketOrderStates> orderStates;
-
-    public ArrayList<TicketOrderStates> getOrderStates() {
-        return orderStates;
+    public ArrayList<TicketOrderStates> getOStates() {
+        return OStates;
     }
 
-    public void setOrderStates(ArrayList<TicketOrderStates> orderStates) {
-        this.orderStates = orderStates;
+    public void setOStates(ArrayList<TicketOrderStates> OStates) {
+        this.OStates = OStates;
     }
-
-
-    //    "orderTags" : [{\"OI\":2,\"OK\":\"000010\",\"PR\":2.00,\"Q\":1,\"TN\":\"SAUCE\",\"TV\":\"STRAWBERRY\",\"UI\":1},{\"OI\":2,\"OK\":\"000020\",\"Q\":1,\"TN\":\"SAUCE\",\"TV\":\"PESTO\",\"UI\":1},{\"OI\":2,\"OK\":\"000030\",\"PR\":1.00,\"Q\":1,\"TN\":\"SAUCE\",\"TV\":\"TOMATO\",\"UI\":1}],
-    //        "orderStates" : [{\"D\":\"\\\/Date(1474180957331+0530)\\\/\",\"OK\":\"000000\",\"S\":\"Submitted\",\"SN\":\"Status\",\"SV\":\"\",\"U\":1}],
-
 }

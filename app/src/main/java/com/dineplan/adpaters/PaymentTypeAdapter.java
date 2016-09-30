@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dineplan.R;
-import com.dineplan.activities.BaseActivity;
 import com.dineplan.activities.Payment1Activity;
 import com.dineplan.activities.PaymentCashActivity;
 import com.dineplan.model.PaymentType;

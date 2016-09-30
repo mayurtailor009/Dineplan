@@ -1,8 +1,12 @@
 package com.dineplan.activities;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Dialog;
+import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
@@ -58,36 +62,56 @@ public class HomeActivity extends BaseActivity implements AsyncTaskCompleteListe
     private SharedPreferences preferences;
     private Dialog dialog;
     private LinearLayout ll_sale;
-    private  FoodListFragment foodListFragment;
+    private FoodListFragment foodListFragment;
     private User user;
-    private final int REQ_SYNC_MENU = 3, REQ_SYNC_PAYMENT = 4, REQ_START_SHIFT = 2, REQ_SYNC_STATUS = 1
-            , REQ_SYNC_TRANSACTION = 5, REQ_SYNC_TAX = 6, REQ_SYNC_DEPARTMENT = 7;
+    private final int REQ_SYNC_MENU = 3, REQ_SYNC_PAYMENT = 4, REQ_START_SHIFT = 2, REQ_SYNC_STATUS = 1, REQ_SYNC_TRANSACTION = 5, REQ_SYNC_TAX = 6, REQ_SYNC_DEPARTMENT = 7;
     private int itemCount = 0;
     private TextView tv_count, tv_sale;
 
-    private int syncCounter=0, totalSyncCount=0;
+    private int syncCounter = 0, totalSyncCount = 0;
     private ArrayList<Syncer> sync;
 
     private FirebaseAnalytics mFirebaseAnalytics;
 
+
+    // Instance fields
+    Account mAccount;
+    // Constants
+    // Content provider authority
+    public static final String AUTHORITY = "com.dineplan.sync.StubProvider";
+    // Account
+    public static final String ACCOUNT = "default_account";
+    // Sync interval constants
+    public static final long SECONDS_PER_MINUTE = 1L;
+    public static final long SYNC_INTERVAL_IN_MINUTES = 1L;
+    public static final long SYNC_INTERVAL =
+            SYNC_INTERVAL_IN_MINUTES *
+                    SECONDS_PER_MINUTE;
+    // Global variables
+    // A content resolver for accessing the provider
+    ContentResolver mResolver;
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-
         setContentView(R.layout.activity_home);
         setupDrawer();
         init(savedInstanceState);
-
         Utils.exportDatabse("dineplan", this);
         new DbHandler(this).getTransactionTypeList();
         //Utils.exportDatabse("dineplan", this);
         logEvent();
+
+
+        setUpTheSyncAdapter();
+
     }
 
+
     private void init(Bundle savedInstanceState) {
-        ll_sale=(LinearLayout)findViewById(R.id.ll_sale);
+        ll_sale = (LinearLayout) findViewById(R.id.ll_sale);
         preferences = getSharedPreferences(Constants.PREF_NAME, MODE_PRIVATE);
         user = new Gson().fromJson(preferences.getString("user", "{}"), User.class);
         if (preferences.getInt("workPeriodId", 0) == 0) {
@@ -95,19 +119,19 @@ public class HomeActivity extends BaseActivity implements AsyncTaskCompleteListe
             findViewById(R.id.lay_shift).setOnClickListener(this);
         } else {
             if (savedInstanceState == null) {
-                foodListFragment=new FoodListFragment();
+                foodListFragment = new FoodListFragment();
                 addFragment(foodListFragment, true);
                 ll_sale.setOnClickListener(foodListFragment);
             }
         }
         findViewById(R.id.btn_start_shift).setOnClickListener(this);
 
-       int count= getSupportFragmentManager().getBackStackEntryCount();
-        if(count>0) {
+        int count = getSupportFragmentManager().getBackStackEntryCount();
+        if (count > 0) {
             foodListFragment = (FoodListFragment) getSupportFragmentManager().getFragments().get(0);
         }
-        if(foodListFragment!=null)
-        ll_sale.setOnClickListener(foodListFragment);
+        if (foodListFragment != null)
+            ll_sale.setOnClickListener(foodListFragment);
 
 
     }
@@ -287,7 +311,7 @@ public class HomeActivity extends BaseActivity implements AsyncTaskCompleteListe
                         new DbHandler(this).updateSyncRequire(syncer.getId());
                     }
                 }
-                syncCounter=syncCounter+2;
+                syncCounter = syncCounter + 2;
                 startJourney();
                 break;
 
@@ -307,7 +331,7 @@ public class HomeActivity extends BaseActivity implements AsyncTaskCompleteListe
                         new DbHandler(this).updateSyncRequire(syncer.getId());
                     }
                 }
-                syncCounter=syncCounter+1;
+                syncCounter = syncCounter + 1;
                 startJourney();
                 break;
 
@@ -327,7 +351,7 @@ public class HomeActivity extends BaseActivity implements AsyncTaskCompleteListe
                         new DbHandler(this).updateSyncRequire(syncer.getId());
                     }
                 }
-                syncCounter=syncCounter+1;
+                syncCounter = syncCounter + 1;
                 startJourney();
                 break;
 
@@ -347,7 +371,7 @@ public class HomeActivity extends BaseActivity implements AsyncTaskCompleteListe
                         new DbHandler(this).updateSyncRequire(syncer.getId());
                     }
                 }
-                syncCounter=syncCounter+1;
+                syncCounter = syncCounter + 1;
                 startJourney();
                 break;
             case REQ_SYNC_DEPARTMENT:
@@ -366,7 +390,7 @@ public class HomeActivity extends BaseActivity implements AsyncTaskCompleteListe
                         new DbHandler(this).updateSyncRequire(syncer.getId());
                     }
                 }
-                syncCounter=syncCounter+1;
+                syncCounter = syncCounter + 1;
                 startJourney();
                 break;
         }
@@ -396,7 +420,7 @@ public class HomeActivity extends BaseActivity implements AsyncTaskCompleteListe
 
     @Override
     public void clearItems() {
-        itemCount=0;
+        itemCount = 0;
         tv_sale.setText(getResources().getText(R.string.no_sale));
         tv_count.setVisibility(View.GONE);
     }
@@ -418,7 +442,7 @@ public class HomeActivity extends BaseActivity implements AsyncTaskCompleteListe
                 tv_sale.setText(getResources().getText(R.string.no_sale));
                 tv_count.setText(String.valueOf(itemCount));
                 tv_count.setVisibility(View.GONE);
-            }else{
+            } else {
                 tv_sale.setText(getResources().getText(R.string.current_sale));
                 tv_count.setText(String.valueOf(itemCount));
                 tv_count.setVisibility(View.VISIBLE);
@@ -447,8 +471,8 @@ public class HomeActivity extends BaseActivity implements AsyncTaskCompleteListe
         }
     }
 
-    public void handleSyncStatusResponse(ArrayList<Syncer> list){
-        try{
+    public void handleSyncStatusResponse(ArrayList<Syncer> list) {
+        try {
 
             for (Syncer syncer : list) {
                 if (syncer.isSyncNeeded()) {
@@ -460,32 +484,23 @@ public class HomeActivity extends BaseActivity implements AsyncTaskCompleteListe
                 if (syncer.getName().equalsIgnoreCase("menu") & syncer.isSyncNeeded()) {
 
                     callGetMenuApi();
-                }
-
-                else if (syncer.getName().equalsIgnoreCase("PAYMENTTYPE") & syncer.isSyncNeeded()) {
+                } else if (syncer.getName().equalsIgnoreCase("PAYMENTTYPE") & syncer.isSyncNeeded()) {
 
                     callGetPaymentTypeApi();
-                }
-
-                else if (syncer.getName().equalsIgnoreCase("TRANSACTIONTYPE") & syncer.isSyncNeeded()) {
+                } else if (syncer.getName().equalsIgnoreCase("TRANSACTIONTYPE") & syncer.isSyncNeeded()) {
 
                     callGetTransactionTypeApi();
-                }
-
-                else if (syncer.getName().equalsIgnoreCase("TAX") & syncer.isSyncNeeded()) {
+                } else if (syncer.getName().equalsIgnoreCase("TAX") & syncer.isSyncNeeded()) {
 
                     callGetTaxApi();
-                }
-
-                else if (syncer.getName().equalsIgnoreCase("DEPARTMENT") & syncer.isSyncNeeded()) {
+                } else if (syncer.getName().equalsIgnoreCase("DEPARTMENT") & syncer.isSyncNeeded()) {
 
                     callGetDepartmentApi();
                 }
             }
             startJourney();
 
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -563,27 +578,27 @@ public class HomeActivity extends BaseActivity implements AsyncTaskCompleteListe
         }
     }
 
-    public void startJourney(){
+    public void startJourney() {
 
-        if(syncCounter >= totalSyncCount) {
-            foodListFragment=new FoodListFragment();
+        if (syncCounter >= totalSyncCount) {
+            foodListFragment = new FoodListFragment();
             addFragment(foodListFragment, true);
             ll_sale.setOnClickListener(foodListFragment);
         }
     }
 
-    public Syncer getSyncObj(String syncType){
-        if(sync == null)
+    public Syncer getSyncObj(String syncType) {
+        if (sync == null)
             return null;
-        for(Syncer syncer : sync){
-            if(syncer!=null && syncer.getName()!=null && syncer.getName().equalsIgnoreCase(syncType)){
+        for (Syncer syncer : sync) {
+            if (syncer != null && syncer.getName() != null && syncer.getName().equalsIgnoreCase(syncType)) {
                 return syncer;
             }
         }
         return null;
     }
 
-    public void logEvent(){
+    public void logEvent() {
         Bundle bundle = new Bundle();
         bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "home");
         bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "HomeActivity");
@@ -591,7 +606,7 @@ public class HomeActivity extends BaseActivity implements AsyncTaskCompleteListe
         mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
     }
 
-    public TextView getTv_count(){
+    public TextView getTv_count() {
         return tv_count;
     }
 
@@ -617,5 +632,70 @@ public class HomeActivity extends BaseActivity implements AsyncTaskCompleteListe
         anim.playSequentially(animDown, animUp);
         anim.start();
     }
+
+
+    private void setUpTheSyncAdapter() {
+        // Create the dummy account
+        mAccount = CreateSyncAccount(this);
+        // Get the content resolver for your app
+        mResolver = getContentResolver();
+
+
+        Bundle bundle=new Bundle();
+        ContentResolver.setIsSyncable(mAccount, getString(R.string.content_authority), 1);
+        ContentResolver.requestSync(mAccount, getString(R.string.content_authority), bundle);
+
+
+        ContentResolver.setSyncAutomatically(mAccount, getString(R.string.content_authority), true);
+       // ContentResolver.requestSync(mAccount, AUTHORITY, Bundle.EMPTY);
+
+       /* *//*
+         * Turn on periodic syncing
+         *//*
+        ContentResolver.addPeriodicSync(
+                mAccount,
+                AUTHORITY,
+                Bundle.EMPTY,
+                SYNC_INTERVAL);*/
+
+    }
+
+
+    /**
+     * Create a new dummy account for the sync adapter
+     *
+     * @param context The application context
+     */
+    public  Account CreateSyncAccount(Context context) {
+        // Create the account type and default account
+        Account newAccount = new Account(ACCOUNT, getResources().getString(R.string.account_type));
+        // Get an instance of the Android account manager
+        AccountManager accountManager =
+                (AccountManager) context.getSystemService(
+                        ACCOUNT_SERVICE);
+       /*
+         * Add the account and account type, no password or user data
+         * If successful, return the Account object, otherwise report an error.
+         */
+        if (accountManager.addAccountExplicitly(newAccount, null, null)) {
+            /*
+             * If you don't set android:syncable="true" in
+             * in your <provider> element in the manifest,
+             * then call context.setIsSyncable(account, AUTHORITY, 1)
+             * here.
+             */
+        } else {
+            /*
+             * The account exists or some other error occurred. Log this, report it,
+             * or handle it internally.
+             */
+        }
+        return  newAccount;
+    }
 }
+
+
+
+
+
 

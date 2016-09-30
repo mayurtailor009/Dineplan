@@ -11,4 +11,7 @@ public class Constants {
 
     // SHARED PREFERENCE
     public static final String PREF_NAME = "app_pref";
+
+    // SHARED PREFERENCE
+    public static final String AMOUNT_TYPE = "amount_type";
 }

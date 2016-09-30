@@ -30,6 +30,10 @@ public class ChooseFoodAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         this.addOrderTag=addOrderTag;
         orderTags=new ArrayList<>();
         for(OrderTagGroup group:grps){
+            for(OrderTag orderTag:group.getOrderTags()){
+                orderTag.setTagGroupName(group.getName());
+                orderTag.setTagGroupId(group.getId());
+            }
             orderTags.add(new OrderTag(group.getName()));
             orderTags.addAll(group.getOrderTags());
         }
